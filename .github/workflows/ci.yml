@@ -57,5 +57,6 @@ jobs:
 
       - name: Execute tests
         run: |
+          mkdir -p build/cache
           php vendor/bin/phpunit --migrate-configuration || true
           php vendor/bin/phpunit
