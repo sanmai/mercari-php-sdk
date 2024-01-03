@@ -1,1 +1,1 @@
-# mercari-sdk-php
+# mercari-php-sdk

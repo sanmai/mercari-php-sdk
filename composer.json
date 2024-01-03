@@ -1,0 +1,63 @@
+{
+    "name": "sanmai/mercari-php-sdk",
+    "description": "Mercari API PHP SDK",
+    "license": "GPL-2.0-or-later",
+    "type": "library",
+    "keywords": [
+        "SDK",
+        "Mercari"
+    ],
+    "authors": [
+        {
+            "name": "Alexey Kopytko",
+            "email": "alexey@kopytko.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/sanmai/sanmai/mercari-php-sdk/issues"
+    },
+    "require": {
+        "php": "^7.4 || ^8.0",
+        "ext-json": "*",
+        "caseyamcl/guzzle_retry_middleware": "^2.9",
+        "guzzlehttp/guzzle": "^6.3 || ^7.0",
+        "jms/serializer": "^3.29",
+        "psr/log": "^1.1",
+        "sanmai/json-serializer": "^0.2.5",
+        "symfony/http-foundation": "^4.4.7 || ^5.0.7",
+        "tumblr/chorus-timekeeper": "^0.1.1"
+    },
+    "require-dev": {
+        "ergebnis/composer-normalize": ">=2.23",
+        "friendsofphp/php-cs-fixer": "^3",
+        "infection/infection": ">=0.16",
+        "phan/phan": ">1.3.0",
+        "php-coveralls/php-coveralls": "^2.4",
+        "phpstan/phpstan": ">=0.10",
+        "phpunit/phpunit": "^9.3",
+        "vimeo/psalm": ">=3.0.16"
+    },
+    "suggest": {
+        "doctrine/cache": "For metadata caching",
+        "monolog/monolog": "For advanced logging and debugging"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mercari\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\Mercari\\": "tests/"
+        }
+    },
+    "config": {
+        "allow-plugins": true,
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "0.1.x-dev"
+        }
+    }
+}
