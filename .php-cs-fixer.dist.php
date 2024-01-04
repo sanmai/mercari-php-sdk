@@ -45,7 +45,7 @@ $config
     ->setFinder(
         PhpCsFixer\Finder::create()
         ->in(__DIR__)
-->append([__FILE__])
+        ->append([__FILE__])
     )
 ;
 
