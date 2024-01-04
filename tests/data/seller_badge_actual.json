@@ -1,0 +1,25 @@
+{
+    "id": "646991664",
+    "name": "xtest",
+    "photo_url": "https://via.placeholder.com/640x480.png/00dddd?text=eos",
+    "photo_thumbnail_url": "https://via.placeholder.com/640x480.png/0000ff?text=quia",
+    "ratings": {
+        "good": 2085,
+        "bad": 0
+    },
+    "num_ratings": 2185,
+    "star_rating_score": 5,
+    "created": 1231778504,
+    "proper": true,
+    "introduction": "ご覧頂きありがとうございます。",
+    "num_sell_items": 1551,
+    "has_identity_verified": true,
+    "user_badges": [
+        {
+            "ID": 11004,
+            "Name": "高評価",
+            "Description": "直近の取引の評価がすべて「良かった」の出品者",
+            "IconURL": "https://via.placeholder.com/64x64.png/009911?text=ut"
+        }
+    ]
+}

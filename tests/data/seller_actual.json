@@ -1,0 +1,16 @@
+{
+    "created": 1248815348,
+    "id": "810795681",
+    "introduction": "",
+    "name": "test",
+    "num_ratings": 1,
+    "num_sell_items": 8,
+    "photo_thumbnail_url": "https://via.placeholder.com/640x480.png/0055bb?text=numquam",
+    "photo_url": "https://via.placeholder.com/640x480.png/00dd66?text=et",
+    "proper": true,
+    "ratings": {
+        "bad": 0,
+        "good": 1
+    },
+    "star_rating_score": 5
+}
