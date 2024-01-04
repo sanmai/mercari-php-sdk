@@ -26,7 +26,7 @@ jobs:
         include:
           - { php-version: '7.4', dependencies: '--prefer-lowest' }
 
-    name: PHP ${{ matrix.php-version }} ${{ matrix.dependencies }}
+    name: Tests with PHP ${{ matrix.php-version }} ${{ matrix.dependencies }}
 
     steps:
       - name: Checkout code
