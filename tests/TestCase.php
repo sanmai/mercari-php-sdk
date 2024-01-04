@@ -17,4 +17,55 @@
 
 namespace Tests\Mercari;
 
-abstract class TestCase extends \PHPUnit\Framework\TestCase {}
+use JMS\Serializer\SerializerInterface;
+use JSONSerializer;
+
+abstract class TestCase extends \PHPUnit\Framework\TestCase
+{
+    protected SerializerInterface $serializer;
+
+    protected function setUp(): void
+    {
+        $this->serializer = JSONSerializer\Serializer::withJSONOptions(JSON_PRETTY_PRINT);
+    }
+
+    protected static function krsort(&$array)
+    {
+        if (!is_array($array)) {
+            return;
+        }
+
+        array_walk($array, fn(&$array) => self::krsort($array));
+        ksort($array);
+    }
+
+    /**
+     * @param string $file
+     * @param object $response
+     * @param bool $normalize_id Whenever to normalize IDs from strings to integers (Mercari sometimes provides strings)
+     */
+    protected function assertDeserializedSame(string $file, $response, bool $normalize_id = true): void
+    {
+        $contents = file_get_contents($file);
+
+        if ($normalize_id) {
+            $contents = preg_replace('/"id":(\s*)"(\d+)"/', '"id":\1\2', $contents);
+        }
+
+        $expected = json_decode($contents, true);
+        self::krsort($expected);
+
+        $actual = json_decode($this->serializer->serialize($response, 'json'), true);
+        self::krsort($actual);
+
+        $this->assertSame(
+            json_encode($expected, JSON_PRETTY_PRINT),
+            json_encode($actual, JSON_PRETTY_PRINT)
+        );
+    }
+
+    protected function deserializeFile(string $file, string $type)
+    {
+        return $this->serializer->deserialize(file_get_contents($file), $type, 'json');
+    }
+}
