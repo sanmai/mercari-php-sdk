@@ -1,0 +1,25 @@
+{
+    "id": "712229671",
+    "name": "seller-name",
+    "photo_url": "https://via.placeholder.com/640x480.png/0099aa?text=modi",
+    "photo_thumbnail_url": "https://via.placeholder.com/640x480.png/007766?text=ut",
+    "ratings": {
+        "good": 10,
+        "bad": 0
+    },
+    "num_ratings": 10,
+    "star_rating_score": 10,
+    "created": 1238904596,
+    "proper": true,
+    "introduction": "this is seller introduction",
+    "num_sell_items": 2,
+    "has_identity_verified": true,
+    "user_badges": [
+        {
+            "ID": 10004,
+            "Name": "高評価",
+            "Description": "直近の取引の評価がすべて「良かった」の出品者",
+            "IconURL": "https://via.placeholder.com/640x480.png/001188?text=et"
+        }
+    ]
+}

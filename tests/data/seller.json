@@ -1,0 +1,16 @@
+{
+    "id": "773746477",
+    "name": "seller-name",
+    "photo_url": "https://via.placeholder.com/640x480.png/002277?text=reiciendis",
+    "photo_thumbnail_url": "https://via.placeholder.com/640x480.png/0033aa?text=quisquam",
+    "ratings": {
+        "good": 10,
+        "bad": 0
+    },
+    "num_ratings": 10,
+    "star_rating_score": 10,
+    "created": 1221706835,
+    "proper": true,
+    "introduction": "this is seller introduction",
+    "num_sell_items": 2
+}
