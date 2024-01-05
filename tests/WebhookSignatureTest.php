@@ -46,6 +46,15 @@ class WebhookSignatureTest extends TestCase
         $this->assertFalse($signature->isValid());
     }
 
+    public function testValidZero()
+    {
+        $validSignature = 'v0:ad4bebe4e330ef4a37323290ff5c65727a9b285b1b8aa90073aebf7d20ebd6f8';
+
+        $signature = new WebhookSignature('456', '{}', null, $validSignature);
+
+        $this->assertTrue($signature->isValid(new FakeTimeKeeper(0)));
+    }
+
     private const TEST_TIME = 1531420618;
 
     public static function provideTimestamps(): iterable
