@@ -64,7 +64,6 @@ class TokenRequest extends GenericRequest
         $request->code = $code;
 
         return $request;
-
     }
 
     public static function refreshToken(TokenResponse $token): TokenRequest
