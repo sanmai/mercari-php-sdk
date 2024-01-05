@@ -15,37 +15,40 @@
  * Mercari PHP SDK. If not, see <https://www.gnu.org/licenses/>.
  */
 
-declare(strict_types=1);
+namespace Tests\Mercari;
 
-namespace Mercari;
+use Mercari\Failure;
+use Mercari\GenericRequest;
 
-abstract class GenericRequest implements \JsonSerializable
+/**
+ * @covers \Mercari\GenericRequest
+ */
+class GenericRequestTest extends TestCase
 {
-    private array $data = [];
-
-    public function __construct(array $data = [])
+    public function testRequest()
     {
-        $this->data = $data;
-    }
+        $data = [
+            'foo' => 1,
+            'bar' => 2,
+        ];
 
-    public function __get(string $name)
-    {
-        return $this->data[$name] ?? null;
-    }
+        $request = new class ($data) extends GenericRequest {};
 
-    public function __set(string $name, $value): void
-    {
-        $this->data[$name] = $value;
-    }
+        $this->assertNull($request->baz);
 
-    public function getRequestParams(): array
-    {
-        return $this->data;
-    }
+        $this->assertSame(1, $request->foo);
 
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
-    {
-        return $this->getRequestParams();
+        $request->foo = 5;
+
+        $this->assertSame(5, $request->foo);
+
+        $this->assertSame([
+            'foo' => 5,
+            'bar' => 2,
+        ], $request->getRequestParams());
+
+        $request->zap = 'test';
+
+        $this->assertSame('{"foo":5,"bar":2,"zap":"test"}', json_encode($request));
     }
 }
