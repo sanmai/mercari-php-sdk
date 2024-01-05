@@ -32,11 +32,27 @@ class WebhookSignatureTest extends TestCase
         $this->assertFalse($signature->isValid(new FakeTimeKeeper(123)));
     }
 
+    public function testInvalidServerVars()
+    {
+        $signature = new WebhookSignature('123');
+
+        $this->assertFalse($signature->isValid(new FakeTimeKeeper(123)));
+    }
+
     public function testInvalidNow()
     {
         $signature = new WebhookSignature('456', '{}', 123, '567');
 
         $this->assertFalse($signature->isValid());
+    }
+
+    public function testValidZero()
+    {
+        $validSignature = 'v0:ad4bebe4e330ef4a37323290ff5c65727a9b285b1b8aa90073aebf7d20ebd6f8';
+
+        $signature = new WebhookSignature('456', '{}', null, $validSignature);
+
+        $this->assertTrue($signature->isValid(new FakeTimeKeeper(0)));
     }
 
     private const TEST_TIME = 1531420618;
@@ -73,5 +89,29 @@ class WebhookSignatureTest extends TestCase
         );
 
         $this->assertSame($valid, $signature->isValid($timekeeper));
+    }
+
+    /**
+     * @dataProvider provideTimestamps
+     */
+    public function testValidServerVars(int $time, bool $valid)
+    {
+        $_SERVER['HTTP_X_MERCARI_REQUEST_TIMESTAMP'] = self::TEST_TIME;
+        $_SERVER['HTTP_X_MERCARI_SIGNATURE'] = 'v0:249e47edc1980531306517e4435b54ef1ff224020029284bdf19c8eda99aa325';
+
+        $timekeeper = new FakeTimeKeeper($time);
+
+        $signature = new WebhookSignature(
+            '8f742231b10e8888abcd99yyyzzz85a5',
+            '{"webhook_type":"test_webhook"}'
+        );
+
+        $this->assertSame($valid, $signature->isValid($timekeeper));
+    }
+
+    public function tearDown(): void
+    {
+        unset($_SERVER['HTTP_X_MERCARI_REQUEST_TIMESTAMP']);
+        unset($_SERVER['HTTP_X_MERCARI_SIGNATURE']);
     }
 }
