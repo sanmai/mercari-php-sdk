@@ -50,15 +50,15 @@ class WebhookSignature
             return false;
         }
 
-        $hash = hash_hmac('sha256', join(':', [
+        $knownSignature = join(':', [
             self::VERSION,
-            $this->timestamp,
-            $this->requestBody,
-        ]), $this->signingSecret);
+            hash_hmac('sha256', join(':', [
+                self::VERSION,
+                $this->timestamp,
+                $this->requestBody,
+            ]), $this->signingSecret),
+        ]);
 
-        return hash_equals(join(':', [
-            self::VERSION,
-            $hash,
-        ]), $this->signature);
+        return hash_equals($knownSignature, $this->signature);
     }
 }
