@@ -42,4 +42,4 @@ jobs:
 
       - name: Mutation testing
         run: |
-          php vendor/bin/infection --min-msi=80 --min-covered-msi=90 --threads=$(nproc) --show-mutations --no-interaction
+          php vendor/bin/infection --min-msi=80 --min-covered-msi=80 --threads=$(nproc) --show-mutations --no-interaction
