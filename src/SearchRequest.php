@@ -38,6 +38,7 @@ namespace Mercari;
  * @property string $order Sorting order ('desc' by default)
  * @property int $page Starting page index (1 by default).
  * @property int $limit Items per page limit. Maximum is 100 and the default is 50.
+ * @final
  */
 class SearchRequest extends GenericRequest
 {
