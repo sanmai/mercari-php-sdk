@@ -1,0 +1,12 @@
+{
+    "data": [
+        {
+            "created": 123412345,
+            "item_id": "",
+            "message": "ご登録のメールアドレスに認証メールを送りました。メールに記載のURLをクリックして、メールアドレスを認証してください。",
+            "photo_url": "https://example.com/mercari_profile.png",
+            "title": ""
+        }
+    ],
+    "next_page_token": ""
+}
