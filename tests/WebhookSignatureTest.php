@@ -91,6 +91,23 @@ class WebhookSignatureTest extends TestCase
         $this->assertSame($valid, $signature->isValid($timekeeper));
     }
 
+    public function testValidOverrideServerVars()
+    {
+        $_SERVER['HTTP_X_MERCARI_REQUEST_TIMESTAMP'] = 0;
+        $_SERVER['HTTP_X_MERCARI_SIGNATURE'] = '';
+
+        $timekeeper = new FakeTimeKeeper(self::TEST_TIME);
+
+        $signature = new WebhookSignature(
+            '8f742231b10e8888abcd99yyyzzz85a5',
+            '{"webhook_type":"test_webhook"}',
+            self::TEST_TIME,
+            'v0:249e47edc1980531306517e4435b54ef1ff224020029284bdf19c8eda99aa325'
+            );
+
+        $this->assertTrue($signature->isValid($timekeeper));
+    }
+
     /**
      * @dataProvider provideTimestamps
      */
