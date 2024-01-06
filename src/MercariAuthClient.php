@@ -64,8 +64,12 @@ class MercariAuthClient
     /**
      * Create a new instance.
      */
-    public function __construct(string $clientId, Client $client = null, SerializerInterface $serializer = null, TimeKeeper $timekeeper = null)
-    {
+    public function __construct(
+        string $clientId,
+        Client $client,
+        SerializerInterface $serializer = null,
+        TimeKeeper $timekeeper = null
+    ) {
         $this->clientId = $clientId;
         $this->client = $client;
         $this->serializer = $serializer ?? Serializer::withJSONOptions();
