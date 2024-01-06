@@ -59,13 +59,19 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
         self::krsort($actual);
 
         $this->assertSame(
-            json_encode($expected, JSON_PRETTY_PRINT),
-            json_encode($actual, JSON_PRETTY_PRINT)
+            json_encode($expected, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE),
+            json_encode($actual, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
         );
     }
 
     protected function deserializeFile(string $file, string $type)
     {
+        if (!is_file($file) && isset($_SERVER['CI'])) {
+            $this->markTestIncomplete(sprintf('File not found: %s', $file));
+        }
+
+        $this->assertFileExists($file);
+
         return $this->serializer->deserialize(file_get_contents($file), $type, 'json');
     }
 }
