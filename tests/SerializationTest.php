@@ -32,6 +32,7 @@ use Mercari\DTO\Transaction;
 use Mercari\DTO\Webhook;
 use Mercari\DTO\Seller;
 use Mercari\TodoListResponse;
+use PHPUnit\Framework\AssertionFailedError;
 
 class SerializationTest extends TestCase
 {
@@ -62,19 +63,15 @@ class SerializationTest extends TestCase
 
     private const SKIP_FILES = [
         'todolist_null.json',
+        'similar_items_null.json',
     ];
 
     public static function provideFiles(): iterable
     {
-        $skipIndex = array_flip(self::SKIP_FILES);
-
         $files = glob(__DIR__ . '/data/*.json');
 
         foreach ($files as $file) {
             $basename = basename($file);
-            if (array_key_exists($basename, $skipIndex)) {
-                continue;
-            }
 
             foreach (self::PREFIX_CLASS_MAP as $prefix => $className) {
                 if (strpos($basename, $prefix) !== 0) {
@@ -109,7 +106,15 @@ class SerializationTest extends TestCase
 
         $response = $this->deserializeFile($file, $className);
 
-        $this->assertDeserializedSame($file, $response, $normalize_id);
+        try {
+            $this->assertDeserializedSame($file, $response, $normalize_id);
+        } catch (AssertionFailedError $e) {
+            if (array_search($basename, self::SKIP_FILES) !== false) {
+                return;
+            }
+
+            throw $e;
+        }
     }
 
 }

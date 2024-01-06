@@ -103,7 +103,7 @@ class WebhookSignatureTest extends TestCase
             '{"webhook_type":"test_webhook"}',
             self::TEST_TIME,
             'v0:249e47edc1980531306517e4435b54ef1ff224020029284bdf19c8eda99aa325'
-            );
+        );
 
         $this->assertTrue($signature->isValid($timekeeper));
     }
