@@ -22,6 +22,8 @@ use Mercari\PurchaseRequest;
 
 class ItemDetail
 {
+    public const SHOPS_ID_LENGTH = 22;
+
     public const ITEM_TYPE_MERCARI = 'mercari';
 
     /**
@@ -151,4 +153,41 @@ class ItemDetail
     public int $num_comments;
 
     public string $checksum;
+
+    public function getUrl(): string
+    {
+        if ($this->isMercariC2C()) {
+            return sprintf('https://jp.mercari.com/item/%s', rawurlencode($this->id));
+        }
+
+        return sprintf('https://jp.mercari.com/shops/product/%s', rawurlencode($this->id));
+    }
+
+    public function isAvailable(): bool
+    {
+        return $this->status === self::ON_SALE;
+    }
+
+    public function getPurchaseRequest(): PurchaseRequest
+    {
+        if (!$this->isAvailable()) {
+            throw new Exception('Item is not available for sale');
+        }
+
+        return new PurchaseRequest($this);
+    }
+
+    public function isMercariC2C(): bool
+    {
+        if (isset($this->item_type)) {
+            return $this->item_type === self::ITEM_TYPE_MERCARI;
+        }
+
+        return !isset($this->seller->shop_id) && strlen($this->id) !== self::SHOPS_ID_LENGTH;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description ?? '';
+    }
 }
