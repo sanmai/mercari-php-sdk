@@ -27,6 +27,8 @@ use JSONSerializer;
 
 use ReflectionObject;
 
+use ReflectionException;
+
 use function Pipeline\take;
 
 abstract class TestCase extends \PHPUnit\Framework\TestCase
@@ -93,16 +95,22 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
         return $this->serializer->deserialize(file_get_contents($file), $type, 'json');
     }
 
-    protected function getPropertyValue($client, $propertyName)
+    protected function getPropertyValue($client, string $propertyName)
     {
         $reflection = new ReflectionObject($client);
-        $property = $reflection->getProperty($propertyName);
+
+        try {
+            $property = $reflection->getProperty($propertyName);
+        } catch (ReflectionException $e) {
+            $property = $reflection->getParentClass()->getProperty($propertyName);
+        }
+
         $property->setAccessible(true);
 
         return $property->getValue($client);
     }
 
-    protected function buildHttpClient(array $responses): Client
+    protected function buildHttpClient(array $responses, &$handlerStack = null): Client
     {
         $mock = new MockHandler($responses);
 
@@ -110,6 +118,11 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
         $handlerStack->push(Middleware::history($this->requests));
 
         return new Client(['handler' => $handlerStack]);
+    }
+
+    protected function getRequestsCount(): int
+    {
+        return count($this->requests);
     }
 
     protected function getLastRequest(): Request
