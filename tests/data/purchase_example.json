@@ -1,0 +1,26 @@
+{
+    "request_id": "01aba5aa-a3aa-3aa0-8aab-4a02b199a984",
+    "transaction_status": "success",
+    "transaction_details": {
+        "trx_id": 511111151,
+        "paid_method": "card",
+        "price": 3001,
+        "buyer_shipping_fee": 701,
+        "item_id": "m02614384231",
+        "checksum": "ff03defafdaeffbfff32df024efae4ff",
+        "user_address": {
+            "zip_code1": "120",
+            "zip_code2": "0023",
+            "family_name": "山田",
+            "first_name": "花子",
+            "family_name_kana": "ヤマダ",
+            "first_name_kana": "ハナコ",
+            "prefecture": "東京都",
+            "city": "足立区",
+            "address1": "千住曙町４２－４",
+            "address2": "足立郵便局",
+            "telephone": "4442314944"
+        },
+        "shipping_method_id": 1
+    }
+}
