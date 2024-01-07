@@ -1,0 +1,8 @@
+{
+    "failure_details": {
+        "code": "F1004",
+        "reasons": "transaction has been already reviewed"
+    },
+    "request_id": "0229a9a9-50aa-3350-aa84-43abaa2ab5a5",
+    "review_status": "failure"
+}

@@ -15,43 +15,28 @@
  * Mercari PHP SDK. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Mercari;
+namespace Tests\Mercari;
 
-use JMS\Serializer\Annotation\PostDeserialize;
-use JMS\Serializer\Annotation\Type;
-
-use Mercari\DTO\TodoItem;
-use ArrayIterator;
-use IteratorAggregate;
-use ReturnTypeWillChange;
+use Mercari\ItemsResponse;
 
 /**
- * @template-implements IteratorAggregate<TodoItem>
+ * @covers \Mercari\ItemsResponse
  */
-class TodoListResponse extends ListResponse
+class ItemsBulkResponse extends TestCase
 {
-    /**
-     * @var TodoItem[]
-     * @Type("array<Mercari\DTO\TodoItem>")
-     */
-    public $data = [];
-
-    public string $next_page_token;
-
-    /**
-     * @PostDeserialize
-     */
-    private function normalizeData(): void
+    public function testDeserializeBulk()
     {
-        $this->data ??= [];
-    }
+        $file = __DIR__ . '/data/bulk_items_min.json';
 
-    /**
-     * @return ArrayIterator<array-key, TodoItem>
-     */
-    #[ReturnTypeWillChange]
-    public function getIterator()
-    {
-        return new ArrayIterator($this->data);
+        $response = $this->deserializeFile($file, ItemsResponse::class);
+
+        $id = array_key_first($response->items);
+
+        /** @var ItemsResponse $response */
+        $this->assertSame($id, $response->items[$id]->id);
+
+        $this->assertSame('Nice shirt', $response->items[$id]->getDescription());
+
+        $this->assertDeserializedSame($file, $response);
     }
 }

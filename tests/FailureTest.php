@@ -15,43 +15,22 @@
  * Mercari PHP SDK. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Mercari;
+namespace Tests\Mercari;
 
-use JMS\Serializer\Annotation\PostDeserialize;
-use JMS\Serializer\Annotation\Type;
-
-use Mercari\DTO\TodoItem;
-use ArrayIterator;
-use IteratorAggregate;
-use ReturnTypeWillChange;
+use Mercari\Failure;
 
 /**
- * @template-implements IteratorAggregate<TodoItem>
+ * @covers \Mercari\Failure
  */
-class TodoListResponse extends ListResponse
+class FailureTest extends TestCase
 {
-    /**
-     * @var TodoItem[]
-     * @Type("array<Mercari\DTO\TodoItem>")
-     */
-    public $data = [];
-
-    public string $next_page_token;
-
-    /**
-     * @PostDeserialize
-     */
-    private function normalizeData(): void
+    public function testDeserialize()
     {
-        $this->data ??= [];
-    }
+        $file = __DIR__ . '/data/failure.json';
 
-    /**
-     * @return ArrayIterator<array-key, TodoItem>
-     */
-    #[ReturnTypeWillChange]
-    public function getIterator()
-    {
-        return new ArrayIterator($this->data);
+        $response = $this->deserializeFile($file, Failure::class);
+
+        /** @var Failure $response */
+        $this->assertSame(400, $response->code);
     }
 }
