@@ -71,6 +71,9 @@ class MercariAuthClientTest extends TestCase
 
         $this->assertTrue($httpClient->getConfig('http_errors'));
         $this->assertFalse($httpClient->getConfig('allow_redirects'));
+
+        $this->assertSame(3, $httpClient->getConfig('connect_timeout'));
+        $this->assertSame(10, $httpClient->getConfig('timeout'));
     }
 
     private function buildHttpClient(array $responses): Client

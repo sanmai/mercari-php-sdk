@@ -37,7 +37,7 @@ class SearchResponse extends ListResponse
     public SearchResponseMeta $meta;
 
     /**
-     * @return ArrayIterator<ItemDetail>
+     * @return ArrayIterator<array-key, ItemDetail>
      */
     #[ReturnTypeWillChange]
     public function getIterator()

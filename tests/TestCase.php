@@ -20,6 +20,8 @@ namespace Tests\Mercari;
 use JMS\Serializer\SerializerInterface;
 use JSONSerializer;
 
+use function Pipeline\take;
+
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
     protected SerializerInterface $serializer;
@@ -37,6 +39,13 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
 
         array_walk($array, fn(&$array) => self::krsort($array));
         ksort($array);
+    }
+
+    protected static function filesByPrefix(string $prefix): iterable
+    {
+        return take(glob(__DIR__ . '/data/*.json'))
+            ->filter(fn($file) => strpos(basename($file), $prefix) === 0)
+            ->map(fn($file) => yield basename($file) => $file);
     }
 
     /**

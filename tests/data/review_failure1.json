@@ -1,0 +1,8 @@
+{
+    "failure_details": {
+        "code": "F1005",
+        "reasons": "transaction_status is not wait_review"
+    },
+    "request_id": "3a9a9438-2ba3-3a8a-aa14-a14135a9994a",
+    "review_status": "failure"
+}
