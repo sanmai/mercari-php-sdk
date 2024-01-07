@@ -17,18 +17,27 @@
 
 namespace Tests\Mercari;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
+use GuzzleHttp\Psr7\Request;
 use JMS\Serializer\SerializerInterface;
 use JSONSerializer;
+
+use ReflectionObject;
 
 use function Pipeline\take;
 
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
     protected SerializerInterface $serializer;
+    protected array $requests = [];
 
     protected function setUp(): void
     {
         $this->serializer = JSONSerializer\Serializer::withJSONOptions(JSON_PRETTY_PRINT);
+        $this->requests = [];
     }
 
     protected static function krsort(&$array)
@@ -82,5 +91,29 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
         $this->assertFileExists($file);
 
         return $this->serializer->deserialize(file_get_contents($file), $type, 'json');
+    }
+
+    protected function getPropertyValue($client, $propertyName)
+    {
+        $reflection = new ReflectionObject($client);
+        $property = $reflection->getProperty($propertyName);
+        $property->setAccessible(true);
+
+        return $property->getValue($client);
+    }
+
+    protected function buildHttpClient(array $responses): Client
+    {
+        $mock = new MockHandler($responses);
+
+        $handlerStack = HandlerStack::create($mock);
+        $handlerStack->push(Middleware::history($this->requests));
+
+        return new Client(['handler' => $handlerStack]);
+    }
+
+    protected function getLastRequest(): Request
+    {
+        return end($this->requests)['request'];
     }
 }

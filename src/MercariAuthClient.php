@@ -49,7 +49,9 @@ class MercariAuthClient
 
         return new MercariAuthClient(
             $clientId,
-            $httpClient
+            $httpClient,
+            Serializer::withJSONOptions(),
+            new TimeKeeper()
         );
     }
 
@@ -67,13 +69,13 @@ class MercariAuthClient
     public function __construct(
         string $clientId,
         Client $client,
-        SerializerInterface $serializer = null,
-        TimeKeeper $timekeeper = null
+        SerializerInterface $serializer,
+        TimeKeeper $timekeeper
     ) {
         $this->clientId = $clientId;
         $this->client = $client;
-        $this->serializer = $serializer ?? Serializer::withJSONOptions();
-        $this->timekeeper = $timekeeper ?? new TimeKeeper();
+        $this->serializer = $serializer;
+        $this->timekeeper = $timekeeper;
     }
 
     /**

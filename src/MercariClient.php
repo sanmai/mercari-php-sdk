@@ -20,14 +20,28 @@ declare(strict_types=1);
 namespace Mercari;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\MessageFormatter;
+use GuzzleHttp\Middleware;
+use GuzzleHttp\Psr7\Response;
+use GuzzleRetry\GuzzleRetryMiddleware;
+use JMS\Serializer\Exception\RuntimeException as SerializerException;
+use JMS\Serializer\SerializerInterface;
+use JSONSerializer\Serializer;
+use Mercari\DTO\ItemDetail;
+use Mercari\DTO\Seller;
+use Mercari\DTO\Transaction;
+use Mercari\DTO\TransactionMessage;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 /**
- * Main API Client.
+ * Mercari API Client.
  */
 class MercariClient
 {
-    private const ITEM_PREFIX = 'm';
-
     private const SEARCH_ITEMS_V3 = '/v3/items/search';
 
     private const ITEMS = '/v1/items/fetch';
@@ -53,6 +67,63 @@ class MercariClient
     private const TRANSACTION_REVIEW = '/v1/transactions/%s/post_review';
 
     private const CATEGORIES = '/v1/master/item_categories';
+
+    public static function createInstance(string $apiHost, string $authToken, array $extraHeaders = []): self
+    {
+        $stack = HandlerStack::create();
+
+        $stack->push(GuzzleRetryMiddleware::factory([
+            'retry_on_status' => [409, 429, ...range(500, 505)],
+        ]), 'retry_on_status');
+
+        return new MercariClient(
+            new Client([
+                'debug' => defined('MERCARI_DEBUG_CURL'),
+                'base_uri' => sprintf('https://%s', $apiHost),
+                'connect_timeout' => 3,
+                'timeout' => 120,
+                'http_errors' => true,
+                'allow_redirects' => false,
+                'headers' => array_merge([
+                    'Authorization' => "Bearer $authToken",
+                ], $extraHeaders),
+                'handler' => $stack,
+            ]),
+            $stack,
+            Serializer::withJSONOptions()
+        );
+    }
+
+    private Client $client;
+
+    private HandlerStack $stack;
+
+    private SerializerInterface $serializer;
+
+    /**
+     * Create a new instance.
+     */
+    public function __construct(Client $client, HandlerStack $stack, SerializerInterface $serializer)
+    {
+        $this->client = $client;
+        $this->stack = $stack;
+        $this->serializer = $serializer;
+    }
+
+    public function setLogger(LoggerInterface $logger, ?string $template = MessageFormatter::DEBUG)
+    {
+        $this->stack->push(Middleware::mapResponse(function (Response $response) {
+            $response->getBody()->rewind();
+            return $response;
+        }));
+
+        $this->stack->push(Middleware::log(
+            $logger,
+            new MessageFormatter($template)
+        ));
+
+        return $this;
+    }
 
     public const MARKETPLACE_MERCARI = 1;
 

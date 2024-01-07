@@ -17,30 +17,20 @@
 
 namespace Tests\Mercari;
 
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\Middleware;
 use Mercari\MercariAuthClient;
 use Mercari\TokenResponse;
 use ReflectionObject;
 use GuzzleHttp\Client;
 use Mercari\TokenRequest;
 use Tumblr\Chorus\FakeTimeKeeper;
-use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\Psr7\Request;
+use Tumblr\Chorus\TimeKeeper;
 
 /**
  * @covers \Mercari\MercariAuthClient
  */
 class MercariAuthClientTest extends TestCase
 {
-    private array $requests = [];
-
-    public function setUp(): void
-    {
-        $this->requests = [];
-    }
-
     public function testCreateInstance()
     {
         $client = MercariAuthClient::createInstance('sandbox.example.com', 'client_id', 'secret', ['Foo' => 'bar']);
@@ -77,15 +67,6 @@ class MercariAuthClientTest extends TestCase
         $this->assertSame(10, $httpClient->getConfig('timeout'));
     }
 
-    private function buildHttpClient(array $responses): Client
-    {
-        $mock = new MockHandler($responses);
-
-        $handlerStack = HandlerStack::create($mock);
-        $handlerStack->push(Middleware::history($this->requests));
-
-        return new Client(['handler' => $handlerStack]);
-    }
 
     public function testLoginUrlRequest()
     {
@@ -99,15 +80,19 @@ class MercariAuthClientTest extends TestCase
             new Response(200, ['Location' => 'https://sandbox.example.com/login']),
         ];
 
-        $client = new MercariAuthClient('xclient_id', $this->buildHttpClient($responses));
+        $client = new MercariAuthClient(
+            'xclient_id',
+            $this->buildHttpClient($responses),
+            $this->serializer,
+            new TimeKeeper()
+        );
         $url = $client->getAuthUrl($tokenRequest);
 
         $this->assertSame('https://sandbox.example.com/login', $url);
 
         $this->assertCount(1, $this->requests);
 
-        /** @var Request $request */
-        $request = $this->requests[0]['request'];
+        $request = $this->getLastRequest();
 
         $this->assertSame('GET', $request->getMethod());
 
@@ -138,7 +123,12 @@ class MercariAuthClientTest extends TestCase
             new Response(200, [], json_encode($tokenResponse)),
         ];
 
-        $client = new MercariAuthClient('client_id', $this->buildHttpClient($responses), null, $timekeeper);
+        $client = new MercariAuthClient(
+            'xclient_id',
+            $this->buildHttpClient($responses),
+            $this->serializer,
+            $timekeeper
+        );
 
         $tokenRequest = TokenRequest::authorizationCode($redirectUrl, $code);
         $tokenActual = $client->getToken($tokenRequest);
@@ -148,8 +138,7 @@ class MercariAuthClientTest extends TestCase
 
         $this->assertCount(1, $this->requests);
 
-        /** @var Request $request */
-        $request = $this->requests[0]['request'];
+        $request = $this->getLastRequest();
 
         $this->assertSame('POST', $request->getMethod());
         $this->assertSame(MercariAuthClient::TOKEN, $request->getUri()->getPath());
