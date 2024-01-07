@@ -34,6 +34,7 @@ use Mercari\TodoListResponse;
 use PHPUnit\Framework\AssertionFailedError;
 use IteratorAggregate;
 use Countable;
+use Iterator;
 
 class SerializationTest extends TestCase
 {
@@ -108,7 +109,7 @@ class SerializationTest extends TestCase
         $response = $this->deserializeFile($file, $className);
 
         if ($response instanceof IteratorAggregate) {
-            $this->assertInstanceOf(\Iterator::class, $response->getIterator());
+            $this->assertInstanceOf(Iterator::class, $response->getIterator());
             $this->assertGreaterThanOrEqual(0, iterator_count($response));
         }
 
