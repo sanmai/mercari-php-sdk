@@ -108,10 +108,12 @@ class SerializationTest extends TestCase
         $response = $this->deserializeFile($file, $className);
 
         if ($response instanceof IteratorAggregate) {
+            $this->assertInstanceOf(\Iterator::class, $response->getIterator());
             $this->assertGreaterThanOrEqual(0, iterator_count($response));
         }
 
         if ($response instanceof Countable) {
+            $this->assertIsInt($response->count());
             $this->assertGreaterThanOrEqual(0, count($response));
         }
 
