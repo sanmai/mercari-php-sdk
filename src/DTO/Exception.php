@@ -17,4 +17,6 @@
 
 namespace Mercari\DTO;
 
-class Exception extends \RuntimeException {}
+use RuntimeException;
+
+class Exception extends RuntimeException {}

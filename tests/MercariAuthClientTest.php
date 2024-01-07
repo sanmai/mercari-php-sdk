@@ -19,7 +19,6 @@ namespace Tests\Mercari;
 
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\Middleware;
-use JMS\Serializer\SerializerInterface;
 use Mercari\MercariAuthClient;
 use Mercari\TokenResponse;
 use ReflectionObject;
@@ -29,7 +28,6 @@ use Tumblr\Chorus\FakeTimeKeeper;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Exception\RequestException;
 
 /**
  * @covers \Mercari\MercariAuthClient

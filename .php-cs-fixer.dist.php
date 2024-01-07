@@ -31,7 +31,6 @@ You should have received a copy of the GNU General Public License along with
 Mercari PHP SDK. If not, see <https://www.gnu.org/licenses/>.
 ");
 
-use PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer;
 
 $config = new PhpCsFixer\Config();
 $config
@@ -41,6 +40,8 @@ $config
         '@PER-CS' => true,
         '@PER-CS:risky' => true,
         '@PHP74Migration' => true,
+        'no_unused_imports' => true,
+        'global_namespace_import' => true,
     ])
     ->setFinder(
         PhpCsFixer\Finder::create()

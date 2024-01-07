@@ -17,32 +17,14 @@
 
 namespace Mercari;
 
-use JMS\Serializer\Annotation\Type;
-use Mercari\DTO\Category;
-use ArrayIterator;
-use IteratorAggregate;
+use Countable;
 use ReturnTypeWillChange;
+use IteratorAggregate;
 
-/**
- * @template-implements IteratorAggregate<Category>
- * @template-implements \Countable<Category>
- */
-class CategoriesResponse extends ListResponse
+abstract class ListResponse implements IteratorAggregate, Countable
 {
-    /**
-     * @var Category[]
-     * @Type("array<Mercari\DTO\Category>")
-     */
-    public array $master_categories = [];
-
-    /**
-     * @return ArrayIterator<array-key, Category>
-     */
     #[ReturnTypeWillChange]
-    public function getIterator()
-    {
-        return new ArrayIterator($this->master_categories);
-    }
+    abstract public function getIterator();
 
     #[ReturnTypeWillChange]
     public function count()

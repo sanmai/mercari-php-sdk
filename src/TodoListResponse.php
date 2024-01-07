@@ -21,8 +21,14 @@ use JMS\Serializer\Annotation\PostDeserialize;
 use JMS\Serializer\Annotation\Type;
 
 use Mercari\DTO\TodoItem;
+use ArrayIterator;
+use IteratorAggregate;
+use ReturnTypeWillChange;
 
-class TodoListResponse
+/**
+ * @template-implements IteratorAggregate<TodoItem>
+ */
+class TodoListResponse extends ListResponse
 {
     /**
      * @var TodoItem[]
@@ -38,5 +44,14 @@ class TodoListResponse
     private function normalizeData()
     {
         $this->data ??= [];
+    }
+
+    /**
+     * @return ArrayIterator<array-key, TodoItem>
+     */
+    #[ReturnTypeWillChange]
+    public function getIterator()
+    {
+        return new ArrayIterator($this->data);
     }
 }

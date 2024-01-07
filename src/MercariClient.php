@@ -20,22 +20,6 @@ declare(strict_types=1);
 namespace Mercari;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\MessageFormatter;
-use GuzzleHttp\Middleware;
-use GuzzleHttp\Psr7\Response;
-use GuzzleRetry\GuzzleRetryMiddleware;
-use JMS\Serializer\Exception\RuntimeException as SerializerException;
-use JMS\Serializer\SerializerInterface;
-use JSONSerializer\Serializer;
-use Mercari\DTO\ItemDetail;
-use Mercari\DTO\Seller;
-use Mercari\DTO\Transaction;
-use Mercari\DTO\TransactionMessage;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 /**
  * Main API Client.

@@ -20,8 +20,14 @@ namespace Mercari;
 use JMS\Serializer\Annotation\PostDeserialize;
 use JMS\Serializer\Annotation\Type;
 use Mercari\DTO\ItemDetail;
+use ArrayIterator;
+use IteratorAggregate;
+use ReturnTypeWillChange;
 
-class ItemsResponse
+/**
+ * @template-implements IteratorAggregate<ItemDetail>
+ */
+class ItemsResponse implements IteratorAggregate
 {
     /**
      * @var ItemDetail[]
@@ -38,4 +44,14 @@ class ItemsResponse
     {
         $this->items ??= [];
     }
+
+    /**
+     * @return ArrayIterator<ItemDetail>
+     */
+    #[ReturnTypeWillChange]
+    public function getIterator()
+    {
+        return new ArrayIterator($this->items ?? []);
+    }
+
 }

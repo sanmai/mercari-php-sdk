@@ -20,11 +20,13 @@ namespace Mercari;
 use IteratorAggregate;
 use JMS\Serializer\Annotation\Type;
 use Mercari\DTO\TransactionMessage;
+use ArrayIterator;
+use ReturnTypeWillChange;
 
 /**
  * @template-implements IteratorAggregate<TransactionMessage>
  */
-class MessagesResponse implements IteratorAggregate
+class MessagesResponse extends ListResponse
 {
     /**
      * @var TransactionMessage[]
@@ -32,8 +34,9 @@ class MessagesResponse implements IteratorAggregate
      */
     public array $messages = [];
 
+    #[ReturnTypeWillChange]
     public function getIterator()
     {
-        return new \ArrayIterator($this->messages);
+        return new ArrayIterator($this->messages);
     }
 }
