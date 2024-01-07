@@ -1,0 +1,8 @@
+{
+    "request_id": "aaa2aaa0-33aa-3b53-b5a4-2aa18ba5aba4",
+    "transaction_status": "failure",
+    "failure_details": {
+        "code": "F0104",
+        "reasons": "Address verification failed"
+    }
+}

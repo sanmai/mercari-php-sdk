@@ -1,0 +1,8 @@
+{
+    "request_id": "3a85482a-9805-382a-8bb2-aa1414a9a2ba",
+    "transaction_status": "failure",
+    "failure_details": {
+        "code": "F0105",
+        "reasons": "The item is unavailable."
+    }
+}

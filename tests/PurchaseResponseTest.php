@@ -40,4 +40,22 @@ class PurchaseResponseTest extends TestCase
 
         $this->assertFalse($response->isSuccess());
     }
+
+    public function testExample()
+    {
+        $file = __DIR__ . '/data/purchase_example.json';
+
+        $response = $this->deserializeFile($file, PurchaseResponse::class);
+
+        /** @var PurchaseResponse $response */
+
+        $this->assertMatchesRegularExpression('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i', $response->request_id);
+        $this->assertSame('success', $response->transaction_status);
+        $this->assertGreaterThan(0, $response->transaction_details->trx_id);
+        $this->assertGreaterThan(0, $response->transaction_details->buyer_shipping_fee);
+        $this->assertSame('千住曙町４２－４', $response->transaction_details->user_address->address1);
+        $this->assertSame(1, $response->transaction_details->shipping_method_id);
+
+        $this->assertTrue($response->isSuccess());
+    }
 }
