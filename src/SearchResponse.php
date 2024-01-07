@@ -19,8 +19,14 @@ namespace Mercari;
 
 use JMS\Serializer\Annotation\Type;
 use Mercari\DTO\ItemDetail;
+use ArrayIterator;
+use IteratorAggregate;
+use ReturnTypeWillChange;
 
-class SearchResponse
+/**
+ * @template-implements IteratorAggregate<ItemDetail>
+ */
+class SearchResponse implements IteratorAggregate
 {
     /**
      * @var ItemDetail[]
@@ -29,4 +35,13 @@ class SearchResponse
     public array $data = [];
 
     public SearchResponseMeta $meta;
+
+    /**
+     * @return ArrayIterator<ItemDetail>
+     */
+    #[ReturnTypeWillChange]
+    public function getIterator()
+    {
+        return new ArrayIterator($this->data);
+    }
 }

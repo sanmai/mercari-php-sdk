@@ -19,7 +19,6 @@ namespace Tests\Mercari;
 
 use Mercari\CategoriesResponse;
 use Mercari\CommentsResponse;
-use Mercari\CommonResponse;
 use Mercari\Failure;
 use Mercari\ItemsResponse;
 use Mercari\MessagesResponse;
@@ -33,6 +32,7 @@ use Mercari\DTO\Webhook;
 use Mercari\DTO\Seller;
 use Mercari\TodoListResponse;
 use PHPUnit\Framework\AssertionFailedError;
+use IteratorAggregate;
 
 class SerializationTest extends TestCase
 {
@@ -105,6 +105,10 @@ class SerializationTest extends TestCase
         }
 
         $response = $this->deserializeFile($file, $className);
+
+        if ($response instanceof IteratorAggregate) {
+            $this->assertGreaterThanOrEqual(0, iterator_count($response));
+        }
 
         try {
             $this->assertDeserializedSame($file, $response, $normalize_id);

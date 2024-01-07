@@ -17,7 +17,6 @@
 
 namespace Tests\Mercari;
 
-use Mercari\Failure;
 use Mercari\GenericRequest;
 
 /**

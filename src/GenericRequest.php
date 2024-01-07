@@ -19,7 +19,10 @@ declare(strict_types=1);
 
 namespace Mercari;
 
-abstract class GenericRequest implements \JsonSerializable
+use JsonSerializable;
+use ReturnTypeWillChange;
+
+abstract class GenericRequest implements JsonSerializable
 {
     private array $data = [];
 
@@ -43,7 +46,7 @@ abstract class GenericRequest implements \JsonSerializable
         return $this->data;
     }
 
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return $this->getRequestParams();

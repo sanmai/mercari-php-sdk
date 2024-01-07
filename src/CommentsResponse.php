@@ -19,12 +19,28 @@ namespace Mercari;
 
 use JMS\Serializer\Annotation\Type;
 use Mercari\DTO\Comment;
+use ArrayIterator;
+use IteratorAggregate;
+use ReturnTypeWillChange;
 
-class CommentsResponse
+/**
+ * @template-implements IteratorAggregate<Comment>
+ */
+class CommentsResponse implements IteratorAggregate
 {
     /**
      * @var Comment[]
      * @Type("array<Mercari\DTO\Comment>")
      */
     public array $comments = [];
+
+    /**
+     * @return ArrayIterator<array-key, Comment>
+     */
+    #[ReturnTypeWillChange]
+    public function getIterator()
+    {
+        return new ArrayIterator($this->comments);
+    }
+
 }
