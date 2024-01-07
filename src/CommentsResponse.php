@@ -26,7 +26,7 @@ use ReturnTypeWillChange;
 /**
  * @template-implements IteratorAggregate<Comment>
  */
-class CommentsResponse implements IteratorAggregate
+class CommentsResponse extends ListResponse
 {
     /**
      * @var Comment[]

@@ -28,7 +28,7 @@ use ReturnTypeWillChange;
 /**
  * @template-implements IteratorAggregate<TodoItem>
  */
-class TodoListResponse implements IteratorAggregate
+class TodoListResponse extends ListResponse
 {
     /**
      * @var TodoItem[]

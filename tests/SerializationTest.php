@@ -33,6 +33,7 @@ use Mercari\DTO\Seller;
 use Mercari\TodoListResponse;
 use PHPUnit\Framework\AssertionFailedError;
 use IteratorAggregate;
+use Countable;
 
 class SerializationTest extends TestCase
 {
@@ -108,6 +109,10 @@ class SerializationTest extends TestCase
 
         if ($response instanceof IteratorAggregate) {
             $this->assertGreaterThanOrEqual(0, iterator_count($response));
+        }
+
+        if ($response instanceof Countable) {
+            $this->assertGreaterThanOrEqual(0, count($response));
         }
 
         try {

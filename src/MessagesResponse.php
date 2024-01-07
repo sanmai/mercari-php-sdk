@@ -26,7 +26,7 @@ use ReturnTypeWillChange;
 /**
  * @template-implements IteratorAggregate<TransactionMessage>
  */
-class MessagesResponse implements IteratorAggregate
+class MessagesResponse extends ListResponse
 {
     /**
      * @var TransactionMessage[]
