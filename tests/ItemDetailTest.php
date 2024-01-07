@@ -18,7 +18,6 @@
 namespace Tests\Mercari;
 
 use Mercari\DTO\ItemDetail;
-use Mercari\DTO\SellerLatest;
 
 /**
  * @covers \Mercari\DTO\ItemDetail
