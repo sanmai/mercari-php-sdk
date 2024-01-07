@@ -43,30 +43,22 @@ class MercariAuthClientTest extends TestCase
 
         $this->assertSame('client_id', $property->getValue($client));
 
-
         $property = $reflection->getProperty('client');
         $property->setAccessible(true);
 
         /** @var Client $httpClient */
         $httpClient = $property->getValue($client);
 
-        $this->assertSame('bar', $httpClient->getConfig('headers')['Foo']);
-
-        $this->assertSame([
-            'client_id',
-            'secret',
-        ], $httpClient->getConfig('auth'));
-
         $this->assertSame('https://sandbox.example.com', (string) $httpClient->getConfig('base_uri'));
+        $this->assertSame(['client_id', 'secret'], $httpClient->getConfig('auth'));
+        $this->assertSame('bar', $httpClient->getConfig('headers')['Foo']);
 
         $this->assertTrue($httpClient->getConfig('http_errors'));
         $this->assertFalse($httpClient->getConfig('allow_redirects'));
-        $this->assertFalse($httpClient->getConfig('debug'));
 
         $this->assertSame(3, $httpClient->getConfig('connect_timeout'));
         $this->assertSame(10, $httpClient->getConfig('timeout'));
     }
-
 
     public function testLoginUrlRequest()
     {

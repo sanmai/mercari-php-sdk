@@ -42,6 +42,12 @@ use Symfony\Component\HttpFoundation\Response as HttpResponse;
  */
 class MercariClient
 {
+    public const MARKETPLACE_MERCARI = 1;
+
+    public const MARKETPLACE_SHOP = 2;
+
+    public const MARKETPLACE_ALL = 3;
+
     private const SEARCH_ITEMS_V3 = '/v3/items/search';
 
     private const ITEMS = '/v1/items/fetch';
@@ -76,19 +82,20 @@ class MercariClient
             'retry_on_status' => [409, 429, ...range(500, 505)],
         ]), 'retry_on_status');
 
+        $httpClient = new Client([
+            'base_uri' => sprintf('https://%s', $apiHost),
+            'connect_timeout' => 3,
+            'timeout' => 120,
+            'http_errors' => true,
+            'allow_redirects' => false,
+            'headers' => array_merge([
+                'Authorization' => "Bearer $authToken",
+            ], $extraHeaders),
+            'handler' => $stack,
+        ]);
+
         return new MercariClient(
-            new Client([
-                'debug' => defined('MERCARI_DEBUG_CURL'),
-                'base_uri' => sprintf('https://%s', $apiHost),
-                'connect_timeout' => 3,
-                'timeout' => 120,
-                'http_errors' => true,
-                'allow_redirects' => false,
-                'headers' => array_merge([
-                    'Authorization' => "Bearer $authToken",
-                ], $extraHeaders),
-                'handler' => $stack,
-            ]),
+            $httpClient,
             $stack,
             Serializer::withJSONOptions()
         );

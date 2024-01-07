@@ -37,7 +37,6 @@ class MercariAuthClient
     public static function createInstance(string $authHost, string $clientId, string $clientSecret, array $extraHeaders = []): self
     {
         $httpClient = new Client([
-            'debug' => defined('MERCARI_DEBUG_CURL'),
             'base_uri' => sprintf('https://%s', $authHost),
             'auth' => [$clientId, $clientSecret],
             'connect_timeout' => 3,

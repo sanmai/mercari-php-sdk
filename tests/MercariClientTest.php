@@ -51,7 +51,6 @@ class MercariClientTest extends TestCase
 
         $this->assertTrue($httpClient->getConfig('http_errors'));
         $this->assertFalse($httpClient->getConfig('allow_redirects'));
-        $this->assertFalse($httpClient->getConfig('debug'));
 
         $this->assertSame(3, $httpClient->getConfig('connect_timeout'));
         $this->assertSame(120, $httpClient->getConfig('timeout'));
