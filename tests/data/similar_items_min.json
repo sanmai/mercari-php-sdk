@@ -1,0 +1,24 @@
+{
+    "items": [
+        {
+            "id": "m02933635743",
+            "status": "on_sale",
+            "name": "カメラ",
+            "price": 11111,
+            "photos": [
+                "https://via.placeholder.com/640x480.png/004444?text=suscipit"
+            ],
+            "item_type": "mercari"
+        },
+        {
+            "id": "m01728615108",
+            "status": "on_sale",
+            "name": "カメラ",
+            "price": 22222,
+            "photos": [
+                "https://via.placeholder.com/640x480.png/00bbee?text=odit"
+            ],
+            "item_type": "mercari"
+        }
+    ]
+}
