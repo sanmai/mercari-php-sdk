@@ -15,40 +15,40 @@
  * Mercari PHP SDK. If not, see <https://www.gnu.org/licenses/>.
  */
 
-declare(strict_types=1);
+namespace Tests\Mercari\DTO;
 
-namespace Mercari;
+use Mercari\DTO\SellerLatest;
+use Tests\Mercari\TestCase;
 
-use JsonSerializable;
-use ReturnTypeWillChange;
-
-abstract class GenericRequest implements JsonSerializable
+/**
+ * @covers \Mercari\DTO\SellerLatest
+ */
+class SellerLatestTest extends TestCase
 {
-    private array $data;
-
-    public function __construct(array $data = [])
+    public function testNoFallback()
     {
-        $this->data = $data;
+        $seller = new SellerLatest();
+        $seller->id = 42;
+        $seller->name = 'foo';
+        $seller->shop_id = 'bar';
+
+        $this->assertSame(42, $seller->getAnyId());
     }
 
-    public function __get(string $name)
+    public function testFallbackShopId()
     {
-        return $this->data[$name] ?? null;
+        $seller = new SellerLatest();
+        $seller->shop_id = 'bar';
+        $seller->name = 'foo';
+
+        $this->assertSame('bar', $seller->getAnyId());
     }
 
-    public function __set(string $name, $value): void
+    public function testFallbackName()
     {
-        $this->data[$name] = $value;
-    }
+        $seller = new SellerLatest();
+        $seller->shop_id = 'foo';
 
-    public function getRequestParams(): array
-    {
-        return $this->data;
-    }
-
-    #[ReturnTypeWillChange]
-    public function jsonSerialize()
-    {
-        return $this->getRequestParams();
+        $this->assertSame('foo', $seller->getAnyId());
     }
 }

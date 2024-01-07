@@ -32,6 +32,9 @@ class PurchaseRequestTest extends TestCase
         $request = new PurchaseRequest();
 
         $this->assertNull($request->item_id);
+
+        $this->assertSame([], $request->getRequestParams());
+        $this->assertSame('{}', json_encode($request, JSON_FORCE_OBJECT));
     }
 
     public function testFromItem()

@@ -17,6 +17,7 @@
 
 namespace Tests\Mercari;
 
+use Mercari\DTO\ItemDetail;
 use Mercari\ItemsResponse;
 
 /**
@@ -37,5 +38,21 @@ class ItemsResponseTest extends TestCase
         $response = $this->deserializeFile($file, ItemsResponse::class);
 
         $this->assertCount(0, $response->items);
+    }
+
+    public function testItemsNull()
+    {
+        $response = new ItemsResponse();
+        $response->items = null;
+
+        $this->assertCount(0, $response);
+    }
+
+    public function testItemsOne()
+    {
+        $response = new ItemsResponse();
+        $response->items = [new ItemDetail()];
+
+        $this->assertCount(1, $response);
     }
 }
