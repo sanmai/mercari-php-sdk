@@ -37,6 +37,7 @@ use Mercari\TodoListResponse;
 use GuzzleHttp\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use GuzzleHttp\HandlerStack;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 /**
  * @covers \Mercari\MercariClient
@@ -141,7 +142,12 @@ class MercariClientTest extends TestCase
             $this->logicalAnd(
                 $this->stringContains('item'),
                 $this->stringContains('foo')
-            )
+            ),
+            $this->identicalTo([]),
+            $this->identicalTo([
+                HttpResponse::HTTP_NOT_FOUND,
+                HttpResponse::HTTP_BAD_REQUEST,
+            ])
         );
 
         $responseActual = $this->client->item('foo');
@@ -226,6 +232,26 @@ class MercariClientTest extends TestCase
         );
 
         $responseActual = $this->client->similarItems('foo');
+
+        $this->assertSame($response, $responseActual);
+    }
+
+    public function testSimilarItemsNoMarketplace()
+    {
+        $response = new ItemsResponse();
+
+        $this->clientExpects(
+            'getOptional',
+            $response,
+            $this->logicalAnd(
+                $this->stringContains('item'),
+                $this->stringContains('foo'),
+                $this->stringContains('similar_items')
+            ),
+            $this->identicalTo([])
+        );
+
+        $responseActual = $this->client->similarItems('foo', 0);
 
         $this->assertSame($response, $responseActual);
     }

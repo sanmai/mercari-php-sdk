@@ -21,6 +21,8 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use JSONSerializer\Serializer;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
 use Tests\Mercari\Doubles\ExampleMercariClient;
 use Psr\Log\LoggerInterface;
 use Tests\Mercari\Doubles\ExampleResponse;
@@ -34,17 +36,30 @@ class AbstractMercariClientTest extends TestCase
 {
     public function testAddLogger(): void
     {
-        $responses = [
-            new Response(200, [], ExampleResponse::JSON),
-        ];
+        $stream = $this->createMock(StreamInterface::class);
+        $stream->expects($this->once())
+            ->method('rewind');
 
-        $client = $this->buildExampleClient($responses);
+        $stream->expects($this->once())
+            ->method('getContents')
+            ->willReturn(ExampleResponse::JSON);
+
+        $stream->expects($this->once())
+            ->method('__toString')
+            ->willReturn(ExampleResponse::JSON);
+
+        $response = new Response(HttpResponse::HTTP_OK, [], $stream);
+
+        $client = $this->buildExampleClient([$response]);
 
         $logger = $this->createMock(LoggerInterface::class);
         $logger
             ->expects($this->once())
             ->method('log')
-            ->with('info', $this->stringContains(ExampleResponse::JSON));
+            ->with('info', $this->logicalAnd(
+                $this->stringContains(HttpResponse::HTTP_OK),
+                $this->stringContains(ExampleResponse::JSON),
+            ));
 
         $client->setLogger($logger);
 
@@ -66,7 +81,7 @@ class AbstractMercariClientTest extends TestCase
     public function testGet(string $method): void
     {
         $responses = [
-            new Response(200, [], ExampleResponse::JSON),
+            new Response(HttpResponse::HTTP_OK, [], ExampleResponse::JSON),
         ];
 
         $client = $this->buildExampleClient($responses);
@@ -95,7 +110,7 @@ class AbstractMercariClientTest extends TestCase
     public function testPost(string $method): void
     {
         $responses = [
-            new Response(200, [], ExampleResponse::JSON),
+            new Response(HttpResponse::HTTP_OK, [], ExampleResponse::JSON),
         ];
 
         $client = $this->buildExampleClient($responses);
@@ -121,7 +136,7 @@ class AbstractMercariClientTest extends TestCase
 
         $client = $this->buildExampleClient($responses);
 
-        $response = $client->getOptional(ExampleResponse::class, '/example', ['foo' => 'bar']);
+        $response = $client->getOptionalDefault(ExampleResponse::class, '/example', ['foo' => 'bar']);
 
         $this->assertNull($response);
     }
@@ -234,6 +249,24 @@ class AbstractMercariClientTest extends TestCase
         $this->expectExceptionObject($exception);
 
         $client->handleRequestException($exception, ExampleResponse::class);
+    }
+
+    public function testResponseToType()
+    {
+        $client = $this->buildExampleClient([]);
+
+        $body = $this->createMock(StreamInterface::class);
+        $body->expects($this->once())->method('tell')->willReturn(0);
+        $body->expects($this->never())->method('rewind');
+        $body->expects($this->once())->method('getContents')->willReturn(ExampleResponse::JSON);
+
+        $response = $this->createMock(ResponseInterface::class);
+        $response->expects($this->once())->method('getBody')->willReturn($body);
+
+        /** @var ExampleResponse $response */
+        $response = $client->responseToType($response, ExampleResponse::class);
+
+        $this->assertSame('OK', $response->status);
     }
 
     private function buildExampleClient(array $responses): ExampleMercariClient

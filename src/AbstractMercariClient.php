@@ -52,7 +52,7 @@ abstract class AbstractMercariClient
         $this->serializer = $serializer;
     }
 
-    public function setLogger(LoggerInterface $logger, ?string $template = MessageFormatter::DEBUG)
+    public function setLogger(LoggerInterface $logger, ?string $template = MessageFormatter::DEBUG): self
     {
         $this->stack->push(Middleware::mapResponse(function (Response $response) {
             $response->getBody()->rewind();
