@@ -22,11 +22,10 @@ use JMS\Serializer\Annotation\Type;
 
 use Mercari\DTO\TodoItem;
 use ArrayIterator;
-use IteratorAggregate;
 use ReturnTypeWillChange;
 
 /**
- * @template-implements IteratorAggregate<TodoItem>
+ * @extends ListResponse<TodoItem>
  */
 class TodoListResponse extends ListResponse
 {

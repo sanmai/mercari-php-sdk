@@ -20,11 +20,10 @@ namespace Mercari;
 use JMS\Serializer\Annotation\Type;
 use Mercari\DTO\Comment;
 use ArrayIterator;
-use IteratorAggregate;
 use ReturnTypeWillChange;
 
 /**
- * @template-implements IteratorAggregate<Comment>
+ * @extends ListResponse<Comment>
  */
 class CommentsResponse extends ListResponse
 {

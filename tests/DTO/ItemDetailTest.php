@@ -93,7 +93,13 @@ class ItemDetailTest extends TestCase
         $item->item_type = '';
         $this->assertFalse($item->isMercariC2C());
 
+        unset($item->item_type);
         $item->seller = new SellerLatest();
+        $item->seller->shop_id = '123';
+        $this->assertFalse($item->isMercariC2C());
+
+        $item->seller = new SellerLatest();
+        $item->id = str_repeat('a', ItemDetail::SHOPS_ID_LENGTH);
         $item->seller->shop_id = '123';
         $this->assertFalse($item->isMercariC2C());
     }

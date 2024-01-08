@@ -17,14 +17,13 @@
 
 namespace Mercari;
 
-use IteratorAggregate;
 use JMS\Serializer\Annotation\Type;
 use Mercari\DTO\TransactionMessage;
 use ArrayIterator;
 use ReturnTypeWillChange;
 
 /**
- * @template-implements IteratorAggregate<TransactionMessage>
+ * @extends ListResponse<TransactionMessage>
  */
 class MessagesResponse extends ListResponse
 {

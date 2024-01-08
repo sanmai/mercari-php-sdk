@@ -39,6 +39,8 @@ use Mercari\DTO\ItemDetail;
  * @property string $address2 Second line of the delivery address
  * @property string $delivery_identifier An optional identifier to be included in the delivery address
  * @property int $coupon_id Item's coupon ID
+ *
+ * @psalm-suppress RedundantCondition
  */
 class PurchaseRequest extends GenericRequest
 {
