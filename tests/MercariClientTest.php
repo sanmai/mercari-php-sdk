@@ -130,7 +130,6 @@ class MercariClientTest extends TestCase
         $request = new SearchRequest();
         $request->keyword = 'foo';
 
-        /** @var MercariClient $response */
         $responseActual = $this->client->search($request);
 
         $this->assertSame($response, $responseActual);
@@ -357,7 +356,6 @@ class MercariClientTest extends TestCase
             )
         );
 
-        /** @var MercariClient $client */
         $responseActual = $this->client->transaction('foo');
 
         $this->assertSame($response, $responseActual);
@@ -376,7 +374,6 @@ class MercariClientTest extends TestCase
             )
         );
 
-        /** @var MercariClient $client */
         $responseActual = $this->client->itemTransaction('foo');
 
         $this->assertSame($response, $responseActual);
@@ -396,7 +393,6 @@ class MercariClientTest extends TestCase
             )
         );
 
-        /** @var MercariClient $client */
         $responseActual = $this->client->transactionMessages('foo');
 
         $this->assertSame($response, $responseActual);
@@ -419,7 +415,6 @@ class MercariClientTest extends TestCase
             ])
         );
 
-        /** @var MercariClient $client */
         $responseActual = $this->client->transactionMessage('foo', 'bar');
 
         $this->assertSame($response, $responseActual);

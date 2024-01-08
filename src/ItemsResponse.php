@@ -21,11 +21,10 @@ use JMS\Serializer\Annotation\PostDeserialize;
 use JMS\Serializer\Annotation\Type;
 use Mercari\DTO\ItemDetail;
 use ArrayIterator;
-use IteratorAggregate;
 use ReturnTypeWillChange;
 
 /**
- * @template-implements IteratorAggregate<ItemDetail>
+ * @extends ListResponse<ItemDetail>
  */
 class ItemsResponse extends ListResponse
 {
@@ -40,13 +39,13 @@ class ItemsResponse extends ListResponse
     /**
      * @PostDeserialize
      */
-    private function normalizeItems()
+    private function normalizeItems(): void
     {
         $this->items ??= [];
     }
 
     /**
-     * @return ArrayIterator<ItemDetail>
+     * @return ArrayIterator<array-key, ItemDetail>
      */
     #[ReturnTypeWillChange]
     public function getIterator()

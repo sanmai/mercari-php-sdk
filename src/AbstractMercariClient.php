@@ -132,6 +132,11 @@ abstract class AbstractMercariClient
         }
     }
 
+    /**
+     * @template T
+     * @param class-string<T> $type
+     * @return T
+     */
     protected function handleRequestException(RequestException $clientError, string $type)
     {
         $response = $clientError->getResponse();
@@ -157,6 +162,11 @@ abstract class AbstractMercariClient
         }
     }
 
+    /**
+     * @template T
+     * @param class-string<T> $type
+     * @return T
+     */
     protected function responseToType(ResponseInterface $response, string $type)
     {
         $body = $response->getBody();

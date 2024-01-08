@@ -20,11 +20,10 @@ namespace Mercari;
 use JMS\Serializer\Annotation\Type;
 use Mercari\DTO\Category;
 use ArrayIterator;
-use IteratorAggregate;
 use ReturnTypeWillChange;
 
 /**
- * @template-implements IteratorAggregate<Category>
+ * @extends ListResponse<Category>
  * @template-implements \Countable<Category>
  */
 class CategoriesResponse extends ListResponse

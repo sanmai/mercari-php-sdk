@@ -20,11 +20,10 @@ namespace Mercari;
 use JMS\Serializer\Annotation\Type;
 use Mercari\DTO\ItemDetail;
 use ArrayIterator;
-use IteratorAggregate;
 use ReturnTypeWillChange;
 
 /**
- * @template-implements IteratorAggregate<ItemDetail>
+ * @extends ListResponse<ItemDetail>
  */
 class SearchResponse extends ListResponse
 {

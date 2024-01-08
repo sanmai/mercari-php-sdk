@@ -17,7 +17,7 @@
 
 namespace Tests\Mercari;
 
-use Mercari\GenericRequest;
+use Tests\Mercari\Doubles\ExampleRequest;
 
 /**
  * @covers \Mercari\GenericRequest
@@ -31,7 +31,7 @@ class GenericRequestTest extends TestCase
             'bar' => 2,
         ];
 
-        $request = new class ($data) extends GenericRequest {};
+        $request = new ExampleRequest($data);
 
         $this->assertNull($request->baz);
 

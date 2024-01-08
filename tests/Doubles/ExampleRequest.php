@@ -15,24 +15,13 @@
  * Mercari PHP SDK. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Mercari;
+namespace Tests\Mercari\Doubles;
 
-use Countable;
-use ReturnTypeWillChange;
-use IteratorAggregate;
+use Mercari\GenericRequest;
 
 /**
- * @template T
- * @template-implements IteratorAggregate<array-key, T>
+ * @property mixed $baz
+ * @property mixed $foo
+ * @property mixed $zap
  */
-abstract class ListResponse implements IteratorAggregate, Countable
-{
-    #[ReturnTypeWillChange]
-    abstract public function getIterator();
-
-    #[ReturnTypeWillChange]
-    public function count()
-    {
-        return iterator_count($this->getIterator());
-    }
-}
+class ExampleRequest extends GenericRequest {}
