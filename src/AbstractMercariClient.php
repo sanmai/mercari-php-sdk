@@ -67,6 +67,11 @@ abstract class AbstractMercariClient
         return $this;
     }
 
+    /**
+     * @template T
+     * @param class-string<T> $type
+     * @return T|null
+     */
     protected function getOptional(
         string $type,
         string $uri,
@@ -84,6 +89,11 @@ abstract class AbstractMercariClient
         }
     }
 
+    /**
+     * @template T
+     * @param class-string<T> $type
+     * @return T
+     */
     protected function get(string $type, string $uri, array $query = [])
     {
         $response = $this->client->get($uri, [
@@ -93,6 +103,11 @@ abstract class AbstractMercariClient
         return $this->responseToType($response, $type);
     }
 
+    /**
+     * @template T
+     * @param class-string<T> $type
+     * @return T
+     */
     protected function post(string $type, string $uri, array $json)
     {
         $response = $this->client->post(
@@ -103,6 +118,11 @@ abstract class AbstractMercariClient
         return $this->responseToType($response, $type);
     }
 
+    /**
+     * @template T
+     * @param class-string<T> $type
+     * @return T
+     */
     protected function postFallback(string $type, string $uri, array $json)
     {
         try {

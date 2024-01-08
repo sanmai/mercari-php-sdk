@@ -20,27 +20,19 @@ declare(strict_types=1);
 namespace Mercari;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\HandlerStack;
-use GuzzleHttp\MessageFormatter;
-use GuzzleHttp\Middleware;
-use GuzzleHttp\Psr7\Response;
 use GuzzleRetry\GuzzleRetryMiddleware;
-use JMS\Serializer\Exception\RuntimeException as SerializerException;
-use JMS\Serializer\SerializerInterface;
 use JSONSerializer\Serializer;
 use Mercari\DTO\ItemDetail;
 use Mercari\DTO\Seller;
 use Mercari\DTO\Transaction;
 use Mercari\DTO\TransactionMessage;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 /**
  * Mercari API Client.
  */
-class MercariClient
+class MercariClient extends AbstractMercariClient
 {
     public const MARKETPLACE_MERCARI = 1;
 
@@ -101,40 +93,158 @@ class MercariClient
         );
     }
 
-    private Client $client;
-
-    private HandlerStack $stack;
-
-    private SerializerInterface $serializer;
-
-    /**
-     * Create a new instance.
-     */
-    public function __construct(Client $client, HandlerStack $stack, SerializerInterface $serializer)
+    public function search(SearchRequest $request): SearchResponse
     {
-        $this->client = $client;
-        $this->stack = $stack;
-        $this->serializer = $serializer;
+        return $this->get(
+            SearchResponse::class,
+            self::SEARCH_ITEMS_V3,
+            $request->getRequestParams()
+        );
     }
 
-    public function setLogger(LoggerInterface $logger, ?string $template = MessageFormatter::DEBUG)
+    public function items(array $items): ItemsResponse
     {
-        $this->stack->push(Middleware::mapResponse(function (Response $response) {
-            $response->getBody()->rewind();
-            return $response;
-        }));
-
-        $this->stack->push(Middleware::log(
-            $logger,
-            new MessageFormatter($template)
-        ));
-
-        return $this;
+        return $this->postFallback(
+            ItemsResponse::class,
+            self::ITEMS,
+            ['item_ids' => $items]
+        );
     }
 
-    public const MARKETPLACE_MERCARI = 1;
+    public function item(string $id): ?ItemDetail
+    {
+        return $this->getOptional(
+            ItemDetail::class,
+            sprintf(self::ITEM, $id),
+            [],
+            [
+                HttpResponse::HTTP_NOT_FOUND,
+                HttpResponse::HTTP_BAD_REQUEST,
+            ]
+        );
+    }
 
-    public const MARKETPLACE_SHOP = 2;
+    public function itemComments(string $id): CommentsResponse
+    {
+        $response = $this->getOptional(
+            CommentsResponse::class,
+            sprintf(self::ITEM_COMMENTS, $id)
+        );
 
-    public const MARKETPLACE_ALL = 3;
+        return $response ?? new CommentsResponse();
+    }
+
+    public function addComment(string $id, string $message): NewCommentResponse
+    {
+        return $this->post(
+            NewCommentResponse::class,
+            sprintf(self::ITEM_COMMENTS, $id),
+            ['message' => $message]
+        );
+    }
+
+    public function user(string $id): ?Seller
+    {
+        return $this->getOptional(
+            Seller::class,
+            sprintf(self::USER, $id)
+        );
+    }
+
+    public function similarItems(string $id, int $marketplace = self::MARKETPLACE_ALL): ItemsResponse
+    {
+        $response = $this->getOptional(
+            ItemsResponse::class,
+            sprintf(self::SIMILAR_ITEMS, $id),
+            array_filter(['marketplace' => $marketplace])
+        );
+
+        return $response ?? new ItemsResponse();
+    }
+
+    public function purchase(PurchaseRequest $request): PurchaseResponse
+    {
+        return $this->postFallback(
+            PurchaseResponse::class,
+            self::PURCHASE,
+            $request->getRequestParams()
+        );
+    }
+
+    public function todoList(int $limit = 10, string $page_token = ''): TodoListResponse
+    {
+        return $this->get(
+            TodoListResponse::class,
+            self::TODO_LIST,
+            array_filter([
+                'limit' => $limit,
+                'page_token' => $page_token,
+            ])
+        );
+    }
+
+    public function transaction(string $transaction_id): ?Transaction
+    {
+        return $this->getOptional(
+            Transaction::class,
+            sprintf(self::TRANSACTION, $transaction_id)
+        );
+    }
+
+    public function itemTransaction(string $item_id): ?Transaction
+    {
+        return $this->getOptional(
+            Transaction::class,
+            sprintf(self::TRANSACTION_ITEM, $item_id)
+        );
+    }
+
+    public function transactionMessages(string $transaction_id): MessagesResponse
+    {
+        $response = $this->getOptional(
+            MessagesResponse::class,
+            sprintf(self::TRANSACTION_MESSAGES, $transaction_id)
+        );
+
+        return $response ?? new MessagesResponse();
+    }
+
+    public function transactionMessage(string $transaction_id, string $message): TransactionMessage
+    {
+        return $this->post(
+            TransactionMessage::class,
+            sprintf(self::TRANSACTION_MESSAGES, $transaction_id),
+            ['message' => $message]
+        );
+    }
+
+    public function transactionReview(string $transaction_id, string $message, string $fame = 'good'): void
+    {
+        /** @var ReviewResponse $response */
+        $response = $this->postFallback(
+            ReviewResponse::class,
+            sprintf(self::TRANSACTION_REVIEW, $transaction_id),
+            [
+                'fame' => $fame,
+                'message' => $message,
+                'subject' => 'seller',
+            ]
+        );
+
+        if ($response->isSuccess()) {
+            return;
+        }
+
+        throw new DTO\Exception(sprintf('%s (%s)', $response->failure_details->reasons, $response->failure_details->code));
+    }
+
+    public function categories(): CategoriesResponse
+    {
+        $response = $this->getOptional(
+            CategoriesResponse::class,
+            self::CATEGORIES
+        );
+
+        return $response ?? new CategoriesResponse();
+    }
 }
