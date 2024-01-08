@@ -38,6 +38,7 @@ use GuzzleHttp\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use GuzzleHttp\HandlerStack;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
+use GuzzleRetry\GuzzleRetryMiddleware;
 
 /**
  * @covers \Mercari\MercariClient
@@ -88,6 +89,28 @@ class MercariClientTest extends TestCase
         $this->assertSame($handler, $this->getPropertyValue($client, 'stack'));
 
         $this->assertStringContainsString('retry_on_status', (string) $handler);
+
+        $retryMiddleware = $this->getRetryMiddleware($handler);
+
+        $statusCodes = $this->getPropertyValue($retryMiddleware, 'defaultOptions')['retry_on_status'];
+
+        foreach ($statusCodes as $code) {
+            $this->assertIsInt($code);
+        }
+
+        $this->assertCount(8, $statusCodes);
+    }
+
+    private function getRetryMiddleware(HandlerStack $handler): GuzzleRetryMiddleware
+    {
+        $stack = $this->getPropertyValue($handler, 'stack');
+        foreach ($stack as $item) {
+            if ($item[1] === "retry_on_status") {
+                return $item[0](fn() => null);
+            }
+        }
+
+        $this->fail('retry_on_status middleware not found');
     }
 
     public function testSearch(): void

@@ -71,7 +71,14 @@ class MercariClient extends AbstractMercariClient
         $stack = HandlerStack::create();
 
         $stack->push(GuzzleRetryMiddleware::factory([
-            'retry_on_status' => [409, 429, ...range(500, 505)],
+            'retry_on_status' => [
+                HttpResponse::HTTP_CONFLICT,
+                HttpResponse::HTTP_TOO_MANY_REQUESTS,
+                ...range(
+                    HttpResponse::HTTP_INTERNAL_SERVER_ERROR,
+                    HttpResponse::HTTP_VERSION_NOT_SUPPORTED
+                ),
+            ],
         ]), 'retry_on_status');
 
         $httpClient = new Client([
