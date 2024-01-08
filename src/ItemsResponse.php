@@ -27,7 +27,7 @@ use ReturnTypeWillChange;
 /**
  * @template-implements IteratorAggregate<ItemDetail>
  */
-class ItemsResponse implements IteratorAggregate
+class ItemsResponse extends ListResponse
 {
     /**
      * @var ItemDetail[]
