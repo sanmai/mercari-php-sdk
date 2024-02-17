@@ -127,6 +127,7 @@ class MercariClient extends AbstractMercariClient
             [
                 HttpResponse::HTTP_NOT_FOUND,
                 HttpResponse::HTTP_BAD_REQUEST,
+                HttpResponse::HTTP_FORBIDDEN,
             ]
         );
     }
