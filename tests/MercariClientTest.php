@@ -169,6 +169,7 @@ class MercariClientTest extends TestCase
             $this->identicalTo([
                 HttpResponse::HTTP_NOT_FOUND,
                 HttpResponse::HTTP_BAD_REQUEST,
+                HttpResponse::HTTP_FORBIDDEN,
             ])
         );
 
