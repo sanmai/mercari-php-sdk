@@ -36,7 +36,7 @@ class PurchaseResponseTest extends TestCase
     public function testFailure()
     {
         $response = new PurchaseResponse();
-        $response->transaction_status = '';
+        $response->transaction_status = $response::FAILURE;
 
         $this->assertFalse($response->isSuccess());
     }
