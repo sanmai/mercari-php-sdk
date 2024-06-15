@@ -31,6 +31,6 @@ class PurchaseResponse extends CommonResponse
 
     public function isSuccess(): bool
     {
-        return $this->transaction_status === self::SUCCESS;
+        return $this->transaction_status !== self::FAILURE;
     }
 }

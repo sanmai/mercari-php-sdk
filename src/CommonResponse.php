@@ -24,6 +24,8 @@ class CommonResponse
 {
     public const SUCCESS = 'success';
 
+    public const FAILURE = 'failure';
+
     public string $request_id;
 
     /**
