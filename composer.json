@@ -38,7 +38,7 @@
         "php-coveralls/php-coveralls": "^2.4",
         "phpstan/phpstan": ">=0.10",
         "phpunit/phpunit": "^9.3",
-        "sanmai/pipeline": ">=6.10",
+        "sanmai/pipeline": ">=6.11",
         "symfony/validator": "^7.0",
         "vimeo/psalm": ">=3.0.16"
     },
