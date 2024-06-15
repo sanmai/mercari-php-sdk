@@ -80,7 +80,12 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
 
         $this->assertSame(
             json_encode($expected, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE),
-            json_encode($actual, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
+            json_encode($actual, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE),
+            sprintf(
+                "Failed to deserialize %s to %s",
+                str_replace(dirname(__DIR__), '.', $file),
+                get_class($response)
+            )
         );
     }
 

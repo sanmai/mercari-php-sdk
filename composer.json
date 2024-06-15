@@ -20,6 +20,7 @@
         "php": "^7.4 || ^8.0",
         "ext-json": "*",
         "caseyamcl/guzzle_retry_middleware": "^2.9",
+        "doctrine/annotations": "^2.0",
         "guzzlehttp/guzzle": "^6.3 || ^7.0",
         "jms/serializer": "^3.29",
         "psr/log": "^1.1",
@@ -29,12 +30,16 @@
     },
     "require-dev": {
         "ergebnis/composer-normalize": ">=2.23",
+        "fakerphp/faker": "^1.23",
         "friendsofphp/php-cs-fixer": "^3",
-        "infection/infection": ">=0.16",
+        "infection/infection": ">=0.11",
+        "jenssegers/optimus": "^0.2.3",
         "phan/phan": ">1.3.0",
         "php-coveralls/php-coveralls": "^2.4",
         "phpstan/phpstan": ">=0.10",
         "phpunit/phpunit": "^9.3",
+        "sanmai/pipeline": ">=6.11",
+        "symfony/validator": ">=5.4",
         "vimeo/psalm": ">=3.0.16"
     },
     "suggest": {

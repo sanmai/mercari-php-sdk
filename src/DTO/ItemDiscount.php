@@ -25,5 +25,5 @@ class ItemDiscount
 
     public int $return_absolute;
 
-    public int $return_percent;
+    public float $return_percent;
 }
