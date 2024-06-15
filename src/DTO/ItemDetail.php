@@ -145,12 +145,19 @@ class ItemDetail
     public CatalogDetails $catalog_details;
 
     /**
+     * @Type("Mercari\DTO\AnshinAuthentication")
+     */
+    public AnshinAuthentication $anshin_item_authentication;
+
+    /**
      * @Type("array<Mercari\DTO\ItemVariant>")
      * @var ItemVariant[]
      */
     public array $item_variants;
 
     public int $num_comments;
+
+    public int $num_likes;
 
     public string $checksum;
 
