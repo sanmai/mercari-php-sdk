@@ -55,3 +55,20 @@ location / {
 ```
 
 This tells nginx to forward requests to your `actual-api-host.example.jp` server, but only from the IPs you've specified. You're in control, deciding who gets access and what they can do. Feel free to get fancy with your access restrictions – it's your party!
+
+### SSH Tunnel
+
+If you don't want to set up a dedicated proxy, fear not! SSH's dynamic tunnel feature is your secret weapon for secure access to the Mercari API. Just run this command:
+
+```bash
+ssh -fCND 1080 my-server.example.com
+```
+
+This opens a tunnel through your `my-server.example.com` server (replace with your actual server address), granting you access to the Mercari API as if you were right there on the server. It's a convenient way to bypass those pesky IP restrictions, especially when a full-fledged proxy setup isn't in the cards.
+
+While an nginx proxy is great for basic IP allowlisting, an SSH tunnel takes it a step further. Your traffic is encrypted end-to-end, adding an extra layer of security compared to a plain proxy setup. This makes it a great choice for situations where you need to protect your API credentials or when you're working on a public or less secure network.
+
+However, SSH tunnels have their quirks. Unstable connections can make them a bit finicky, and you'll need to configure your API client to use the tunnel in development but not in production. It's a trade-off between security and convenience.
+
+So, if you're okay with a bit of extra configuration and don't mind the occasional connection hiccup, SSH tunnels offer a secure and flexible way to access the API from anywhere. 
+
