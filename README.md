@@ -36,22 +36,22 @@ If you're not a fan of Mercari's IP restrictions (and honestly, who is?), you ca
 
 ### Proxy Server
 
-Alright, so Mercari's a bit picky about who gets to access their API directly. That's where a proxy server comes in handy. It acts as a middleman, letting you bypass those pesky IP restrictions and make requests like you're sipping a Mai Tai on a tropical beach. But remember, you don't want just anyone crashing your beach party, so let's add a bit of security.
+Let's face it: Mercari's API security is a bit of a buzzkill. Their "one IP address per customer" rule is about as flexible as a brick wall, making life difficult for teams or anyone who needs to switch things up. Imagine trying to change your IP (like when you're spinning up new servers in the cloud) and having to wait weeks for Mercari to catch up. Yikes!
 
-We're gonna use nginx for this shindig because it's fantastic and does the job well. Setting a proxy is as simple as adding a new location block. Here's a basic example:
+That's where a proxy server swoops in to save the day. It's like your own personal API bouncer, letting you change your IP address as often as you want without Mercari even noticing. Plus, you can share access with your team without jumping through hoops. Talk about a win-win for collaboration and sanity!
+
+Mercari's lack of visibility into who's actually using their API is also a bit of a concern. It's like throwing a party with no guest list – anyone could show up. While probably unintentional, this lack of oversight on Mercari's part emphasizes the need for a proxy server with robust authentication on our end, especially for teams collaborating on projects.
+
+Let's start this party with nginx, the proxy server extraordinaire. Setting it up is a breeze – just add a new location block to your config file:
 
 ```nginx
 location / {
     proxy_pass http://actual-api-host.example.jp/; 
-    auth_basic "Mercari VIP Lounge Only"; 
-    auth_basic_user_file /etc/nginx/.htpasswd; 
+    # Lock it down with an IP allow list
+    allow 192.168.1.0/24; # Allow a specific subnet
+    allow 10.0.0.1;      # Allow a specific IP
+    deny all;             # Deny all other IPs
 }
 ```
 
-This tells nginx to forward all requests to your `actual-api-host.example.jp` server, requiring basic authentication to access it. Create a password file using the htpasswd utility:
-```
-sudo htpasswd -c /etc/nginx/.htpasswd your_username
-```
-Restart nginx, and boom! You've got yourself a proxy server with a bouncer at the door. Only those with a secret password can use your proxy to access the Mercari API. Party on, safely!
-
-With this setup, you're the bouncer at the club. You decide who gets in and what they can access by creating different user accounts and permissions in your nginx config.
+This tells nginx to forward requests to your `actual-api-host.example.jp` server, but only from the IPs you've specified. You're in control, deciding who gets access and what they can do. Feel free to get fancy with your access restrictions – it's your party!
