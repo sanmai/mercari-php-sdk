@@ -28,9 +28,9 @@ This is a pretty complete Mercari API client, whipped up over a few holiday cock
 ## What You Need
 
 Before you start messing with this API client, here's the lowdown on what you gotta have:
-- Authority Hostname: This is where the authentication magic happens. In the examples, we'll pretend it's `proxy-auth.example.com` .
-- "Open API" Hostname: This is where you actually talk to the Mercari API. We'll call it `proxy-api.example.com`. 
-- API Credentials: You'll need a `client_id` and `client_secret` from Mercari. These are like your secret handshake to get into the API party.
+- Authority Hostname. In the examples, we'll pretend it's `proxy-auth.example.com` .
+- "Open API" Hostname. This is where you actually talk to the Mercari API. We'll call it `proxy-api.example.com`. 
+- API Credentials: You'll need a `client_id` and `client_secret` from Mercari.
   
 If you're not a fan of Mercari's IP restrictions (and honestly, who is?), you can either set up your own proxy server or, if you're feeling adventurous, try accessing the API directly. Your call!
 
