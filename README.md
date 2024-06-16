@@ -24,3 +24,34 @@ This is a pretty complete Mercari API client, whipped up over a few holiday cock
  - [ ] Post Comment
  - [ ] Get Item Categories
  - [ ] Get Item Brands
+
+## What You Need
+
+Before you start messing with this API client, here's the lowdown on what you gotta have:
+- Authority Hostname: This is where the authentication magic happens. In the examples, we'll pretend it's `proxy-auth.example.com` .
+- "Open API" Hostname: This is where you actually talk to the Mercari API. We'll call it `proxy-api.example.com`. 
+- API Credentials: You'll need a `client_id` and `client_secret` from Mercari. These are like your secret handshake to get into the API party.
+  
+If you're not a fan of Mercari's IP restrictions (and honestly, who is?), you can either set up your own proxy server or, if you're feeling adventurous, try accessing the API directly. Your call!
+
+### Proxy Server
+
+Alright, so Mercari's a bit picky about who gets to access their API directly. That's where a proxy server comes in handy. It acts as a middleman, letting you bypass those pesky IP restrictions and make requests like you're sipping a Mai Tai on a tropical beach. But remember, you don't want just anyone crashing your beach party, so let's add a bit of security.
+
+We're gonna use nginx for this shindig because it's fantastic and does the job well. Setting a proxy is as simple as adding a new location block. Here's a basic example:
+
+```nginx
+location / {
+    proxy_pass http://actual-api-host.example.jp/; 
+    auth_basic "Mercari VIP Lounge Only"; 
+    auth_basic_user_file /etc/nginx/.htpasswd; 
+}
+```
+
+This tells nginx to forward all requests to your `actual-api-host.example.jp` server, requiring basic authentication to access it. Create a password file using the htpasswd utility:
+```
+sudo htpasswd -c /etc/nginx/.htpasswd your_username
+```
+Restart nginx, and boom! You've got yourself a proxy server with a bouncer at the door. Only those with a secret password can use your proxy to access the Mercari API. Party on, safely!
+
+With this setup, you're the bouncer at the club. You decide who gets in and what they can access by creating different user accounts and permissions in your nginx config.
