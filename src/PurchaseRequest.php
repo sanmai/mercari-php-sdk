@@ -45,7 +45,7 @@ use Mercari\DTO\ItemDetail;
  */
 class PurchaseRequest extends GenericRequest
 {
-    public function __construct(ItemDetail $item = null)
+    public function __construct(?ItemDetail $item = null)
     {
         parent::__construct();
 

@@ -81,7 +81,7 @@ class MercariAuthClient
     /**
      * @throws RequestException
      */
-    public function getToken(TokenRequest $request = null): TokenResponse
+    public function getToken(?TokenRequest $request = null): TokenResponse
     {
         $request ??= TokenRequest::clientCredentials();
 
