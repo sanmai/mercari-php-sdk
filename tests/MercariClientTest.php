@@ -171,6 +171,7 @@ class MercariClientTest extends TestCase
                 HttpResponse::HTTP_NOT_FOUND,
                 HttpResponse::HTTP_BAD_REQUEST,
                 HttpResponse::HTTP_FORBIDDEN,
+                HttpResponse::HTTP_PRECONDITION_FAILED,
             ])
         );
 
