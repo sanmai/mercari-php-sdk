@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Mercari PHP SDK
  * Copyright 2024 Alexey Kopytko

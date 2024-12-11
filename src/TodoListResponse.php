@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Mercari PHP SDK
  * Copyright 2024 Alexey Kopytko
@@ -19,7 +20,6 @@ namespace Mercari;
 
 use JMS\Serializer\Annotation\PostDeserialize;
 use JMS\Serializer\Annotation\Type;
-
 use Mercari\DTO\TodoItem;
 use ArrayIterator;
 use ReturnTypeWillChange;

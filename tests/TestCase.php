@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Mercari PHP SDK
  * Copyright 2024 Alexey Kopytko
@@ -24,9 +25,7 @@ use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Request;
 use JMS\Serializer\SerializerInterface;
 use JSONSerializer;
-
 use ReflectionObject;
-
 use ReflectionException;
 
 use function Pipeline\take;
