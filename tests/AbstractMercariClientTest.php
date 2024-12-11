@@ -22,6 +22,7 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use JSONSerializer\Serializer;
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Tests\Mercari\Doubles\ExampleMercariClient;
@@ -185,7 +186,7 @@ class AbstractMercariClientTest extends TestCase
             ->with($this->isInstanceOf(RequestException::class), ExampleResponse::class)
             ->willReturn(null);
 
-        /** @var ExampleMercariClient $client */
+        /** @var ExampleMercariClient&MockObject $client */
         $response = $client->postFallback(ExampleResponse::class, '/example', ['foo' => 'bar']);
 
         $this->assertNull($response);
