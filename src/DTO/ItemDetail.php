@@ -160,6 +160,14 @@ class ItemDetail
 
     public int $num_likes;
 
+    public string $language_code;
+
+    /**
+     * @Type("array<string,array<string>>")
+     * @var array<string,array<string>>
+     */
+    public array $metadata;
+
     public string $checksum;
 
     public function getUrl(): string

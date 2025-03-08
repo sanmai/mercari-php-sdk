@@ -119,12 +119,12 @@ class MercariClient extends AbstractMercariClient
         );
     }
 
-    public function item(string $id): ?ItemDetail
+    public function item(string $id, ?string $prefecture): ?ItemDetail
     {
         return $this->getOptional(
             ItemDetail::class,
             sprintf(self::ITEM, $id),
-            [],
+            array_filter(['prefecture' => $prefecture]),
             [
                 HttpResponse::HTTP_NOT_FOUND,
                 HttpResponse::HTTP_BAD_REQUEST,
