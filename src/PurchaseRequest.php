@@ -40,6 +40,8 @@ use Mercari\DTO\ItemDetail;
  * @property string $address2 Second line of the delivery address
  * @property string $delivery_identifier An optional identifier to be included in the delivery address
  * @property int $coupon_id Item's coupon ID
+ * @property int $shops_shipping_fee Shops buyer shipping fee
+ * @property string $country_code Two-character country or region code representing the shipping address of the user
  *
  * @psalm-suppress RedundantCondition
  */
