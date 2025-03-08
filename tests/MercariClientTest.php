@@ -180,6 +180,31 @@ class MercariClientTest extends TestCase
         $this->assertSame($response, $responseActual);
     }
 
+    public function testItemPrefecture(): void
+    {
+        $response = new ItemDetail();
+
+        $this->clientExpects(
+            'getOptional',
+            $response,
+            $this->logicalAnd(
+                $this->stringContains('item'),
+                $this->stringContains('foo')
+            ),
+            $this->identicalTo(['prefecture' => 'bar']),
+            $this->identicalTo([
+                HttpResponse::HTTP_NOT_FOUND,
+                HttpResponse::HTTP_BAD_REQUEST,
+                HttpResponse::HTTP_FORBIDDEN,
+                HttpResponse::HTTP_PRECONDITION_FAILED,
+            ])
+        );
+
+        $responseActual = $this->client->item('foo', 'bar');
+
+        $this->assertSame($response, $responseActual);
+    }
+
     public function testItemComments(): void
     {
         $response = new CommentsResponse();
