@@ -119,7 +119,7 @@ class MercariClient extends AbstractMercariClient
         );
     }
 
-    public function item(string $id, ?string $prefecture): ?ItemDetail
+    public function item(string $id, ?string $prefecture = null): ?ItemDetail
     {
         return $this->getOptional(
             ItemDetail::class,
