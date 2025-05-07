@@ -17,7 +17,7 @@
         "issues": "https://github.com/sanmai/sanmai/mercari-php-sdk/issues"
     },
     "require": {
-        "php": "^7.4 || ^8.0",
+        "php": "^8.2",
         "ext-json": "*",
         "caseyamcl/guzzle_retry_middleware": "^2.9",
         "doctrine/annotations": "^2.0",
