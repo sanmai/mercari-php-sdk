@@ -21,7 +21,8 @@ namespace Mercari;
 use JMS\Serializer\Annotation\Type;
 use Mercari\DTO\Category;
 use ArrayIterator;
-use ReturnTypeWillChange;
+use Override;
+use Traversable;
 
 /**
  * @extends ListResponse<Category>
@@ -38,14 +39,14 @@ class CategoriesResponse extends ListResponse
     /**
      * @return ArrayIterator<array-key, Category>
      */
-    #[ReturnTypeWillChange]
-    public function getIterator()
+    #[Override]
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->master_categories);
     }
 
-    #[ReturnTypeWillChange]
-    public function count()
+    #[Override]
+    public function count(): int
     {
         return iterator_count($this->getIterator());
     }

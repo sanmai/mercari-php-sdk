@@ -22,7 +22,8 @@ use JMS\Serializer\Annotation\PostDeserialize;
 use JMS\Serializer\Annotation\Type;
 use Mercari\DTO\TodoItem;
 use ArrayIterator;
-use ReturnTypeWillChange;
+use Traversable;
+use Override;
 
 /**
  * @extends ListResponse<TodoItem>
@@ -48,8 +49,8 @@ class TodoListResponse extends ListResponse
     /**
      * @return ArrayIterator<array-key, TodoItem>
      */
-    #[ReturnTypeWillChange]
-    public function getIterator()
+    #[Override]
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->data);
     }
