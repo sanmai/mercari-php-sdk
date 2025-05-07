@@ -21,8 +21,8 @@ namespace Mercari;
 use JMS\Serializer\Annotation\Type;
 use Mercari\DTO\Comment;
 use ArrayIterator;
-use ReturnTypeWillChange;
 use Override;
+use Traversable;
 
 /**
  * @extends ListResponse<Comment>
@@ -39,7 +39,7 @@ class CommentsResponse extends ListResponse
      * @return ArrayIterator<array-key, Comment>
      */
     #[Override]
-    public function getIterator(): \Traversable
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->comments);
     }

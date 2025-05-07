@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Mercari;
 
 use JsonSerializable;
-use ReturnTypeWillChange;
 use Override;
 
 abstract class GenericRequest implements JsonSerializable

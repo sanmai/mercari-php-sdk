@@ -22,7 +22,6 @@ use JMS\Serializer\Annotation\PostDeserialize;
 use JMS\Serializer\Annotation\Type;
 use Mercari\DTO\ItemDetail;
 use ArrayIterator;
-use ReturnTypeWillChange;
 use Override;
 use Traversable;
 
