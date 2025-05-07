@@ -21,7 +21,8 @@ namespace Mercari;
 use JMS\Serializer\Annotation\Type;
 use Mercari\DTO\TransactionMessage;
 use ArrayIterator;
-use ReturnTypeWillChange;
+use Traversable;
+use Override;
 
 /**
  * @extends ListResponse<TransactionMessage>
@@ -34,8 +35,8 @@ class MessagesResponse extends ListResponse
      */
     public array $messages = [];
 
-    #[ReturnTypeWillChange]
-    public function getIterator()
+    #[Override]
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->messages);
     }

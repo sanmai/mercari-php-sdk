@@ -19,8 +19,9 @@
 namespace Mercari;
 
 use Countable;
-use ReturnTypeWillChange;
 use IteratorAggregate;
+use Traversable;
+use Override;
 
 /**
  * @template T
@@ -28,11 +29,11 @@ use IteratorAggregate;
  */
 abstract class ListResponse implements IteratorAggregate, Countable
 {
-    #[ReturnTypeWillChange]
-    abstract public function getIterator();
+    #[Override]
+    abstract public function getIterator(): Traversable;
 
-    #[ReturnTypeWillChange]
-    public function count()
+    #[Override]
+    public function count(): int
     {
         return iterator_count($this->getIterator());
     }

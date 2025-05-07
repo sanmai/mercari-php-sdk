@@ -23,6 +23,8 @@ use JMS\Serializer\Annotation\Type;
 use Mercari\DTO\ItemDetail;
 use ArrayIterator;
 use ReturnTypeWillChange;
+use Override;
+use Traversable;
 
 /**
  * @extends ListResponse<ItemDetail>
@@ -48,8 +50,8 @@ class ItemsResponse extends ListResponse
     /**
      * @return ArrayIterator<array-key, ItemDetail>
      */
-    #[ReturnTypeWillChange]
-    public function getIterator()
+    #[Override]
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->items ?? []);
     }
