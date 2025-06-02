@@ -19,12 +19,8 @@ jobs:
           - '8.2'
           - '8.3'
           - '8.4'
-        dependencies:
-          - ''
-        include:
-          - { php-version: '8.2', dependencies: '--prefer-lowest' }
 
-    name: Tests with PHP ${{ matrix.php-version }} ${{ matrix.dependencies }}
+    name: Tests with PHP ${{ matrix.php-version }}
 
     steps:
       - name: Checkout code
