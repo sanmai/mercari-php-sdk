@@ -18,9 +18,18 @@
 
 namespace Mercari;
 
+use JMS\Serializer\Annotation\Type;
+use JMS\Serializer\Annotation\SkipWhenEmpty;
+
 class Failure
 {
     public int $code = 0;
 
     public string $message = '';
+
+    /**
+     * @Type("array")
+     * @SkipWhenEmpty
+     */
+    public array $details = [];
 }
