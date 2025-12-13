@@ -39,8 +39,7 @@
         "phpstan/phpstan": ">=0.10",
         "phpunit/phpunit": "^9.3",
         "sanmai/pipeline": ">=6.11",
-        "symfony/validator": ">=5.4",
-        "vimeo/psalm": ">=3.0.16"
+        "symfony/validator": ">=5.4"
     },
     "suggest": {
         "doctrine/cache": "For metadata caching",
