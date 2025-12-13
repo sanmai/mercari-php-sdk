@@ -77,10 +77,9 @@ class MercariClient extends AbstractMercariClient
             'retry_on_status' => [
                 HttpResponse::HTTP_CONFLICT,
                 HttpResponse::HTTP_TOO_MANY_REQUESTS,
-                ...range(
-                    HttpResponse::HTTP_BAD_GATEWAY,
-                    HttpResponse::HTTP_GATEWAY_TIMEOUT
-                ),
+                HttpResponse::HTTP_BAD_GATEWAY,
+                HttpResponse::HTTP_SERVICE_UNAVAILABLE,
+                HttpResponse::HTTP_GATEWAY_TIMEOUT,
             ],
         ], $retryOptions)), 'retry_on_status');
 
