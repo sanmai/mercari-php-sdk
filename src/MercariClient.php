@@ -30,6 +30,8 @@ use Mercari\DTO\Transaction;
 use Mercari\DTO\TransactionMessage;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
+use function array_merge;
+
 /**
  * Mercari API Client.
  */
@@ -67,20 +69,20 @@ class MercariClient extends AbstractMercariClient
 
     private const CATEGORIES = '/v1/master/item_categories';
 
-    public static function createInstance(string $apiHost, string $authToken, array $extraHeaders = []): self
+    public static function createInstance(string $apiHost, string $authToken, array $extraHeaders = [], array $retryOptions = []): self
     {
         $stack = HandlerStack::create();
 
-        $stack->push(GuzzleRetryMiddleware::factory([
+        $stack->push(GuzzleRetryMiddleware::factory(array_merge([
             'retry_on_status' => [
                 HttpResponse::HTTP_CONFLICT,
                 HttpResponse::HTTP_TOO_MANY_REQUESTS,
                 ...range(
-                    HttpResponse::HTTP_INTERNAL_SERVER_ERROR,
-                    HttpResponse::HTTP_VERSION_NOT_SUPPORTED
+                    HttpResponse::HTTP_BAD_GATEWAY,
+                    HttpResponse::HTTP_GATEWAY_TIMEOUT
                 ),
             ],
-        ]), 'retry_on_status');
+        ], $retryOptions)), 'retry_on_status');
 
         $httpClient = new Client([
             'base_uri' => sprintf('https://%s', $apiHost),
