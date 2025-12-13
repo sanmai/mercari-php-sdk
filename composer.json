@@ -14,7 +14,7 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/sanmai/sanmai/mercari-php-sdk/issues"
+        "issues": "https://github.com/sanmai/mercari-php-sdk/issues"
     },
     "require": {
         "php": "^8.2",
