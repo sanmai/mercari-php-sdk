@@ -42,6 +42,7 @@ use Mercari\DTO\ItemDetail;
  * @property int $coupon_id Item's coupon ID
  * @property int $shops_shipping_fee Shops buyer shipping fee
  * @property string $country_code Two-character country or region code representing the shipping address of the user
+ * @property string $buyer_id Buyer's ID number
  */
 class PurchaseRequest extends GenericRequest
 {
