@@ -349,7 +349,7 @@ return [
         'vendor/sanmai/json-serializer/src',
         'vendor/sanmai/pipeline/src',
         'vendor/symfony/http-foundation',
-        'vendor/tumblr/chorus-timekeeper',
+        'vendor/sanmai/duoclock/src',
        'vendor/caseyamcl',
     ],
 

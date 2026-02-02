@@ -23,9 +23,9 @@ use Mercari\TokenResponse;
 use ReflectionObject;
 use GuzzleHttp\Client;
 use Mercari\TokenRequest;
-use Tumblr\Chorus\FakeTimeKeeper;
+use DuoClock\DuoClock;
+use DuoClock\TimeSpy;
 use GuzzleHttp\Psr7\Response;
-use Tumblr\Chorus\TimeKeeper;
 
 /**
  * @covers \Mercari\MercariAuthClient
@@ -77,7 +77,7 @@ class MercariAuthClientTest extends TestCase
             'xclient_id',
             $this->buildHttpClient($responses),
             $this->serializer,
-            new TimeKeeper()
+            new DuoClock()
         );
         $url = $client->getAuthUrl($tokenRequest);
 
@@ -107,7 +107,7 @@ class MercariAuthClientTest extends TestCase
         $redirectUrl = 'https://www.example.com/mercari/return';
         $code = 'foo123123';
 
-        $timekeeper = new FakeTimeKeeper(10000);
+        $timekeeper = new TimeSpy(10000);
 
         $tokenResponse = new TokenResponse();
         $tokenResponse->access_token = 'access_token123';

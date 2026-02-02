@@ -19,7 +19,7 @@
 namespace Tests\Mercari;
 
 use Mercari\WebhookSignature;
-use Tumblr\Chorus\FakeTimeKeeper;
+use DuoClock\TimeSpy;
 
 /**
  * @covers \Mercari\WebhookSignature
@@ -30,14 +30,14 @@ class WebhookSignatureTest extends TestCase
     {
         $signature = new WebhookSignature('123', '{}', 123, '123');
 
-        $this->assertFalse($signature->isValid(new FakeTimeKeeper(123)));
+        $this->assertFalse($signature->isValid(new TimeSpy(123)));
     }
 
     public function testInvalidServerVars()
     {
         $signature = new WebhookSignature('123');
 
-        $this->assertFalse($signature->isValid(new FakeTimeKeeper(123)));
+        $this->assertFalse($signature->isValid(new TimeSpy(123)));
     }
 
     public function testInvalidNow()
@@ -53,7 +53,7 @@ class WebhookSignatureTest extends TestCase
 
         $signature = new WebhookSignature('456', '{}', null, $validSignature);
 
-        $this->assertTrue($signature->isValid(new FakeTimeKeeper(0)));
+        $this->assertTrue($signature->isValid(new TimeSpy(0)));
     }
 
     private const TEST_TIME = 1531420618;
@@ -80,7 +80,7 @@ class WebhookSignatureTest extends TestCase
      */
     public function testValid(int $time, bool $valid)
     {
-        $timekeeper = new FakeTimeKeeper($time);
+        $timekeeper = new TimeSpy($time);
 
         $signature = new WebhookSignature(
             '8f742231b10e8888abcd99yyyzzz85a5',
@@ -97,7 +97,7 @@ class WebhookSignatureTest extends TestCase
         $_SERVER['HTTP_X_MERCARI_REQUEST_TIMESTAMP'] = 0;
         $_SERVER['HTTP_X_MERCARI_SIGNATURE'] = '';
 
-        $timekeeper = new FakeTimeKeeper(self::TEST_TIME);
+        $timekeeper = new TimeSpy(self::TEST_TIME);
 
         $signature = new WebhookSignature(
             '8f742231b10e8888abcd99yyyzzz85a5',
@@ -117,7 +117,7 @@ class WebhookSignatureTest extends TestCase
         $_SERVER['HTTP_X_MERCARI_REQUEST_TIMESTAMP'] = self::TEST_TIME;
         $_SERVER['HTTP_X_MERCARI_SIGNATURE'] = 'v0:249e47edc1980531306517e4435b54ef1ff224020029284bdf19c8eda99aa325';
 
-        $timekeeper = new FakeTimeKeeper($time);
+        $timekeeper = new TimeSpy($time);
 
         $signature = new WebhookSignature(
             '8f742231b10e8888abcd99yyyzzz85a5',
