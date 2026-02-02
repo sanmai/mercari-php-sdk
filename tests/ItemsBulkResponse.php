@@ -21,6 +21,8 @@ namespace Tests\Mercari;
 
 use Mercari\ItemsResponse;
 
+use function array_key_first;
+
 /**
  * @covers \Mercari\ItemsResponse
  */

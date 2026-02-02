@@ -23,6 +23,10 @@ use PHPUnit\Framework\TestCase;
 use Mercari\DTO\TodoItem;
 use ReflectionClass;
 
+use function count;
+use function dirname;
+use function glob;
+
 class StaticAnalysisTest extends TestCase
 {
     public function testInclude()

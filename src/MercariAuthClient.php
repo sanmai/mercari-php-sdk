@@ -27,6 +27,8 @@ use JMS\Serializer\SerializerInterface;
 use JSONSerializer\Serializer;
 use DuoClock\DuoClock;
 
+use function sprintf;
+
 /**
  * Authentication client for Mercari API.
  */

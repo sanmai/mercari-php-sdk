@@ -21,6 +21,8 @@ namespace Tests\Mercari;
 
 use Mercari\MessagesResponse;
 
+use function iterator_to_array;
+
 /**
  * @covers \Mercari\MessagesResponse
  */

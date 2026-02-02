@@ -22,6 +22,10 @@ namespace Mercari\DTO;
 use JMS\Serializer\Annotation\Type;
 use Mercari\PurchaseRequest;
 
+use function rawurlencode;
+use function sprintf;
+use function strlen;
+
 class ItemDetail
 {
     public const SHOPS_ID_LENGTH = 22;

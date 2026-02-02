@@ -24,6 +24,8 @@ use IteratorAggregate;
 use Traversable;
 use Override;
 
+use function iterator_count;
+
 /**
  * @template T
  * @template-implements IteratorAggregate<array-key, T>

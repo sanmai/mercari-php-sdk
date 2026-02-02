@@ -21,6 +21,13 @@ namespace Mercari;
 
 use DuoClock\DuoClock;
 
+use function abs;
+use function file_get_contents;
+use function hash_equals;
+use function hash_hmac;
+use function intval;
+use function join;
+
 class WebhookSignature
 {
     public const VALIDITY_WINDOW = 300;

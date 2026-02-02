@@ -26,7 +26,7 @@ use Mercari\DTO\Seller;
  */
 class SellerTest extends TestCase
 {
-    public function provideItems(): iterable
+    public static function provideItems(): iterable
     {
         yield 'seller.json' => [__DIR__ . '/data/seller.json', 773746477];
         yield 'seller_actual.json' => [__DIR__ . '/data/seller_actual.json', 810795681];

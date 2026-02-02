@@ -38,6 +38,13 @@ use IteratorAggregate;
 use Countable;
 use Iterator;
 
+use function array_search;
+use function basename;
+use function count;
+use function glob;
+use function iterator_count;
+use function strpos;
+
 class SerializationTest extends TestCase
 {
     private const PREFIX_CLASS_MAP = [

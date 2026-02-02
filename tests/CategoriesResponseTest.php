@@ -21,13 +21,16 @@ namespace Tests\Mercari;
 
 use Mercari\CategoriesResponse;
 
+use function count;
+use function is_file;
+
 /**
  * @covers \Mercari\DTO\Category
  * @covers \Mercari\CategoriesResponse
  */
 class CategoriesResponseTest extends TestCase
 {
-    public function provideCategories(): iterable
+    public static function provideCategories(): iterable
     {
         yield 'master_categories.json' => [__DIR__ . '/data/master_categories.json', 4];
 

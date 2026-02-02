@@ -28,6 +28,9 @@ use DuoClock\DuoClock;
 use DuoClock\TimeSpy;
 use GuzzleHttp\Psr7\Response;
 
+use function json_encode;
+use function urlencode;
+
 /**
  * @covers \Mercari\MercariAuthClient
  */

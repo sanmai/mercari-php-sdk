@@ -25,6 +25,8 @@ use ArrayIterator;
 use Override;
 use Traversable;
 
+use function iterator_count;
+
 /**
  * @extends ListResponse<Category>
  * @template-implements \Countable<Category>
