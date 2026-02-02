@@ -1,7 +1,7 @@
 {
     "name": "sanmai/mercari-php-sdk",
     "description": "Mercari API PHP SDK",
-    "license": "GPL-2.0-or-later",
+    "license": "Apache-2.0",
     "type": "library",
     "keywords": [
         "SDK",
