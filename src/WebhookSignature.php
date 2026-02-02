@@ -18,7 +18,7 @@
 
 namespace Mercari;
 
-use Tumblr\Chorus\TimeKeeper;
+use DuoClock\DuoClock;
 
 class WebhookSignature
 {
@@ -43,11 +43,11 @@ class WebhookSignature
         $this->signature = $signature ?? $_SERVER['HTTP_X_MERCARI_SIGNATURE'] ?? '';
     }
 
-    public function isValid(?TimeKeeper $timekeeper = null, int $validityWindow = self::VALIDITY_WINDOW): bool
+    public function isValid(?DuoClock $timekeeper = null, int $validityWindow = self::VALIDITY_WINDOW): bool
     {
-        $timekeeper ??= new TimeKeeper();
+        $timekeeper ??= new DuoClock();
 
-        if (abs($this->timestamp - $timekeeper->getCurrentUnixTime()) > $validityWindow) {
+        if (abs($this->timestamp - $timekeeper->time()) > $validityWindow) {
             return false;
         }
 

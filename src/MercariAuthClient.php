@@ -24,7 +24,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use JMS\Serializer\SerializerInterface;
 use JSONSerializer\Serializer;
-use Tumblr\Chorus\TimeKeeper;
+use DuoClock\DuoClock;
 
 /**
  * Authentication client for Mercari API.
@@ -51,7 +51,7 @@ class MercariAuthClient
             $clientId,
             $httpClient,
             Serializer::withJSONOptions(),
-            new TimeKeeper()
+            new DuoClock()
         );
     }
 
@@ -61,7 +61,7 @@ class MercariAuthClient
 
     private SerializerInterface $serializer;
 
-    private TimeKeeper $timekeeper;
+    private DuoClock $timekeeper;
 
     /**
      * Create a new instance.
@@ -70,7 +70,7 @@ class MercariAuthClient
         string $clientId,
         Client $client,
         SerializerInterface $serializer,
-        TimeKeeper $timekeeper
+        DuoClock $timekeeper
     ) {
         $this->clientId = $clientId;
         $this->client = $client;
@@ -93,7 +93,7 @@ class MercariAuthClient
         $content = $response->getBody()->getContents();
 
         $token = $this->serializer->deserialize($content, TokenResponse::class, 'json');
-        $token->ts = $this->timekeeper->getCurrentUnixTime();
+        $token->ts = $this->timekeeper->time();
 
         return $token;
     }
