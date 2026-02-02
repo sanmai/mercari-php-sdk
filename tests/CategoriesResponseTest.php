@@ -21,6 +21,9 @@ namespace Tests\Mercari;
 
 use Mercari\CategoriesResponse;
 
+use function count;
+use function is_file;
+
 /**
  * @covers \Mercari\DTO\Category
  * @covers \Mercari\CategoriesResponse

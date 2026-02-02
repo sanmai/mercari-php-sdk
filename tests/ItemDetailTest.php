@@ -21,6 +21,8 @@ namespace Tests\Mercari;
 
 use Mercari\DTO\ItemDetail;
 
+use function strpos;
+
 /**
  * @covers \Mercari\DTO\ItemDetail
  * @covers \Mercari\PurchaseRequest

@@ -24,6 +24,10 @@ use Mercari\DTO\ItemDiscount;
 use Mercari\DTO\ItemVariant;
 use Mercari\PurchaseRequest;
 
+use function json_encode;
+
+use const JSON_FORCE_OBJECT;
+
 /**
  * @covers \Mercari\PurchaseRequest
  */

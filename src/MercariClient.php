@@ -32,6 +32,8 @@ use Mercari\DTO\TransactionMessage;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 use function array_merge;
+use function array_filter;
+use function sprintf;
 
 /**
  * Mercari API Client.

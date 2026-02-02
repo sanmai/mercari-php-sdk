@@ -23,6 +23,8 @@ use Mercari\DTO\ItemDetail;
 use Mercari\DTO\SellerLatest;
 use Tests\Mercari\TestCase;
 
+use function str_repeat;
+
 /**
  * @covers \Mercari\DTO\ItemDetail
  */

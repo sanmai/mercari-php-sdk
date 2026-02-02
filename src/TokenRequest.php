@@ -21,6 +21,8 @@ declare(strict_types=1);
 
 namespace Mercari;
 
+use function join;
+
 /**
  * @property string $grant_type
  * @property string $scope

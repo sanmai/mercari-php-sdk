@@ -42,6 +42,11 @@ use GuzzleHttp\HandlerStack;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 use GuzzleRetry\GuzzleRetryMiddleware;
 
+use function get_class;
+use function get_parent_class;
+use function is_string;
+use function strpos;
+
 /**
  * @covers \Mercari\MercariClient
  */

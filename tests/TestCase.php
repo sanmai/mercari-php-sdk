@@ -30,6 +30,26 @@ use ReflectionObject;
 use ReflectionException;
 
 use function Pipeline\take;
+use function array_walk;
+use function basename;
+use function count;
+use function dirname;
+use function end;
+use function file_get_contents;
+use function get_class;
+use function glob;
+use function is_array;
+use function is_file;
+use function json_decode;
+use function json_encode;
+use function ksort;
+use function preg_replace;
+use function sprintf;
+use function str_replace;
+use function strpos;
+
+use const JSON_PRETTY_PRINT;
+use const JSON_UNESCAPED_UNICODE;
 
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {

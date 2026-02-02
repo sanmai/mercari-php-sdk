@@ -21,6 +21,8 @@ namespace Mercari;
 
 use Mercari\DTO\ItemDetail;
 
+use function count;
+
 /**
  * All fields except when marked are required to be non-empty strings.
  *
