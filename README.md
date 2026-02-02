@@ -32,7 +32,7 @@ Before you start messing with this API client, here's the lowdown on what you go
 - Authority Hostname. In the examples, we'll pretend it's `proxy-auth.example.com` .
 - "Open API" Hostname. This is where you actually talk to the Mercari API. We'll call it `proxy-api.example.com`. 
 - API Credentials: You'll need a `client_id` and `client_secret` from Mercari.
-  
+
 Next, you can either set up your own proxy server or resort to a dynamic SSH tunnel. Your call!
 
 ### Proxy Server
@@ -62,3 +62,11 @@ ssh -fCND 1080 my-server.example.com
 ```
 
 This opens a tunnel through your `my-server.example.com` server (replace with your actual server address), granting you access to the Mercari API as if you were right there on the server.
+
+## Development
+
+To run all tests:
+
+```
+make -j -k
+```
