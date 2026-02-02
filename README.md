@@ -2,6 +2,10 @@
 
 This is a pretty complete Mercari API client. Feel free to jump in and contribute!
 
+```
+composer require sanmai/mercari-php-sdk
+```
+
 ## Status of Implementation
 
  - [ ] Search Items (v3)
