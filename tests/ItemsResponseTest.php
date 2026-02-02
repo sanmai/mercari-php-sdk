@@ -27,7 +27,7 @@ use Mercari\ItemsResponse;
  */
 class ItemsResponseTest extends TestCase
 {
-    public function provideItems(): iterable
+    public static function provideItems(): iterable
     {
         yield 'similar_items_null.json' => [__DIR__ . '/data/similar_items_null.json'];
     }

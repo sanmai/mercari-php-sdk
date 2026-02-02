@@ -27,7 +27,7 @@ use Mercari\CategoriesResponse;
  */
 class CategoriesResponseTest extends TestCase
 {
-    public function provideCategories(): iterable
+    public static function provideCategories(): iterable
     {
         yield 'master_categories.json' => [__DIR__ . '/data/master_categories.json', 4];
 

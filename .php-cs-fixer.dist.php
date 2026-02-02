@@ -41,14 +41,33 @@ $config
         'header_comment' => ['comment_type' => 'PHPDoc', 'header' => $header, 'separate' => 'bottom', 'location' => 'after_open'],
         '@PER-CS' => true,
         '@PER-CS:risky' => true,
-        '@PHP74Migration' => true,
+
+        '@PHPUnit100Migration:risky' => true,
+        '@PHP82Migration' => true,
         'no_unused_imports' => true,
-        'global_namespace_import' => true,
+        'declare_strict_types' => false,
+
+        'native_constant_invocation' => [
+            'strict' => false,
+            'scope' => 'namespaced',
+        ],
+        'native_function_invocation' => [
+            'include' => ['@internal'],
+            'scope' => 'namespaced',
+        ],
+        'global_namespace_import' => [
+            'import_classes' => true,
+            'import_constants' => true,
+            'import_functions' => true,
+        ],
+
+        'strict_comparison' => true,
+        'array_indentation' => true,
     ])
     ->setFinder(
         PhpCsFixer\Finder::create()
-        ->in(__DIR__)
-        ->append([__FILE__])
+            ->in(__DIR__)
+            ->append([__FILE__])
     )
 ;
 
