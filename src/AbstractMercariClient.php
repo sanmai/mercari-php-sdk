@@ -149,7 +149,7 @@ abstract class AbstractMercariClient
         try {
             /** @var Failure $failure */
             $failure = $this->responseToType($response, Failure::class);
-        } catch (SerializerException $_) {
+        } catch (SerializerException) {
             throw $clientError;
         }
 
@@ -159,7 +159,7 @@ abstract class AbstractMercariClient
 
         try {
             return $this->responseToType($response, $type);
-        } catch (SerializerException $_) {
+        } catch (SerializerException) {
             throw $clientError;
         }
     }
