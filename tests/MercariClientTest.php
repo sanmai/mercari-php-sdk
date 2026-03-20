@@ -105,7 +105,7 @@ class MercariClientTest extends TestCase
             $this->assertIsInt($code);
         }
 
-        $this->assertCount(5, $statusCodes);
+        $this->assertCount(6, $statusCodes);
     }
 
     private function getRetryMiddleware(HandlerStack $handler): GuzzleRetryMiddleware

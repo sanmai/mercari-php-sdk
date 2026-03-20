@@ -78,6 +78,7 @@ class MercariClient extends AbstractMercariClient
 
         $stack->push(GuzzleRetryMiddleware::factory(array_merge([
             'retry_on_status' => [
+                HttpResponse::HTTP_INTERNAL_SERVER_ERROR,
                 HttpResponse::HTTP_CONFLICT,
                 HttpResponse::HTTP_TOO_MANY_REQUESTS,
                 HttpResponse::HTTP_BAD_GATEWAY,
