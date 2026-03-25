@@ -72,19 +72,22 @@ class MercariClient extends AbstractMercariClient
 
     private const CATEGORIES = '/v1/master/item_categories';
 
+    private const RETRY_ON_STATUS = [
+        HttpResponse::HTTP_INTERNAL_SERVER_ERROR,
+        HttpResponse::HTTP_CONFLICT,
+        HttpResponse::HTTP_TOO_MANY_REQUESTS,
+        HttpResponse::HTTP_BAD_GATEWAY,
+        HttpResponse::HTTP_SERVICE_UNAVAILABLE,
+        HttpResponse::HTTP_GATEWAY_TIMEOUT,
+    ];
+
     public static function createInstance(string $apiHost, string $authToken, array $extraHeaders = [], array $retryOptions = []): self
     {
         $stack = HandlerStack::create();
 
         $stack->push(GuzzleRetryMiddleware::factory(array_merge([
-            'retry_on_status' => [
-                HttpResponse::HTTP_INTERNAL_SERVER_ERROR,
-                HttpResponse::HTTP_CONFLICT,
-                HttpResponse::HTTP_TOO_MANY_REQUESTS,
-                HttpResponse::HTTP_BAD_GATEWAY,
-                HttpResponse::HTTP_SERVICE_UNAVAILABLE,
-                HttpResponse::HTTP_GATEWAY_TIMEOUT,
-            ],
+            'retry_on_timeout' => true,
+            'retry_on_status' => self::RETRY_ON_STATUS,
         ], $retryOptions)), 'retry_on_status');
 
         $httpClient = new Client([
