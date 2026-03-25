@@ -23,10 +23,13 @@ namespace Mercari;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\HandlerStack;
+use GuzzleRetry\GuzzleRetryMiddleware;
 use JMS\Serializer\SerializerInterface;
 use JSONSerializer\Serializer;
 use DuoClock\DuoClock;
 
+use function array_merge;
 use function sprintf;
 
 /**
@@ -38,8 +41,14 @@ class MercariAuthClient
 
     public const REDIRECT = '/jp/v1/authorize';
 
-    public static function createInstance(string $authHost, string $clientId, string $clientSecret, array $extraHeaders = []): self
+    public static function createInstance(string $authHost, string $clientId, string $clientSecret, array $extraHeaders = [], array $retryOptions = []): self
     {
+        $stack = HandlerStack::create();
+
+        $stack->push(GuzzleRetryMiddleware::factory(array_merge([
+            'retry_on_timeout' => true,
+        ], $retryOptions)), 'retry_on_status');
+
         $httpClient = new Client([
             'base_uri' => sprintf('https://%s', $authHost),
             'auth' => [$clientId, $clientSecret],
@@ -48,6 +57,7 @@ class MercariAuthClient
             'http_errors' => true,
             'allow_redirects' => false,
             'headers' => $extraHeaders,
+            'handler' => $stack,
         ]);
 
         return new MercariAuthClient(
