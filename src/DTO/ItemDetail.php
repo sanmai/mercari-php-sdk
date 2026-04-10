@@ -175,6 +175,8 @@ class ItemDetail
 
     public string $checksum;
 
+    public int $shops_shipping_fee;
+
     public function getUrl(): string
     {
         if ($this->isMercariC2C()) {
