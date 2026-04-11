@@ -97,4 +97,28 @@ class PurchaseRequestTest extends TestCase
         $this->assertSame($checksum, $request->checksum);
         $this->assertSame($variant_id, $request->variant_id);
     }
+
+    public function testFromShopItemWithShippingFee()
+    {
+        $item = new ItemDetail();
+        $item->id = '123123';
+        $item->checksum = 'FFFFF';
+        $item->shops_shipping_fee = 500;
+
+        $request = new PurchaseRequest($item);
+
+        $this->assertSame('123123', $request->item_id);
+        $this->assertSame(500, $request->shops_shipping_fee);
+    }
+
+    public function testFromC2CItemWithoutShippingFee()
+    {
+        $item = new ItemDetail();
+        $item->id = '123123';
+        $item->checksum = 'FFFFF';
+
+        $request = new PurchaseRequest($item);
+
+        $this->assertNull($request->shops_shipping_fee);
+    }
 }

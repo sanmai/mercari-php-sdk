@@ -69,5 +69,9 @@ class PurchaseRequest extends GenericRequest
         if (isset($item->item_discount->coupon_id)) {
             $this->coupon_id = $item->item_discount->coupon_id;
         }
+
+        if (isset($item->shops_shipping_fee)) {
+            $this->shops_shipping_fee = $item->shops_shipping_fee;
+        }
     }
 }
