@@ -81,6 +81,13 @@ class MercariClient extends AbstractMercariClient
         HttpResponse::HTTP_GATEWAY_TIMEOUT,
     ];
 
+    private const ITEM_NOT_FOUND_ON_STATUS = [
+        HttpResponse::HTTP_NOT_FOUND,
+        HttpResponse::HTTP_BAD_REQUEST,
+        HttpResponse::HTTP_FORBIDDEN,
+        HttpResponse::HTTP_PRECONDITION_FAILED,
+    ];
+
     public static function createInstance(string $apiHost, string $authToken, array $extraHeaders = [], array $retryOptions = []): self
     {
         $stack = HandlerStack::create();
@@ -133,12 +140,7 @@ class MercariClient extends AbstractMercariClient
             ItemDetail::class,
             sprintf(self::ITEM, $id),
             array_filter(['prefecture' => $prefecture]),
-            [
-                HttpResponse::HTTP_NOT_FOUND,
-                HttpResponse::HTTP_BAD_REQUEST,
-                HttpResponse::HTTP_FORBIDDEN,
-                HttpResponse::HTTP_PRECONDITION_FAILED,
-            ]
+            self::ITEM_NOT_FOUND_ON_STATUS,
         );
     }
 
