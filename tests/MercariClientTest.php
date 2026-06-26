@@ -262,7 +262,12 @@ class MercariClientTest extends TestCase
             $this->logicalAnd(
                 $this->stringContains('user'),
                 $this->stringContains('foo')
-            )
+            ),
+            $this->identicalTo([]),
+            $this->identicalTo([
+                HttpResponse::HTTP_NOT_FOUND,
+                HttpResponse::HTTP_BAD_REQUEST,
+            ])
         );
 
         $responseActual = $this->client->user('foo');
