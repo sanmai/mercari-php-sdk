@@ -145,7 +145,7 @@ class MercariClient extends AbstractMercariClient
             ItemDetail::class,
             sprintf(self::ITEM, $id),
             array_filter(['prefecture' => $prefecture]),
-            self::ITEM_NOT_FOUND_ON_STATUS,
+            error_codes: self::ITEM_NOT_FOUND_ON_STATUS,
         );
     }
 
@@ -173,7 +173,7 @@ class MercariClient extends AbstractMercariClient
         return $this->getOptional(
             Seller::class,
             sprintf(self::USER, $id),
-            self::USER_NOT_FOUND_ON_STATUS,
+            error_codes: self::USER_NOT_FOUND_ON_STATUS,
         );
     }
 
