@@ -88,6 +88,11 @@ class MercariClient extends AbstractMercariClient
         HttpResponse::HTTP_PRECONDITION_FAILED,
     ];
 
+    private const USER_NOT_FOUND_ON_STATUS = [
+        HttpResponse::HTTP_NOT_FOUND,
+        HttpResponse::HTTP_BAD_REQUEST,
+    ];
+
     public static function createInstance(string $apiHost, string $authToken, array $extraHeaders = [], array $retryOptions = []): self
     {
         $stack = HandlerStack::create();
@@ -167,7 +172,8 @@ class MercariClient extends AbstractMercariClient
     {
         return $this->getOptional(
             Seller::class,
-            sprintf(self::USER, $id)
+            sprintf(self::USER, $id),
+            self::USER_NOT_FOUND_ON_STATUS,
         );
     }
 
