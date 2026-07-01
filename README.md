@@ -25,7 +25,7 @@ There are three kinds of objects you work with:
 - **Responses.** Most calls return a typed response or DTO. List responses
   (`SearchResponse`, `ItemsResponse`, `MessagesResponse`, and so on) are both iterable
   and countable, so you can `foreach` over them or pass them to `count()`. The DTO
-  classes under `src/DTO/` are the reference for the fields each response carries.
+  and response classes under `src/` are the reference for the fields each response carries.
 
 ## What You Need
 
@@ -108,7 +108,7 @@ $_SESSION['mercari_oauth_state'] = $expectedState;
 $request = Mercari\TokenRequest::loginUrl(
     'https://your-app.example.com/callback', // your redirect URL
     $expectedState,                          // state, echoed back to you
-    'nonce'
+    rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '=')
 );
 
 header('Location: ' . $authClient->getAuthUrl($request));
@@ -225,6 +225,7 @@ $request->prefecture       = 'Tokyo';
 $request->city             = 'Chiyoda';
 $request->address1         = '1-1';
 $request->address2         = 'Mercari Heights 101';
+$request->delivery_identifier = "purchase-{$item->id}";
 
 $response = $client->purchase($request);
 
@@ -235,8 +236,10 @@ if ($response->isSuccess()) {
 
 The constructor only auto-selects a variant when the item has exactly one. For an item
 with several variants, set `$request->variant_id` yourself (Mercari Shops purchases also
-expect `$request->shops_shipping_fee`). The checksum ties the request to a specific item
-snapshot, so fetch the item immediately before purchasing.
+expect `$request->shops_shipping_fee`). If any part of the delivery address varies by
+order, put that dynamic part in `delivery_identifier`; doing so helps Mercari match the
+address and avoid address-mismatch conflicts. The checksum ties the request to a specific
+item snapshot, so fetch the item immediately before purchasing.
 
 ### Transactions and Messaging
 
@@ -253,7 +256,7 @@ foreach ($client->transactionMessages('t1234567890') as $message) {
 
 $client->transactionMessage('t1234567890', 'Thank you, shipping today!');
 
-// Leave a review; ratings are "good" (default) or "neutral"
+// Leave a review; ratings are "good" (default) or "bad"
 $client->transactionReview('t1234567890', 'Great buyer!');
 ```
 
@@ -286,7 +289,7 @@ the request's `page`:
 ```php
 $request = new Mercari\SearchRequest();
 $request->keyword = 'Nintendo Switch';
-$request->page = 1;
+$request->page = 0;
 
 do {
     $response = $client->search($request);
