@@ -139,12 +139,12 @@ $request = (new Mercari\SearchRequest())->searchShopsOnly();
 // or ->searchMercariOnly(), or ->searchBothMarketplaces()
 ```
 
-Results are paginated. `->meta` reports the total and whether more pages exist; advance by raising the request's `page`:
+Results are paginated. `->meta` reports the total and whether more pages exist; advance by raising the request's `page`, which is zero-indexed (the first page is `0`):
 
 ```php
 $request = new Mercari\SearchRequest();
 $request->keyword = 'Nintendo Switch';
-$request->page = 1;
+$request->page = 0;
 
 do {
     $response = $client->search($request);
@@ -316,7 +316,7 @@ foreach ($client->transactionMessages('t1234567890') as $message) {
 
 $client->transactionMessage('t1234567890', 'Thank you, shipping today!');
 
-// Leave a review; the rating defaults to "good" ("neutral" is also accepted)
+// Leave a review; the rating is "good" (default) or "bad"
 $client->transactionReview('t1234567890', 'Great buyer!');
 ```
 
