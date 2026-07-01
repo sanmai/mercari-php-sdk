@@ -100,15 +100,18 @@ To act on behalf of a user, including for purchase and transaction actions, use 
 the returned code for a token pair:
 
 ```php
-// 1. Generate a random state (URL-safe base64url), persist it in the session, and
-//    redirect. The callback below is a separate request, so the session is how they meet.
-$expectedState = rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '=');
+// 1. Generate a random state and nonce, persist them in the session, and redirect.
+//    The callback below is a separate request, so the session is where the both legs meet.
+$expectedState = bin2hex(random_bytes(16));
+$nonce = bin2hex(random_bytes(16));
+
 $_SESSION['mercari_oauth_state'] = $expectedState;
+$_SESSION['mercari_oauth_nonce'] = $nonce;
 
 $request = Mercari\TokenRequest::loginUrl(
     'https://your-app.example.com/callback', // your redirect URL
     $expectedState,                          // state, echoed back to you
-    rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '=')
+    $nonce                                   // nonce, echoed back in the ID token
 );
 
 header('Location: ' . $authClient->getAuthUrl($request));
@@ -116,7 +119,7 @@ header('Location: ' . $authClient->getAuthUrl($request));
 // 2. On your callback, confirm the returned state matches the one you issued
 //    before trusting the code. Use a constant-time comparison to avoid timing leaks:
 $expectedState = $_SESSION['mercari_oauth_state'] ?? '';
-unset($_SESSION['mercari_oauth_state']); // single use
+unset($_SESSION['mercari_oauth_state'], $_SESSION['mercari_oauth_nonce']); // single use
 
 if ($expectedState === '' || !hash_equals($expectedState, $_GET['state'] ?? '')) {
     throw new RuntimeException('State mismatch - possible CSRF, discard this callback');
@@ -134,9 +137,10 @@ $userToken = $authClient->getToken(
 );
 ```
 
-The `strtr()`/`rtrim()` around `base64_encode()` turn standard base64 into its URL-safe
-*base64url* form (`+/` become `-_` and `=` padding is dropped), so the state survives
-intact as a query-string parameter.
+Hex-encoded random bytes are already URL-safe, so the state and nonce survive intact as
+query-string parameters. The nonce is echoed back inside the OIDC ID token; validate it
+there if you decode that token yourself, as this SDK surfaces the access and refresh
+token pair rather than the ID token.
 
 A `TokenResponse` carries everything you need to keep a session alive: `access_token`,
 `refresh_token`, `expires_in` (seconds), and `ts` (when the token was issued). Persist it,
@@ -236,10 +240,10 @@ if ($response->isSuccess()) {
 
 The constructor only auto-selects a variant when the item has exactly one. For an item
 with several variants, set `$request->variant_id` yourself (Mercari Shops purchases also
-expect `$request->shops_shipping_fee`). If any part of the delivery address varies by
-order, put that dynamic part in `delivery_identifier`; doing so helps Mercari match the
-address and avoid address-mismatch conflicts. The checksum ties the request to a specific
-item snapshot, so fetch the item immediately before purchasing.
+expect `$request->shops_shipping_fee`). `delivery_identifier` is an optional identifier
+included with the delivery address; the example above tags it with the item ID. The
+checksum ties the request to a specific item snapshot, so fetch the item immediately
+before purchasing.
 
 ### Transactions and Messaging
 
