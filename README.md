@@ -306,10 +306,17 @@ $request->delivery_identifier = "purchase-{$item->id}";
 
 $response = $client->purchase($request);
 
-if ($response->isSuccess()) {
-    echo "Purchased\n";
+if (!$response->isSuccess()) {
+    echo "Purchase failed: {$response->failure_details->code} {$response->failure_details->reasons}\n";
+    return;
 }
+
+// trx_id on the flea market, shop_order_id on Mercari Shops
+$transactionId = $response->transaction_details->trx_id ?? $response->transaction_details->shop_order_id;
+echo "Purchased, transaction {$transactionId}\n";
 ```
+
+A failed purchase still returns a `PurchaseResponse` rather than throwing, so check `isSuccess()` and read `failure_details->code` and `->reasons` to see why. On success, the transaction ID lives in `transaction_details` (`trx_id` for the flea market, `shop_order_id` for Mercari Shops); keep it for the transaction and messaging calls below.
 
 The constructor only auto-selects a variant when the item has exactly one. For an item with several variants, set `$request->variant_id` yourself (Mercari Shops purchases also expect `$request->shops_shipping_fee`). `delivery_identifier` is an optional identifier included with the delivery address; the example above tags it with the item ID. The checksum ties the request to a specific item snapshot, so fetch the item immediately before purchasing.
 
@@ -318,17 +325,17 @@ The constructor only auto-selects a variant when the item has exactly one. For a
 Look up a transaction by its own ID or by the item ID, read and post messages, and leave a review:
 
 ```php
-$transaction = $client->transaction('t1234567890');
+$transaction = $client->transaction('1234567890');
 // or by item: $client->itemTransaction('m1234567890');
 
-foreach ($client->transactionMessages('t1234567890') as $message) {
+foreach ($client->transactionMessages('1234567890') as $message) {
     echo "{$message->body}\n";
 }
 
-$client->transactionMessage('t1234567890', 'Thank you, shipping today!');
+$client->transactionMessage('1234567890', '初めまして、購入させていただきました。短い間ではございますが、よろしくお願いします。');
 
 // Leave a review; the rating is "good" (default) or "bad"
-$client->transactionReview('t1234567890', 'Great buyer!');
+$client->transactionReview('1234567890', 'この度はお取引ありがとうございました。');
 ```
 
 ### Your Todo List
@@ -374,7 +381,7 @@ use GuzzleHttp\Exception\RequestException;
 use Mercari\DTO\Exception as MercariException;
 
 try {
-    $client->transactionReview('t1234567890', 'Great buyer!');
+    $client->transactionReview('1234567890', 'この度はお取引ありがとうございました。');
 } catch (MercariException $e) {
     // Accepted by the API, but the action itself was rejected
     echo "Review rejected: {$e->getMessage()}\n";
