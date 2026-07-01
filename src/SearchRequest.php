@@ -38,7 +38,7 @@ namespace Mercari;
  * @property int $marketplace Preferred marketplace for the search; defaults to Mercari.
  * @property string $sort Sort using the given field.
  * @property string $order Sorting order ('desc' by default)
- * @property int $page Starting page index (1 by default).
+ * @property int $page Starting page index, zero-based (the first page is 0).
  * @property int $limit Items per page limit. Maximum is 100 and the default is 50.
  * @final
  */

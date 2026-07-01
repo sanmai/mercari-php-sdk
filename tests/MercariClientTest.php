@@ -500,13 +500,13 @@ class MercariClientTest extends TestCase
                 $this->stringContains('review'),
             ),
             $this->identicalTo([
-                'fame' => 'neutral',
+                'fame' => 'bad',
                 'message' => 'bar',
                 'subject' => 'seller',
             ])
         );
 
-        $this->client->transactionReview('foo', 'bar', 'neutral');
+        $this->client->transactionReview('foo', 'bar', 'bad');
     }
 
 
