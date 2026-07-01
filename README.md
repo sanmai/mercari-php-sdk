@@ -6,6 +6,8 @@ A pretty complete PHP client for the Mercari API. Feel free to jump in and contr
 composer require sanmai/mercari-php-sdk
 ```
 
+Requires PHP 8.2 or newer.
+
 Please note this is _not_ an official SDK. It is an independent, community-maintained
 client, so Mercari most likely won't be able to answer questions about it. **Something
 amiss?** [Open an issue](https://github.com/sanmai/mercari-php-sdk/issues/new), or, even
@@ -22,7 +24,8 @@ There are three kinds of objects you work with:
   named constructors and a fluent interface.
 - **Responses.** Most calls return a typed response or DTO. List responses
   (`SearchResponse`, `ItemsResponse`, `MessagesResponse`, and so on) are both iterable
-  and countable, so you can `foreach` over them or pass them to `count()`.
+  and countable, so you can `foreach` over them or pass them to `count()`. The DTO
+  classes under `src/DTO/` are the reference for the fields each response carries.
 
 ## What You Need
 
@@ -97,16 +100,28 @@ To act on behalf of a user, including for purchase and transaction actions, use 
 the returned code for a token pair:
 
 ```php
-// 1. Build a login URL and redirect the user to it
+// 1. Generate a random state (URL-safe base64url), persist it in the session, and
+//    redirect. The callback below is a separate request, so the session is how they meet.
+$expectedState = rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '=');
+$_SESSION['mercari_oauth_state'] = $expectedState;
+
 $request = Mercari\TokenRequest::loginUrl(
     'https://your-app.example.com/callback', // your redirect URL
-    'csrf-token',                            // state, echoed back to you
+    $expectedState,                          // state, echoed back to you
     'nonce'
 );
 
 header('Location: ' . $authClient->getAuthUrl($request));
 
-// 2. On your callback, after validating the state, exchange the code for a token pair
+// 2. On your callback, confirm the returned state matches the one you issued
+//    before trusting the code. Use a constant-time comparison to avoid timing leaks:
+$expectedState = $_SESSION['mercari_oauth_state'] ?? '';
+unset($_SESSION['mercari_oauth_state']); // single use
+
+if ($expectedState === '' || !hash_equals($expectedState, $_GET['state'] ?? '')) {
+    throw new RuntimeException('State mismatch - possible CSRF, discard this callback');
+}
+
 $request = Mercari\TokenRequest::authorizationCode(
     'https://your-app.example.com/callback',
     $_GET['code']
@@ -117,6 +132,23 @@ $userToken = $authClient->getToken($request);
 $userToken = $authClient->getToken(
     Mercari\TokenRequest::refreshToken($userToken)
 );
+```
+
+The `strtr()`/`rtrim()` around `base64_encode()` turn standard base64 into its URL-safe
+*base64url* form (`+/` become `-_` and `=` padding is dropped), so the state survives
+intact as a query-string parameter.
+
+A `TokenResponse` carries everything you need to keep a session alive: `access_token`,
+`refresh_token`, `expires_in` (seconds), and `ts` (when the token was issued). Persist it,
+and refresh only once it's about to expire rather than on every request:
+
+```php
+if ($savedToken->ts + $savedToken->expires_in <= time() + 60) {
+    $savedToken = $authClient->getToken(
+        Mercari\TokenRequest::refreshToken($savedToken)
+    );
+    // persist $savedToken for next time
+}
 ```
 
 The rest of the examples assume you have a `$client` built from an access token with the
@@ -176,7 +208,7 @@ $similar = $client->similarItems('m1234567890');
 
 Build a `PurchaseRequest` from an item you've fetched, fill in the buyer and delivery
 details, then submit it. Constructing the request from an `ItemDetail` copies over the
-item ID, checksum, and — where applicable — the sole variant, coupon, and shipping fee:
+item ID, checksum, and - where applicable - the sole variant, coupon, and shipping fee:
 
 ```php
 $item = $client->item('m1234567890');
@@ -201,6 +233,11 @@ if ($response->isSuccess()) {
 }
 ```
 
+The constructor only auto-selects a variant when the item has exactly one. For an item
+with several variants, set `$request->variant_id` yourself (Mercari Shops purchases also
+expect `$request->shops_shipping_fee`). The checksum ties the request to a specific item
+snapshot, so fetch the item immediately before purchasing.
+
 ### Transactions and Messaging
 
 Look up a transaction by its own ID or by the item ID, read and post messages, and leave
@@ -216,7 +253,7 @@ foreach ($client->transactionMessages('t1234567890') as $message) {
 
 $client->transactionMessage('t1234567890', 'Thank you, shipping today!');
 
-// Leave a review; the default rating is "good"
+// Leave a review; ratings are "good" (default) or "neutral"
 $client->transactionReview('t1234567890', 'Great buyer!');
 ```
 
@@ -241,18 +278,87 @@ $client->addComment('m1234567890', 'Is this still available?');
 $categories = $client->categories();
 ```
 
-### Not-Found Handling
+### Pagination
 
-Methods that fetch a single resource — `item()`, `user()`, `transaction()`,
-`itemTransaction()` — return `null` when the resource is not found rather than throwing.
-List methods return an empty, iterable response in the same situation. Genuine transport
-or server errors surface as Guzzle `RequestException`s, and failed reviews throw a
-`Mercari\DTO\Exception`.
+Search reports totals and whether more pages exist through `->meta`; advance by raising
+the request's `page`:
+
+```php
+$request = new Mercari\SearchRequest();
+$request->keyword = 'Nintendo Switch';
+$request->page = 1;
+
+do {
+    $response = $client->search($request);
+
+    foreach ($response as $item) {
+        echo "{$item->id}\t{$item->name}\n";
+    }
+
+    $request->page++;
+} while ($response->meta->has_next);
+
+echo "{$response->meta->num_found} items in total\n";
+```
+
+`todoList()` pages through a `next_page_token` instead:
+
+```php
+$pageToken = '';
+
+do {
+    $response = $client->todoList(limit: 50, page_token: $pageToken);
+
+    foreach ($response as $todo) {
+        echo "{$todo->message}\n";
+    }
+
+    $pageToken = $response->next_page_token;
+} while ($pageToken !== '');
+```
+
+### Errors and Missing Resources
+
+Methods that fetch a single resource - `item()`, `user()`, `transaction()`,
+`itemTransaction()` - return `null` when it isn't found rather than throwing; list methods
+return an empty, iterable response.
+
+Write actions report problems in two ways. `purchase()` returns a `PurchaseResponse` even
+when the purchase is declined, so check `isSuccess()` and inspect `transaction_status`. A
+rejected review instead throws `Mercari\DTO\Exception`. Genuine transport or server errors
+surface as Guzzle `RequestException`s. The `Failure` and `FailureDetails` DTOs describe the
+error payload the API returns.
+
+Catch the two throwing paths separately: a `Mercari\DTO\Exception` means the API accepted
+the request but refused the action (its message holds the reason), while a Guzzle
+`RequestException` is a transport- or HTTP-level failure you can interrogate for a status
+code:
+
+```php
+use GuzzleHttp\Exception\RequestException;
+use Mercari\DTO\Exception as MercariException;
+
+try {
+    $client->transactionReview('t1234567890', 'Great buyer!');
+} catch (MercariException $e) {
+    // Accepted by the API, but the action itself was rejected
+    echo "Review rejected: {$e->getMessage()}\n";
+} catch (RequestException $e) {
+    // Transport or HTTP-level failure
+    echo "Request failed (HTTP {$e->getResponse()?->getStatusCode()})\n";
+}
+```
+
+### Client Configuration
+
+Both `createInstance()` factories take optional `$extraHeaders` and `$retryOptions` arrays
+after their required arguments - use them to send extra headers (a custom User-Agent, say)
+or tune the bundled retry middleware. The factory signatures in `src/` list the defaults.
 
 ### Debug Logging
 
 `MercariClient` accepts any PSR-3 logger through `setLogger()`, which logs full request
-and response bodies — handy while you're experimenting:
+and response bodies - handy while you're experimenting:
 
 ```php
 $client->setLogger($psrLogger);
