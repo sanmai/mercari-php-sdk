@@ -8,40 +8,31 @@ composer require sanmai/mercari-php-sdk
 
 Requires PHP 8.2 or newer.
 
-Please note this is _not_ an official SDK. It is an independent, community-maintained
-client, so Mercari most likely won't be able to answer questions about it. **Something
-amiss?** [Open an issue](https://github.com/sanmai/mercari-php-sdk/issues/new), or, even
-better, send a PR!
+Please note that this is not an official SDK but rather an independent, community-maintained client, so Mercari folks most likely won't be able to answer questions about it.
+
+**Something amiss?** [Open an issue](https://github.com/sanmai/mercari-php-sdk/issues/new), or, even better, send a PR!
 
 ## Overview
 
 There are three kinds of objects you work with:
 
-- **Clients.** `MercariAuthClient` acquires access tokens; `MercariClient` sends every
-  other request. You build each with a static `createInstance()` factory.
-- **Requests.** Objects like `SearchRequest`, `PurchaseRequest`, and `TokenRequest`
-  carry the parameters of a call. They expose properties directly and, where it helps,
-  named constructors and a fluent interface.
-- **Responses.** Most calls return a typed response or DTO. List responses
-  (`SearchResponse`, `ItemsResponse`, `MessagesResponse`, and so on) are both iterable
-  and countable, so you can `foreach` over them or pass them to `count()`. The DTO
-  and response classes under `src/` are the reference for the fields each response carries.
+- **Clients.** `MercariAuthClient` acquires access tokens; `MercariClient` sends every other request. You build each with a static `createInstance()` factory.
+- **Requests.** Objects like `SearchRequest`, `PurchaseRequest`, and `TokenRequest` carry the parameters of a call. They expose properties directly and, where it helps, named constructors and a fluent interface.
+- **Responses.** Most calls return a typed response or DTO. List responses (`SearchResponse`, `ItemsResponse`, `MessagesResponse`, and so on) are both iterable and countable, so you can `foreach` over them or pass them to `count()`. The DTO and response classes under `src/` are the reference for the fields each response carries.
 
 ## What You Need
 
 Before you start messing with this API client, here's the lowdown on what you gotta have:
 
 - **Authority Hostname.** In the examples, we'll pretend it's `proxy-auth.example.com`.
-- **"Open API" Hostname.** This is where you actually talk to the Mercari API. We'll
-  call it `proxy-api.example.com`.
+- **"Open API" Hostname.** This is where you actually talk to the Mercari API. We'll call it `proxy-api.example.com`.
 - **API Credentials.** You'll need a `client_id` and `client_secret` from Mercari.
 
-Next, you can either set up your own proxy server or resort to a dynamic SSH tunnel.
-Your call!
+Next, you can either set up your own proxy server or resort to a dynamic SSH tunnel. Your call!
 
 ### Proxy Server
 
-Just add a new location block to your config file:
+Add a new location block to your config file:
 
 ```nginx
 location / {
@@ -55,29 +46,23 @@ location / {
 }
 ```
 
-This tells nginx to forward requests to your `actual-api-host.example.jp` server, but
-only from the IPs you've specified. You're in control, deciding who gets access and what
-they can do.
+This tells nginx to forward requests to your `actual-api-host.example.jp` server, but only from the IPs you've specified. You're in control, deciding who gets access and what they can do.
 
 ### SSH Tunnel
 
-If you don't want to set up a dedicated proxy, fear not! Just run this command to set up
-a dynamic SSH tunnel:
+If you don't want to set up a dedicated proxy, fear not! Run this command to set up a dynamic SSH tunnel:
 
 ```bash
 ssh -vCND 1080 my-server.example.com
 ```
 
-This opens a tunnel through your `my-server.example.com` server (replace with your
-actual server address), granting you access to the Mercari API as if you were right
-there on the server.
+This opens a tunnel through your `my-server.example.com` server (replace with your actual server address), granting you access to the Mercari API as if you were right there on the server.
 
 ## Usage
 
 ### Authentication
 
-Every API call needs an access token. The simplest way to get one is the
-**client-credentials** flow, which is enough for read-only, unauthenticated calls:
+Every API call needs an access token. The simplest way to get one is the **client-credentials** flow, which is enough for read-only, unauthenticated calls:
 
 ```php
 $authClient = Mercari\MercariAuthClient::createInstance(
@@ -95,13 +80,11 @@ $client = Mercari\MercariClient::createInstance(
 );
 ```
 
-To act on behalf of a user, including for purchase and transaction actions, use the
-**authorization-code** flow. First, send the user to Mercari's login page, then exchange
-the returned code for a token pair:
+To act on behalf of a user, including for purchase and transaction actions, use the **authorization-code** flow. First, send the user to Mercari's login page, then exchange the returned code for a token pair:
 
 ```php
 // 1. Generate a random state and nonce, persist them in the session, and redirect.
-//    The callback below is a separate request, so the session is where the both legs meet.
+//    The callback below is a separate request, so the session is where both legs meet.
 $expectedState = bin2hex(random_bytes(16));
 $nonce = bin2hex(random_bytes(16));
 
@@ -137,14 +120,9 @@ $userToken = $authClient->getToken(
 );
 ```
 
-Hex-encoded random bytes are already URL-safe, so the state and nonce survive intact as
-query-string parameters. The nonce is echoed back inside the OIDC ID token; validate it
-there if you decode that token yourself, as this SDK surfaces the access and refresh
-token pair rather than the ID token.
+Hex-encoded random bytes are already URL-safe, so the state and nonce survive intact as query-string parameters. The nonce is echoed back inside the OIDC ID token; validate it there if you decode that token yourself, as this SDK surfaces the access and refresh token pair rather than the ID token.
 
-A `TokenResponse` carries everything you need to keep a session alive: `access_token`,
-`refresh_token`, `expires_in` (seconds), and `ts` (when the token was issued). Persist it,
-and refresh only once it's about to expire rather than on every request:
+A `TokenResponse` carries everything you need to keep a session alive: `access_token`, `refresh_token`, `expires_in` (seconds), and `ts` (when the token was issued). Persist it, and refresh only once it's about to expire rather than on every request:
 
 ```php
 if ($savedToken->ts + $savedToken->expires_in <= time() + 60) {
@@ -155,8 +133,7 @@ if ($savedToken->ts + $savedToken->expires_in <= time() + 60) {
 }
 ```
 
-The rest of the examples assume you have a `$client` built from an access token with the
-scopes needed for the action.
+The rest of the examples assume you have a `$client` built from an access token with the scopes needed for the action.
 
 ### Searching for Items
 
@@ -178,8 +155,7 @@ foreach ($response as $item) {
 }
 ```
 
-Searches use Mercari's flea market by default. Use the fluent helpers to search Shops or
-both marketplaces:
+Searches use Mercari's flea market by default. Use the fluent helpers to search Shops or both marketplaces:
 
 ```php
 $request = (new Mercari\SearchRequest())->searchShopsOnly();
@@ -210,9 +186,7 @@ $similar = $client->similarItems('m1234567890');
 
 ### Purchasing an Item
 
-Build a `PurchaseRequest` from an item you've fetched, fill in the buyer and delivery
-details, then submit it. Constructing the request from an `ItemDetail` copies over the
-item ID, checksum, and - where applicable - the sole variant, coupon, and shipping fee:
+Build a `PurchaseRequest` from an item you've fetched, fill in the buyer and delivery details, then submit it. Constructing the request from an `ItemDetail` copies over the item ID, checksum, and - where applicable - the sole variant, coupon, and shipping fee:
 
 ```php
 $item = $client->item('m1234567890');
@@ -238,17 +212,11 @@ if ($response->isSuccess()) {
 }
 ```
 
-The constructor only auto-selects a variant when the item has exactly one. For an item
-with several variants, set `$request->variant_id` yourself (Mercari Shops purchases also
-expect `$request->shops_shipping_fee`). `delivery_identifier` is an optional identifier
-included with the delivery address; the example above tags it with the item ID. The
-checksum ties the request to a specific item snapshot, so fetch the item immediately
-before purchasing.
+The constructor only auto-selects a variant when the item has exactly one. For an item with several variants, set `$request->variant_id` yourself (Mercari Shops purchases also expect `$request->shops_shipping_fee`). `delivery_identifier` is an optional identifier included with the delivery address; the example above tags it with the item ID. The checksum ties the request to a specific item snapshot, so fetch the item immediately before purchasing.
 
 ### Transactions and Messaging
 
-Look up a transaction by its own ID or by the item ID, read and post messages, and leave
-a review:
+Look up a transaction by its own ID or by the item ID, read and post messages, and leave a review:
 
 ```php
 $transaction = $client->transaction('t1234567890');
@@ -264,8 +232,7 @@ $client->transactionMessage('t1234567890', 'Thank you, shipping today!');
 $client->transactionReview('t1234567890', 'Great buyer!');
 ```
 
-Your outstanding to-dos (items awaiting shipment, unread messages, and so on) come from
-`todoList()`:
+Your outstanding todos (items awaiting shipment, unread messages, and so on) come from `todoList()`:
 
 ```php
 foreach ($client->todoList() as $todo) {
@@ -287,8 +254,7 @@ $categories = $client->categories();
 
 ### Pagination
 
-Search reports totals and whether more pages exist through `->meta`; advance by raising
-the request's `page`:
+Search reports totals and whether more pages exist through `->meta`; advance by raising the request's `page`:
 
 ```php
 $request = new Mercari\SearchRequest();
@@ -326,20 +292,11 @@ do {
 
 ### Errors and Missing Resources
 
-Methods that fetch a single resource - `item()`, `user()`, `transaction()`,
-`itemTransaction()` - return `null` when it isn't found rather than throwing; list methods
-return an empty, iterable response.
+Methods that fetch a single resource - `item()`, `user()`, `transaction()`, `itemTransaction()` - return `null` when it isn't found rather than throwing; list methods return an empty, iterable response.
 
-Write actions report problems in two ways. `purchase()` returns a `PurchaseResponse` even
-when the purchase is declined, so check `isSuccess()` and inspect `transaction_status`. A
-rejected review instead throws `Mercari\DTO\Exception`. Genuine transport or server errors
-surface as Guzzle `RequestException`s. The `Failure` and `FailureDetails` DTOs describe the
-error payload the API returns.
+Write actions report problems in two ways. `purchase()` returns a `PurchaseResponse` even when the purchase is declined, so check `isSuccess()` and inspect `transaction_status`. A rejected review instead throws `Mercari\DTO\Exception`. Genuine transport or server errors surface as Guzzle `RequestException`s. The `Failure` and `FailureDetails` DTOs describe the error payload the API returns.
 
-Catch the two throwing paths separately: a `Mercari\DTO\Exception` means the API accepted
-the request but refused the action (its message holds the reason), while a Guzzle
-`RequestException` is a transport- or HTTP-level failure you can interrogate for a status
-code:
+Catch the two throwing paths separately: a `Mercari\DTO\Exception` means the API accepted the request but refused the action (its message holds the reason), while a Guzzle `RequestException` is a transport- or HTTP-level failure you can interrogate for a status code:
 
 ```php
 use GuzzleHttp\Exception\RequestException;
@@ -358,14 +315,11 @@ try {
 
 ### Client Configuration
 
-Both `createInstance()` factories take optional `$extraHeaders` and `$retryOptions` arrays
-after their required arguments - use them to send extra headers (a custom User-Agent, say)
-or tune the bundled retry middleware. The factory signatures in `src/` list the defaults.
+Both `createInstance()` factories take optional `$extraHeaders` and `$retryOptions` arrays after their required arguments - use them to send extra headers (a custom User-Agent, say) or tune the bundled retry middleware. The factory signatures in `src/` list the defaults.
 
 ### Debug Logging
 
-`MercariClient` accepts any PSR-3 logger through `setLogger()`, which logs full request
-and response bodies - handy while you're experimenting:
+`MercariClient` accepts any PSR-3 logger through `setLogger()`, which logs full request and response bodies - handy while you're experimenting:
 
 ```php
 $client->setLogger($psrLogger);
