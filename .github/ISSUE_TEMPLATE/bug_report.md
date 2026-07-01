@@ -7,8 +7,6 @@ about: Create a report to help us improve
 | ------------------- | ---------------
 | Package Version     | x.y.z
 | PHP Version         | x.y.z (`php -v`)
-| Platform            | e.g. Ubuntu/Windows/MacOS
-| GitHub Repo         | -
 
 
 <!-- Remove the below section if not needed -->
