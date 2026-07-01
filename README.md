@@ -325,17 +325,17 @@ The constructor only auto-selects a variant when the item has exactly one. For a
 Look up a transaction by its own ID or by the item ID, read and post messages, and leave a review:
 
 ```php
-$transaction = $client->transaction('1234567890');
-// or by item: $client->itemTransaction('m1234567890');
+$transaction = $client->itemTransaction($item->id);
+// or by transaction ID: $client->transaction($transactionId);
 
-foreach ($client->transactionMessages('1234567890') as $message) {
+foreach ($client->transactionMessages($transaction->id) as $message) {
     echo "{$message->body}\n";
 }
 
-$client->transactionMessage('1234567890', '初めまして、購入させていただきました。短い間ではございますが、よろしくお願いします。');
+$client->transactionMessage($transaction->id, '初めまして、購入させていただきました。短い間ではございますが、よろしくお願いします。');
 
 // Leave a review; the rating is "good" (default) or "bad"
-$client->transactionReview('1234567890', 'この度はお取引ありがとうございました。');
+$client->transactionReview($transaction->id, 'この度はお取引ありがとうございました。');
 ```
 
 ### Your Todo List
@@ -381,7 +381,7 @@ use GuzzleHttp\Exception\RequestException;
 use Mercari\DTO\Exception as MercariException;
 
 try {
-    $client->transactionReview('1234567890', 'この度はお取引ありがとうございました。');
+    $client->transactionReview($transactionId, 'この度はお取引ありがとうございました。');
 } catch (MercariException $e) {
     // Accepted by the API, but the action itself was rejected
     echo "Review rejected: {$e->getMessage()}\n";
