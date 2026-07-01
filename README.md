@@ -168,9 +168,10 @@ $item = $client->item('m1234567890');
 
 if ($item === null) {
     echo "Item not found\n";
-} else {
-    echo "{$item->name}: {$item->status}\n";
+    return;
 }
+
+echo "{$item->name}: {$item->status}\n";
 ```
 
 Fetch several items at once, or find items similar to a given one:
@@ -188,9 +189,12 @@ $similar = $client->similarItems('m1234567890');
 ```php
 $seller = $client->user('123456');
 
-if ($seller !== null) {
-    echo "{$seller->name}: {$seller->num_sell_items} items, {$seller->num_ratings} ratings\n";
+if ($seller === null) {
+    echo "Seller not found\n";
+    return;
 }
+
+echo "{$seller->name}: {$seller->num_sell_items} items, {$seller->num_ratings} ratings\n";
 ```
 
 ### Reading Comments
