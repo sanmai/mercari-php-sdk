@@ -220,34 +220,33 @@ Purchasing, your transactions and their messages, reviews, your todo list, and p
 Send the user to Mercari's login page, then exchange the returned code for a token pair:
 
 ```php
-// 1. Generate a random state and nonce, persist them in the session, and redirect.
-//    The callback below is a separate request, so the session is where both legs meet.
-$expectedState = bin2hex(random_bytes(16));
-$nonce = bin2hex(random_bytes(16));
-
-// Make sure a session is running before touching $_SESSION (both requests need this).
+// 0. Make sure a session is running before touching $_SESSION (both requests need this).
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
 
+// 1. Generate a random state (CSRF guard), persist it in the session, and redirect.
+$expectedState = bin2hex(random_bytes(16));
+
 $_SESSION['mercari_oauth_state'] = $expectedState;
-$_SESSION['mercari_oauth_nonce'] = $nonce;
 
 $request = Mercari\TokenRequest::loginUrl(
     'https://your-app.example.com/callback', // your redirect URL
     $expectedState,                          // state, echoed back to you
-    $nonce                                   // nonce, echoed back in the ID token
+    bin2hex(random_bytes(16))                // nonce, required by the endpoint
 );
 
 header(sprintf('Location: %s', $authClient->getAuthUrl($request)));
 return;
 ```
 
+The callback is a separate request.
+
 ```php
 // 2. On your callback, confirm the returned state matches the one you issued
 //    before trusting the code. Use a constant-time comparison to avoid timing leaks:
 $expectedState = $_SESSION['mercari_oauth_state'];
-unset($_SESSION['mercari_oauth_state'], $_SESSION['mercari_oauth_nonce']); // single use
+unset($_SESSION['mercari_oauth_state']); // single use
 
 if (!hash_equals($expectedState, $_GET['state'] ?? '')) {
     throw new RuntimeException('State mismatch: possible CSRF, discard this callback');
@@ -257,15 +256,15 @@ $request = Mercari\TokenRequest::authorizationCode(
     'https://your-app.example.com/callback',
     $_GET['code']
 );
+
+// 3. Persist this token for the next request.
 $userToken = $authClient->getToken($request);
 
-// 3. Refresh the token pair whenever it expires
+// 4. Refresh the token pair whenever it expires
 $userToken = $authClient->getToken(
     Mercari\TokenRequest::refreshToken($userToken)
 );
 ```
-
-Hex-encoded random bytes are already URL-safe, so the state and nonce survive intact as query-string parameters. The nonce is echoed back inside the OIDC ID token; validate it there if you decode that token yourself, as this SDK surfaces the access and refresh token pair rather than the ID token.
 
 A `TokenResponse` carries everything you need to keep a session alive: `access_token`, `refresh_token`, `expires_in` (seconds), and `ts` (when the token was issued). Persist it, and refresh only once it's about to expire rather than on every request:
 
@@ -286,7 +285,7 @@ $client = Mercari\MercariClient::createInstance('proxy-api.example.com', $userTo
 
 ### Purchasing an Item
 
-Build a `PurchaseRequest` from an item you've fetched, fill in the buyer and delivery details, then submit it. Constructing the request from an `ItemDetail` copies over the item ID, checksum, and - where applicable - the sole variant, coupon, and shipping fee:
+Build a `PurchaseRequest` from an item you've just fetched, fill in the buyer and delivery details, then submit it. Constructing the request from an `ItemDetail` copies over the item ID, checksum, and - where applicable - the sole variant, coupon, and shipping fee:
 
 ```php
 $item = $client->item('m1234567890');
