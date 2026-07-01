@@ -20,7 +20,7 @@ There are three kinds of objects you work with:
 - **Requests.** Objects like `SearchRequest`, `PurchaseRequest`, and `TokenRequest`
   carry the parameters of a call. They expose properties directly and, where it helps,
   named constructors and a fluent interface.
-- **Responses.** Every call returns a typed response or DTO. List responses
+- **Responses.** Most calls return a typed response or DTO. List responses
   (`SearchResponse`, `ItemsResponse`, `MessagesResponse`, and so on) are both iterable
   and countable, so you can `foreach` over them or pass them to `count()`.
 
@@ -92,8 +92,9 @@ $client = Mercari\MercariClient::createInstance(
 );
 ```
 
-To act on behalf of a user, use the **authorization-code** flow. First, send the user to
-Mercari's login page, then exchange the returned code for a token pair:
+To act on behalf of a user, including for purchase and transaction actions, use the
+**authorization-code** flow. First, send the user to Mercari's login page, then exchange
+the returned code for a token pair:
 
 ```php
 // 1. Build a login URL and redirect the user to it
@@ -118,7 +119,8 @@ $userToken = $authClient->getToken(
 );
 ```
 
-The rest of the examples assume you have a `$client` built from an access token.
+The rest of the examples assume you have a `$client` built from an access token with the
+scopes needed for the action.
 
 ### Searching for Items
 
@@ -140,8 +142,8 @@ foreach ($response as $item) {
 }
 ```
 
-Searches cover both the flea market and Mercari Shops by default. Narrow it down with the
-fluent helpers:
+Searches use Mercari's flea market by default. Use the fluent helpers to search Shops or
+both marketplaces:
 
 ```php
 $request = (new Mercari\SearchRequest())->searchShopsOnly();
@@ -190,6 +192,7 @@ $request->zip_code2        = '0001';
 $request->prefecture       = 'Tokyo';
 $request->city             = 'Chiyoda';
 $request->address1         = '1-1';
+$request->address2         = 'Mercari Heights 101';
 
 $response = $client->purchase($request);
 
@@ -248,8 +251,8 @@ or server errors surface as Guzzle `RequestException`s, and failed reviews throw
 
 ### Debug Logging
 
-Both clients accept any PSR-3 logger through `setLogger()`, which logs full request and
-response bodies — handy while you're experimenting:
+`MercariClient` accepts any PSR-3 logger through `setLogger()`, which logs full request
+and response bodies — handy while you're experimenting:
 
 ```php
 $client->setLogger($psrLogger);
