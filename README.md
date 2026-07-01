@@ -225,6 +225,11 @@ Send the user to Mercari's login page, then exchange the returned code for a tok
 $expectedState = bin2hex(random_bytes(16));
 $nonce = bin2hex(random_bytes(16));
 
+// Make sure a session is running before touching $_SESSION (both requests need this).
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+
 $_SESSION['mercari_oauth_state'] = $expectedState;
 $_SESSION['mercari_oauth_nonce'] = $nonce;
 
@@ -234,15 +239,18 @@ $request = Mercari\TokenRequest::loginUrl(
     $nonce                                   // nonce, echoed back in the ID token
 );
 
-header('Location: ' . $authClient->getAuthUrl($request));
+header(sprintf('Location: %s', $authClient->getAuthUrl($request)));
+return;
+```
 
+```php
 // 2. On your callback, confirm the returned state matches the one you issued
 //    before trusting the code. Use a constant-time comparison to avoid timing leaks:
-$expectedState = $_SESSION['mercari_oauth_state'] ?? '';
+$expectedState = $_SESSION['mercari_oauth_state'];
 unset($_SESSION['mercari_oauth_state'], $_SESSION['mercari_oauth_nonce']); // single use
 
-if ($expectedState === '' || !hash_equals($expectedState, $_GET['state'] ?? '')) {
-    throw new RuntimeException('State mismatch - possible CSRF, discard this callback');
+if (!hash_equals($expectedState, $_GET['state'] ?? '')) {
+    throw new RuntimeException('State mismatch: possible CSRF, discard this callback');
 }
 
 $request = Mercari\TokenRequest::authorizationCode(
