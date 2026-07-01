@@ -60,9 +60,13 @@ This opens a tunnel through your `my-server.example.com` server (replace with yo
 
 ## Usage
 
-### Authentication
+The API has two tiers, unlocked by two authentication flows. Start with **client credentials** for everything you can browse and read; reach for the **user flow** only when you need to act as a specific Mercari user. Everything in Part 1 works without ever building the OAuth2 redirect dance.
 
-Every API call needs an access token. The simplest way to get one is the **client-credentials** flow, which is enough for read-only, unauthenticated calls:
+## Part 1: Client Credentials
+
+The client-credentials flow needs only your `client_id` and `client_secret`. It unlocks searching, item and user lookups, similar items, reading comments, and categories. No user login, no redirects.
+
+### Building a Client
 
 ```php
 $authClient = Mercari\MercariAuthClient::createInstance(
@@ -80,7 +84,110 @@ $client = Mercari\MercariClient::createInstance(
 );
 ```
 
-To act on behalf of a user, including for purchase and transaction actions, use the **authorization-code** flow. First, send the user to Mercari's login page, then exchange the returned code for a token pair:
+The rest of Part 1 assumes you have this `$client`.
+
+### Searching for Items
+
+Set the properties you care about on a `SearchRequest`, then iterate the response:
+
+```php
+$request = new Mercari\SearchRequest();
+$request->keyword = 'Nintendo Switch';
+$request->price_min = 10000;
+$request->price_max = 30000;
+$request->limit = 20;
+
+$response = $client->search($request);
+
+echo count($response), " items found\n";
+
+foreach ($response as $item) {
+    echo "{$item->id}\t{$item->name}\n";
+}
+```
+
+Searches use Mercari's flea market by default. Use the fluent helpers to search Shops or both marketplaces:
+
+```php
+$request = (new Mercari\SearchRequest())->searchShopsOnly();
+// or ->searchMercariOnly(), or ->searchBothMarketplaces()
+```
+
+Results are paginated. `->meta` reports the total and whether more pages exist; advance by raising the request's `page`:
+
+```php
+$request = new Mercari\SearchRequest();
+$request->keyword = 'Nintendo Switch';
+$request->page = 1;
+
+do {
+    $response = $client->search($request);
+
+    foreach ($response as $item) {
+        echo "{$item->id}\t{$item->name}\n";
+    }
+
+    $request->page++;
+} while ($response->meta->has_next);
+
+echo "{$response->meta->num_found} items in total\n";
+```
+
+### Fetching Items
+
+Fetch a single item by ID. When the item does not exist, `item()` returns `null`:
+
+```php
+$item = $client->item('m1234567890');
+
+if ($item === null) {
+    echo "Item not found\n";
+} else {
+    echo "{$item->name}: {$item->status}\n";
+}
+```
+
+Fetch several items at once, or find items similar to a given one:
+
+```php
+$items = $client->items(['m1111111111', 'm2222222222']);
+
+$similar = $client->similarItems('m1234567890');
+```
+
+### Looking Up a User
+
+`user()` returns a `Seller` profile, or `null` if there's no such user:
+
+```php
+$seller = $client->user('123456');
+
+if ($seller !== null) {
+    echo "{$seller->name}: {$seller->num_sell_items} items, {$seller->num_ratings} ratings\n";
+}
+```
+
+### Reading Comments
+
+```php
+foreach ($client->itemComments('m1234567890') as $comment) {
+    echo "{$comment->comments}\n";
+}
+```
+
+### Categories
+
+```php
+$categories = $client->categories();
+```
+
+## Part 2: Acting as a User
+
+Purchasing, your transactions and their messages, reviews, your todo list, and posting comments all act in the context of a specific Mercari user, so they need a user access token from the OAuth2 **authorization-code** flow rather than client credentials. Purchasing in particular requires it.
+
+### The Authorization-Code Flow
+
+Send the user to Mercari's login page, then exchange the returned code for a token pair:
 
 ```php
 // 1. Generate a random state and nonce, persist them in the session, and redirect.
@@ -133,55 +240,10 @@ if ($savedToken->ts + $savedToken->expires_in <= time() + 60) {
 }
 ```
 
-The rest of the examples assume you have a `$client` built from an access token with the scopes needed for the action.
-
-### Searching for Items
-
-Set the properties you care about on a `SearchRequest`, then iterate the response:
+Build a `$client` from the user's `access_token`, exactly as in Part 1:
 
 ```php
-$request = new Mercari\SearchRequest();
-$request->keyword = 'Nintendo Switch';
-$request->price_min = 10000;
-$request->price_max = 30000;
-$request->limit = 20;
-
-$response = $client->search($request);
-
-echo count($response), " items found\n";
-
-foreach ($response as $item) {
-    echo "{$item->id}\t{$item->name}\n";
-}
-```
-
-Searches use Mercari's flea market by default. Use the fluent helpers to search Shops or both marketplaces:
-
-```php
-$request = (new Mercari\SearchRequest())->searchShopsOnly();
-// or ->searchMercariOnly(), or ->searchBothMarketplaces()
-```
-
-### Fetching Items
-
-Fetch a single item by ID. When the item does not exist, `item()` returns `null`:
-
-```php
-$item = $client->item('m1234567890');
-
-if ($item === null) {
-    echo "Item not found\n";
-} else {
-    echo "{$item->name}: {$item->status}\n";
-}
-```
-
-Fetch several items at once, or find items similar to a given one:
-
-```php
-$items = $client->items(['m1111111111', 'm2222222222']);
-
-$similar = $client->similarItems('m1234567890');
+$client = Mercari\MercariClient::createInstance('proxy-api.example.com', $userToken->access_token);
 ```
 
 ### Purchasing an Item
@@ -228,53 +290,13 @@ foreach ($client->transactionMessages('t1234567890') as $message) {
 
 $client->transactionMessage('t1234567890', 'Thank you, shipping today!');
 
-// Leave a review; ratings are "good" (default) or "bad"
+// Leave a review; the rating defaults to "good" ("neutral" is also accepted)
 $client->transactionReview('t1234567890', 'Great buyer!');
 ```
 
-Your outstanding todos (items awaiting shipment, unread messages, and so on) come from `todoList()`:
+### Your Todo List
 
-```php
-foreach ($client->todoList() as $todo) {
-    echo "{$todo->message}\n";
-}
-```
-
-### Comments and Categories
-
-```php
-foreach ($client->itemComments('m1234567890') as $comment) {
-    echo "{$comment->comments}\n";
-}
-
-$client->addComment('m1234567890', 'Is this still available?');
-
-$categories = $client->categories();
-```
-
-### Pagination
-
-Search reports totals and whether more pages exist through `->meta`; advance by raising the request's `page`:
-
-```php
-$request = new Mercari\SearchRequest();
-$request->keyword = 'Nintendo Switch';
-$request->page = 0;
-
-do {
-    $response = $client->search($request);
-
-    foreach ($response as $item) {
-        echo "{$item->id}\t{$item->name}\n";
-    }
-
-    $request->page++;
-} while ($response->meta->has_next);
-
-echo "{$response->meta->num_found} items in total\n";
-```
-
-`todoList()` pages through a `next_page_token` instead:
+Your outstanding todos (items awaiting shipment, unread messages, and so on) come from `todoList()`, which pages through a `next_page_token`:
 
 ```php
 $pageToken = '';
@@ -289,6 +311,18 @@ do {
     $pageToken = $response->next_page_token;
 } while ($pageToken !== '');
 ```
+
+### Posting a Comment
+
+A comment is posted as the signed-in user:
+
+```php
+$client->addComment('m1234567890', 'Is this still available?');
+```
+
+## Working With Any Call
+
+These apply whichever flow built your `$client`.
 
 ### Errors and Missing Resources
 
