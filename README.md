@@ -65,7 +65,7 @@ If you don't want to set up a dedicated proxy, fear not! Just run this command t
 a dynamic SSH tunnel:
 
 ```bash
-ssh -fCND 1080 my-server.example.com
+ssh -vCND 1080 my-server.example.com
 ```
 
 This opens a tunnel through your `my-server.example.com` server (replace with your
