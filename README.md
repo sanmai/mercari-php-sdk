@@ -12,13 +12,39 @@ Please note that this is not an official SDK but rather an independent, communit
 
 **Something amiss?** [Open an issue](https://github.com/sanmai/mercari-php-sdk/issues/new), or, even better, send a PR!
 
+## Status of Implementation
+
+- [x] Search Items (v3)
+- [x] Get Item By ID
+- [x] Fetch Bulk Items By ID
+- [x] Similar Items
+- [x] Get User By ID
+- [x] Purchase Item
+- [x] Get Transaction By Transaction ID
+- [x] Get Transaction By Item ID
+- [x] Get Transaction Messages
+- [x] Post Transaction Message
+- [x] Post Transaction Review
+- [x] Get Todo List
+- [x] Get Comments
+- [x] Post Comment
+- [x] Get Item Categories
+- [x] Webhook Signature Validation
+- [ ] Get Item Brands
+- [ ] Accept Transaction
+- [ ] Reject Transaction
+- [ ] Return Transaction
+- [ ] Get Shops Order
+- [ ] Get Partner Offers
+- [ ] Update Additional Service Status
+
 ## Overview
 
 There are three kinds of objects you work with:
 
 - **Clients.** `MercariAuthClient` acquires access tokens; `MercariClient` sends every other request. You build each with a static `createInstance()` factory.
 - **Requests.** Objects like `SearchRequest`, `PurchaseRequest`, and `TokenRequest` carry the parameters of a call. They expose properties directly and, where it helps, named constructors and a fluent interface.
-- **Responses.** Most calls return a typed response or DTO. List responses (`SearchResponse`, `ItemsResponse`, `MessagesResponse`, and so on) are both iterable and countable, so you can `foreach` over them or pass them to `count()`. The DTO and response classes under `src/` are the reference for the fields each response carries.
+- **Responses.** Most calls return a typed response or DTO (data transfer object). List responses (`SearchResponse`, `ItemsResponse`, `MessagesResponse`, and so on) are both iterable and countable, so you can `foreach` over them or pass them to `count()`. The DTO and response classes under `src/` are the reference for the fields each response carries.
 
 ## What You Need
 
@@ -46,7 +72,7 @@ location / {
 }
 ```
 
-This tells nginx to forward requests to your `actual-api-host.example.jp` server, but only from the IPs you've specified. You're in control, deciding who gets access and what they can do.
+This block tells nginx to forward requests to your `actual-api-host.example.jp` server, but only from the IPs you've specified. You're in control, deciding who gets access and what they can do.
 
 ### SSH Tunnel
 
@@ -56,11 +82,11 @@ If you don't want to set up a dedicated proxy, fear not! Run this command to set
 ssh -vCND 1080 my-server.example.com
 ```
 
-This opens a tunnel through your `my-server.example.com` server (replace with your actual server address), granting you access to the Mercari API as if you were right there on the server.
+This command opens a tunnel through your `my-server.example.com` server (replace with your actual server address), granting you access to the Mercari API as if you were on the server itself.
 
 ## Usage
 
-The API has two tiers, unlocked by two authentication flows. Start with **client credentials** for everything you can browse and read; reach for the **user flow** only when you need to act as a specific Mercari user. Everything in Part 1 works without ever building the OAuth2 redirect dance.
+The API has two tiers, each unlocked by a separate authentication flow. Start with **client credentials** to browse and read; then use the **user flow** to make purchases or act as a specific Mercari user. Everything in Part 1 works without ever having to build the OAuth2 redirect dance.
 
 ## Part 1: Client Credentials
 
@@ -359,31 +385,6 @@ Both `createInstance()` factories take optional `$extraHeaders` and `$retryOptio
 $client->setLogger($psrLogger);
 ```
 
-## Status of Implementation
-
-- [x] Search Items (v3)
-- [x] Get Item By ID
-- [x] Fetch Bulk Items By ID
-- [x] Similar Items
-- [x] Get User By ID
-- [x] Purchase Item
-- [x] Get Transaction By Transaction ID
-- [x] Get Transaction By Item ID
-- [x] Get Transaction Messages
-- [x] Post Transaction Message
-- [x] Post Transaction Review
-- [x] Get Todo List
-- [x] Get Comments
-- [x] Post Comment
-- [x] Get Item Categories
-- [x] Webhook Signature Validation
-- [ ] Get Item Brands
-- [ ] Accept Transaction
-- [ ] Reject Transaction
-- [ ] Return Transaction
-- [ ] Get Shops Order
-- [ ] Get Partner Offers
-- [ ] Update Additional Service Status
 
 ## Development
 
