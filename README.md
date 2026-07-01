@@ -316,7 +316,7 @@ $transactionId = $response->transaction_details->trx_id ?? $response->transactio
 echo "Purchased, transaction {$transactionId}\n";
 ```
 
-A failed purchase still returns a `PurchaseResponse` rather than throwing, so check `isSuccess()` and read `failure_details->code` and `->reasons` to see why. On success, the transaction ID lives in `transaction_details` (`trx_id` for the flea market, `shop_order_id` for Mercari Shops); ideally, persist the whole purchase response for to access the transaction and messaging later.
+A failed purchase still returns a `PurchaseResponse` rather than throwing, so check `isSuccess()` and read `failure_details->code` and `->reasons` to see why. On success, the transaction ID lives in `transaction_details` (`trx_id` for the flea market, `shop_order_id` for Mercari Shops); ideally, persist the whole purchase response to access the transaction and messaging later.
 
 The constructor only auto-selects a variant when the item has exactly one. For an item with several variants, set `$request->variant_id` yourself (Mercari Shops purchases also expect `$request->shops_shipping_fee`). `delivery_identifier` is an optional identifier included with the delivery address; the example above tags it with the item ID (you'd want to use an internal order ID). The checksum ties the request to a specific item snapshot, so fetch the item immediately before purchasing.
 
