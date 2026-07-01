@@ -381,7 +381,7 @@ use GuzzleHttp\Exception\RequestException;
 use Mercari\DTO\Exception as MercariException;
 
 try {
-    $client->transactionReview($transactionId, 'この度はお取引ありがとうございました。');
+    $client->transactionReview($transaction->id, 'この度はお取引ありがとうございました。');
 } catch (MercariException $e) {
     // Accepted by the API, but the action itself was rejected
     echo "Review rejected: {$e->getMessage()}\n";
