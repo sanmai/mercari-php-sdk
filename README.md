@@ -316,9 +316,9 @@ $transactionId = $response->transaction_details->trx_id ?? $response->transactio
 echo "Purchased, transaction {$transactionId}\n";
 ```
 
-A failed purchase still returns a `PurchaseResponse` rather than throwing, so check `isSuccess()` and read `failure_details->code` and `->reasons` to see why. On success, the transaction ID lives in `transaction_details` (`trx_id` for the flea market, `shop_order_id` for Mercari Shops); keep it for the transaction and messaging calls below.
+A failed purchase still returns a `PurchaseResponse` rather than throwing, so check `isSuccess()` and read `failure_details->code` and `->reasons` to see why. On success, the transaction ID lives in `transaction_details` (`trx_id` for the flea market, `shop_order_id` for Mercari Shops); ideally, persist the whole purchase response for to access the transaction and messaging later.
 
-The constructor only auto-selects a variant when the item has exactly one. For an item with several variants, set `$request->variant_id` yourself (Mercari Shops purchases also expect `$request->shops_shipping_fee`). `delivery_identifier` is an optional identifier included with the delivery address; the example above tags it with the item ID. The checksum ties the request to a specific item snapshot, so fetch the item immediately before purchasing.
+The constructor only auto-selects a variant when the item has exactly one. For an item with several variants, set `$request->variant_id` yourself (Mercari Shops purchases also expect `$request->shops_shipping_fee`). `delivery_identifier` is an optional identifier included with the delivery address; the example above tags it with the item ID (you'd want to use an internal order ID). The checksum ties the request to a specific item snapshot, so fetch the item immediately before purchasing.
 
 ### Transactions and Messaging
 
@@ -361,7 +361,7 @@ do {
 A comment is posted as the signed-in user:
 
 ```php
-$client->addComment('m1234567890', 'Is this still available?');
+$client->addComment('m1234567890', 'コメント失礼いたします。こちらの商品はまだ購入可能でしょうか？');
 ```
 
 ## Working With Any Call
@@ -374,7 +374,7 @@ Methods that fetch a single resource - `item()`, `user()`, `transaction()`, `ite
 
 Write actions report problems in two ways. `purchase()` returns a `PurchaseResponse` even when the purchase is declined, so check `isSuccess()` and inspect `transaction_status`. A rejected review instead throws `Mercari\DTO\Exception`. Genuine transport or server errors surface as Guzzle `RequestException`s. The `Failure` and `FailureDetails` DTOs describe the error payload the API returns.
 
-Catch the two throwing paths separately: a `Mercari\DTO\Exception` means the API accepted the request but refused the action (its message holds the reason), while a Guzzle `RequestException` is a transport- or HTTP-level failure you can interrogate for a status code:
+Catch the two throwing paths separately: a `Mercari\DTO\Exception` means the API accepted the request but refused the action (its message has the reason), while a Guzzle `RequestException` is a transport- or HTTP-level failure you can interrogate for a status code:
 
 ```php
 use GuzzleHttp\Exception\RequestException;
@@ -402,7 +402,6 @@ Both `createInstance()` factories take optional `$extraHeaders` and `$retryOptio
 ```php
 $client->setLogger($psrLogger);
 ```
-
 
 ## Development
 
