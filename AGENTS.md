@@ -43,6 +43,7 @@ It is designed to be type-safe and easy to use, providing a structured way to in
     - Package and configuration validation.
     *Refer to the `Makefile` for the exact tools and current configurations.*
 3. **Parallel Execution**: Use `make -j -k` to run checks in parallel and identify all failures at once.
+    - To run a single test file while iterating: `vendor/bin/phpunit tests/SpecificTest.php`.
 4. **Testing Requirement**: Every new endpoint or bug fix must be accompanied by a corresponding test in the `tests/` directory.
 5. **Mocking**: Use the patterns established in existing tests for mocking API responses.
 
