@@ -173,6 +173,10 @@ abstract class AbstractMercariClient
      */
     protected function responseToType(ResponseInterface $response, string $type)
     {
+        if ($response->getStatusCode() === HttpResponse::HTTP_NOT_MODIFIED) {
+            throw new NotModifiedException(code: $response->getStatusCode());
+        }
+
         $body = $response->getBody();
 
         if ($body->tell() > 0) {

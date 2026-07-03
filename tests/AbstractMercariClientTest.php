@@ -23,6 +23,7 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use JSONSerializer\Serializer;
+use Mercari\NotModifiedException;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
@@ -270,6 +271,18 @@ class AbstractMercariClientTest extends TestCase
         $response = $client->responseToType($response, ExampleResponse::class);
 
         $this->assertSame('OK', $response->status);
+    }
+
+    public function testResponseToTypeThrowsNotModifiedException(): void
+    {
+        $client = $this->buildExampleClient([]);
+
+        $response = new Response(HttpResponse::HTTP_NOT_MODIFIED);
+
+        $this->expectException(NotModifiedException::class);
+        $this->expectExceptionCode(HttpResponse::HTTP_NOT_MODIFIED);
+
+        $client->responseToType($response, ExampleResponse::class);
     }
 
     private function buildExampleClient(array $responses): ExampleMercariClient
