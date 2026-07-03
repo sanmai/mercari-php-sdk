@@ -30,7 +30,7 @@ class ExampleMercariClient extends AbstractMercariClient
         string $type,
         string $uri,
         array $query = [],
-        array $error_codes = [HttpResponse::HTTP_NOT_FOUND]
+        array $error_codes = [HttpResponse::HTTP_NOT_FOUND],
     ) {
         return parent::getOptional($type, $uri, $query, $error_codes);
     }
@@ -43,9 +43,9 @@ class ExampleMercariClient extends AbstractMercariClient
         return parent::getOptional($type, $uri, $query);
     }
 
-    public function get(string $type, string $uri, array $query = [])
+    public function get(string $type, string $uri, array $query = [], array $headers = [])
     {
-        return parent::get($type, $uri, $query);
+        return parent::get($type, $uri, $query, $headers);
     }
 
     public function post(string $type, string $uri, array $json)

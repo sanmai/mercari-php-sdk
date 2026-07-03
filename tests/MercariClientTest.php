@@ -553,9 +553,11 @@ class MercariClientTest extends TestCase
         $response = new CategoriesResponse();
 
         $this->clientExpects(
-            'getOptional',
+            'get',
             $response,
             $this->stringContains('categories'),
+            [],
+            [],
         );
 
         $responseActual = $this->client->categories();
@@ -563,15 +565,17 @@ class MercariClientTest extends TestCase
         $this->assertSame($response, $responseActual);
     }
 
-    public function testCategoriesOptional(): void
+    public function testCategoriesWithHeaders(): void
     {
         $this->clientExpects(
-            'getOptional',
-            CategoriesResponse::class,
+            'get',
+            new CategoriesResponse(),
             $this->stringContains('categories'),
+            [],
+            ['x-some-header' => 'true'],
         );
 
-        $responseActual = $this->client->categories();
+        $responseActual = $this->client->categories(['x-some-header' => 'true']);
 
         $this->assertInstanceOf(CategoriesResponse::class, $responseActual);
     }

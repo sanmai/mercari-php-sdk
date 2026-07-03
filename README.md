@@ -211,6 +211,8 @@ foreach ($client->itemComments('m1234567890') as $comment) {
 $categories = $client->categories();
 ```
 
+You may pass optional headers when fetching categories.
+
 ## Part 2: Acting as a User
 
 Purchasing, your transactions and their messages, reviews, your todo list, and posting comments all act in the context of a specific Mercari user, so they need a user access token from the OAuth2 **authorization-code** flow rather than client credentials. Purchasing in particular requires it.

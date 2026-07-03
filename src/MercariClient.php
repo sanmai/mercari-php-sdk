@@ -274,13 +274,12 @@ class MercariClient extends AbstractMercariClient
         throw new DTO\Exception(sprintf('%s (%s)', $response->failure_details->reasons, $response->failure_details->code));
     }
 
-    public function categories(): CategoriesResponse
+    public function categories(array $headers = []): CategoriesResponse
     {
-        $response = $this->getOptional(
+        return $this->get(
             CategoriesResponse::class,
-            self::CATEGORIES
+            self::CATEGORIES,
+            headers: $headers,
         );
-
-        return $response ?? new CategoriesResponse();
     }
 }

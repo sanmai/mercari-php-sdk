@@ -98,10 +98,15 @@ abstract class AbstractMercariClient
      * @param class-string<T> $type
      * @return T
      */
-    protected function get(string $type, string $uri, array $query = [])
-    {
+    protected function get(
+        string $type,
+        string $uri,
+        array $query = [],
+        array $headers = [],
+    ) {
         $response = $this->client->get($uri, [
             'query' => $query,
+            'headers' => $headers,
         ]);
 
         return $this->responseToType($response, $type);
