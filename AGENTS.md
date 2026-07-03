@@ -41,7 +41,7 @@ It is designed to be type-safe and easy to use, providing a structured way to in
     - Unit and functional tests.
     - Mutation testing.
     - Package and configuration validation.
-    *Refer to the `Makefile` for the exact tools and current configurations.*
+    *Refer to the output of `make -j -k` for the exact tools and current configurations.*
 3. **Testing Requirement**: Every new endpoint or bug fix must be accompanied by a corresponding test in the `tests/` directory.
     - To run a single test file while iterating: `vendor/bin/phpunit tests/SpecificTest.php`.
 4. **Mocking**: Use the patterns established in existing tests for mocking API responses.
