@@ -90,75 +90,49 @@ class ItemDetail
 
     public SellerLatest $seller;
 
-    /**
-     * @Type("array<string>")
-     */
+    #[Type('array<string>')]
     public array $photos;
 
-    /**
-     * @Type("Mercari\DTO\ItemCategory")
-     */
+    #[Type('Mercari\DTO\ItemCategory')]
     public ItemCategory $item_category;
 
-    /**
-     * @Type("Mercari\DTO\ItemCondition")
-     */
+    #[Type('Mercari\DTO\ItemCondition')]
     public ItemCondition $item_condition;
 
-    /**
-     * @Type("Mercari\DTO\ItemDiscount")
-     */
+    #[Type('Mercari\DTO\ItemDiscount')]
     public ItemDiscount $item_discount;
 
-    /**
-     * @Type("Mercari\DTO\ItemSize")
-     */
+    #[Type('Mercari\DTO\ItemSize')]
     public ItemSize $item_size;
 
-    /**
-     * @Type("Mercari\DTO\ItemBrand")
-     */
+    #[Type('Mercari\DTO\ItemBrand')]
     public ItemBrand $item_brand;
 
-    /**
-     * @Type("Mercari\DTO\ShippingPayer")
-     */
+    #[Type('Mercari\DTO\ShippingPayer')]
     public ShippingPayer $shipping_payer;
 
-    /**
-     * @Type("Mercari\DTO\ShippingMethod")
-     */
+    #[Type('Mercari\DTO\ShippingMethod')]
     public ShippingMethod $shipping_method;
 
-    /**
-     * @Type("Mercari\DTO\ShippingFromArea")
-     */
+    #[Type('Mercari\DTO\ShippingFromArea')]
     public ShippingFromArea $shipping_from_area;
 
-    /**
-     * @Type("Mercari\DTO\ShippingDuration")
-     */
+    #[Type('Mercari\DTO\ShippingDuration')]
     public ShippingDuration $shipping_duration;
 
-    /**
-     * @Type("Mercari\DTO\ShippingClass")
-     */
+    #[Type('Mercari\DTO\ShippingClass')]
     public ShippingClass $shipping_class;
 
-    /**
-     * @Type("Mercari\DTO\CatalogDetails")
-     */
+    #[Type('Mercari\DTO\CatalogDetails')]
     public CatalogDetails $catalog_details;
 
-    /**
-     * @Type("Mercari\DTO\AnshinAuthentication")
-     */
+    #[Type('Mercari\DTO\AnshinAuthentication')]
     public AnshinAuthentication $anshin_item_authentication;
 
     /**
-     * @Type("array<Mercari\DTO\ItemVariant>")
      * @var ItemVariant[]
      */
+    #[Type('array<Mercari\DTO\ItemVariant>')]
     public array $item_variants;
 
     public int $num_comments;
@@ -168,9 +142,9 @@ class ItemDetail
     public string $language_code;
 
     /**
-     * @Type("array<string,array<string>>")
      * @var array<string,array<string>>
      */
+    #[Type('array<string,array<string>>')]
     public array $metadata;
 
     public string $checksum;

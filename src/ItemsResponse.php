@@ -33,15 +33,13 @@ class ItemsResponse extends ListResponse
 {
     /**
      * @var ItemDetail[]
-     * @Type("array<string, Mercari\DTO\ItemDetail>")
      */
+    #[Type('array<string, Mercari\DTO\ItemDetail>')]
     public ?array $items = [];
 
     public SearchResponseMeta $meta;
 
-    /**
-     * @PostDeserialize
-     */
+    #[PostDeserialize]
     private function normalizeItems(): void
     {
         $this->items ??= [];

@@ -33,8 +33,6 @@ class Transaction
 
     public int $updated_time;
 
-    /**
-     * @Type("Mercari\DTO\ShippingInfo")
-     */
+    #[Type('Mercari\DTO\ShippingInfo')]
     public ShippingInfo $shipping_info;
 }

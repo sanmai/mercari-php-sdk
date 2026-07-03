@@ -30,8 +30,6 @@ class CommonResponse
 
     public string $request_id;
 
-    /**
-     * @Type("Mercari\DTO\FailureDetails")
-     */
+    #[Type('Mercari\DTO\FailureDetails')]
     public FailureDetails $failure_details;
 }

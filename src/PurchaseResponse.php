@@ -26,9 +26,7 @@ class PurchaseResponse extends CommonResponse
 {
     public string $transaction_status;
 
-    /**
-     * @Type("Mercari\DTO\TransactionDetails")
-     */
+    #[Type('Mercari\DTO\TransactionDetails')]
     public TransactionDetails $transaction_details;
 
     public function isSuccess(): bool

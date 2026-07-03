@@ -25,9 +25,7 @@ class Comment
 {
     public string $id;
 
-    /**
-     * @Type("Mercari\DTO\User")
-     */
+    #[Type('Mercari\DTO\User')]
     public User $user;
 
     public string $comments;

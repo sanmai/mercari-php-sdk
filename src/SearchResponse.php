@@ -32,8 +32,8 @@ class SearchResponse extends ListResponse
 {
     /**
      * @var ItemDetail[]
-     * @Type("array<Mercari\DTO\ItemDetail>")
      */
+    #[Type('array<Mercari\DTO\ItemDetail>')]
     public array $data = [];
 
     public SearchResponseMeta $meta;

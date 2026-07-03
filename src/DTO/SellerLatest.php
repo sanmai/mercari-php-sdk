@@ -32,9 +32,7 @@ class SellerLatest extends NamedDetail
 
     public int $num_sell_items;
 
-    /**
-     * @Type("Mercari\DTO\SellerRating")
-     */
+    #[Type('Mercari\DTO\SellerRating')]
     public SellerRating $ratings;
 
     /**

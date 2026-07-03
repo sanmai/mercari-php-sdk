@@ -35,8 +35,8 @@ class CategoriesResponse extends ListResponse
 {
     /**
      * @var Category[]
-     * @Type("array<Mercari\DTO\Category>")
      */
+    #[Type('array<Mercari\DTO\Category>')]
     public array $master_categories = [];
 
     /**
