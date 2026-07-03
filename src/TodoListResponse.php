@@ -33,15 +33,13 @@ class TodoListResponse extends ListResponse
 {
     /**
      * @var TodoItem[]
-     * @Type("array<Mercari\DTO\TodoItem>")
      */
+    #[Type('array<Mercari\DTO\TodoItem>')]
     public $data = [];
 
     public string $next_page_token;
 
-    /**
-     * @PostDeserialize
-     */
+    #[PostDeserialize]
     private function normalizeData(): void
     {
         $this->data ??= [];

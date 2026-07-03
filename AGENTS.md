@@ -29,7 +29,8 @@ It is designed to be type-safe and easy to use, providing a structured way to in
 
 - **`postFallback()`**: Used for endpoints that may return an error HTTP status but a success payload (indicated by a `Failure` code of 0).
 - **`getOptional()`**: Allows swallowing specific HTTP status codes (e.g., 400, 404) to return `null` instead of throwing.
-- **`#[PostDeserialize]`**: Use this annotation for normalizing DTO properties after JMS deserialization.
+- **JMS attributes**: Use PHP attributes such as `#[Type(...)]`, `#[PostDeserialize]`, and `#[SkipWhenEmpty]` for JMS serializer metadata. Keep PHPDoc like `@var` where it provides static-analysis detail.
+- **Serializer property names**: The JSON serializer uses JMS' `IdenticalPropertyNamingStrategy`, so DTO property names must match API field names unless a `#[SerializedName(...)]` override is added.
 - **Pagination**: Endpoints use either a zero-indexed offset or a cursor, depending on the API specification.
 
 ## Development Workflow

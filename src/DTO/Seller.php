@@ -37,9 +37,7 @@ class Seller
 
     public string $photo_thumbnail_url;
 
-    /**
-     * @Type("Mercari\DTO\SellerRating")
-     */
+    #[Type('Mercari\DTO\SellerRating')]
     public SellerRating $ratings;
 
     public int $num_ratings;
@@ -54,7 +52,7 @@ class Seller
 
     /**
      * @var UserBadge[]
-     * @Type("array<Mercari\DTO\UserBadge>")
      */
+    #[Type('array<Mercari\DTO\UserBadge>')]
     public array $user_badges;
 }

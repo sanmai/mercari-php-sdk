@@ -32,8 +32,8 @@ class MessagesResponse extends ListResponse
 {
     /**
      * @var TransactionMessage[]
-     * @Type("array<Mercari\DTO\TransactionMessage>")
      */
+    #[Type('array<Mercari\DTO\TransactionMessage>')]
     public array $messages = [];
 
     #[Override]

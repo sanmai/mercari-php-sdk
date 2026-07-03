@@ -28,9 +28,7 @@ class Failure
 
     public string $message = '';
 
-    /**
-     * @Type("array")
-     * @SkipWhenEmpty
-     */
+    #[Type('array')]
+    #[SkipWhenEmpty]
     public array $details = [];
 }
