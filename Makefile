@@ -66,6 +66,7 @@ ci-cs: prerequisites
 
 .PHONY: test
 test: analyze phpunit composer-validate yamllint
+	@echo "\033[0;32mAll Tests Passed!\033[0m"
 
 .PHONY: composer-validate
 composer-validate: test-prerequisites
