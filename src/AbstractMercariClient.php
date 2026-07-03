@@ -80,11 +80,10 @@ abstract class AbstractMercariClient
         string $type,
         string $uri,
         array $query = [],
-        array $error_codes = [HttpResponse::HTTP_NOT_FOUND],
-        array $headers = []
+        array $error_codes = [HttpResponse::HTTP_NOT_FOUND]
     ) {
         try {
-            return $this->get($type, $uri, $query, $headers);
+            return $this->get($type, $uri, $query);
         } catch (RequestException $e) {
             if (in_array($e->getCode(), $error_codes, true)) {
                 return null;
