@@ -23,7 +23,7 @@ It is designed to be type-safe and easy to use, providing a structured way to in
 
 - **Type Hinting:** Use precise type hints for parameters and return types. Use generics (`@template`) where appropriate for list responses.
 - **DTOs:** Data Transfer Objects should be simple classes with public properties.
-- **Naming:** Follow PSR-12 coding standards.
+- **Naming:** Follow PER-CS coding standards (extended PSR-12). Run `make cs` to validate.
 
 ## Implementation Details
 
