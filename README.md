@@ -320,6 +320,10 @@ A failed purchase still returns a `PurchaseResponse` rather than throwing, so ch
 
 The constructor only auto-selects a variant when the item has exactly one. For an item with several variants, set `$request->variant_id` yourself (Mercari Shops purchases also expect `$request->shops_shipping_fee`). `delivery_identifier` is an optional identifier included with the delivery address; the example above tags it with the item ID (you'd want to use an internal order ID). The checksum ties the request to a specific item snapshot, so fetch the item immediately before purchasing.
 
+#### Latency Considerations for Purchases
+
+To ensure the highest success rate for purchases, the client automatically retries transient errors (such as HTTP 500 or 409) using an exponential back-off strategy. While this increases reliability, it can lead to significant response times. You should ensure that your web server (e.g., Nginx `proxy_read_timeout`), PHP configuration (`max_execution_time`), and any database transaction timeouts are aligned to accommodate the potential total duration of a retried purchase request.
+
 ### Transactions and Messaging
 
 Look up a transaction by its own ID or by the item ID, read and post messages, and leave a review:
@@ -393,7 +397,7 @@ try {
 
 ### Client Configuration
 
-Both `createInstance()` factories take optional `$extraHeaders` and `$retryOptions` arrays after their required arguments - use them to send extra headers (a custom User-Agent, say) or tune the bundled retry middleware. The factory signatures in `src/` list the defaults.
+Both `createInstance()` factories take optional `$extraHeaders` and `$retryOptions` arrays after their required arguments - use them to send extra headers (a custom User-Agent, say) or tune the bundled retry middleware. The client enables automatic retries for transient errors by default; you can customize this behavior via `$retryOptions`. The factory signatures in `src/` list the defaults.
 
 ### Debug Logging
 
