@@ -32,8 +32,8 @@ class CommentsResponse extends ListResponse
 {
     /**
      * @var Comment[]
-     * @Type("array<Mercari\DTO\Comment>")
      */
+    #[Type('array<Mercari\DTO\Comment>')]
     public array $comments = [];
 
     /**

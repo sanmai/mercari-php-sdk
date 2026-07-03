@@ -39,9 +39,7 @@ class TransactionDetails
 
     public string $checksum;
 
-    /**
-     * @Type("Mercari\DTO\UserAddress")
-     */
+    #[Type('Mercari\DTO\UserAddress')]
     public UserAddress $user_address;
 
     public int $shipping_method_id;
