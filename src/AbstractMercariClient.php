@@ -80,10 +80,11 @@ abstract class AbstractMercariClient
         string $type,
         string $uri,
         array $query = [],
-        array $error_codes = [HttpResponse::HTTP_NOT_FOUND]
+        array $error_codes = [HttpResponse::HTTP_NOT_FOUND],
+        array $headers = []
     ) {
         try {
-            return $this->get($type, $uri, $query);
+            return $this->get($type, $uri, $query, $headers);
         } catch (RequestException $e) {
             if (in_array($e->getCode(), $error_codes, true)) {
                 return null;
@@ -98,10 +99,11 @@ abstract class AbstractMercariClient
      * @param class-string<T> $type
      * @return T
      */
-    protected function get(string $type, string $uri, array $query = [])
+    protected function get(string $type, string $uri, array $query = [], array $headers = [])
     {
         $response = $this->client->get($uri, [
             'query' => $query,
+            'headers' => $headers,
         ]);
 
         return $this->responseToType($response, $type);

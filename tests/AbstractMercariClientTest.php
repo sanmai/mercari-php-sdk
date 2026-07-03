@@ -102,6 +102,21 @@ class AbstractMercariClientTest extends TestCase
         $this->assertSame('/example?foo=bar', (string) $request->getUri());
     }
 
+    public function testGetWithHeaders(): void
+    {
+        $responses = [
+            new Response(HttpResponse::HTTP_OK, [], ExampleResponse::JSON),
+        ];
+
+        $client = $this->buildExampleClient($responses);
+
+        $client->get(ExampleResponse::class, '/example', headers: ['x-foo-bar' => 'true']);
+
+        $request = $this->getLastRequest();
+
+        $this->assertSame('true', $request->getHeaderLine('x-foo-bar'));
+    }
+
     public static function providePostMethods(): iterable
     {
         yield ['post'];
