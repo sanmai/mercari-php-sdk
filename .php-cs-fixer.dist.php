@@ -60,6 +60,10 @@ $config
             'import_constants' => true,
             'import_functions' => true,
         ],
+        'trailing_comma_in_multiline' => [
+            'after_heredoc' => true,
+            'elements' => ['arguments', 'array_destructuring', 'arrays', 'match', 'parameters'],
+        ],
 
         'strict_comparison' => true,
         'array_indentation' => true,
@@ -67,7 +71,7 @@ $config
     ->setFinder(
         PhpCsFixer\Finder::create()
             ->in(__DIR__)
-            ->append([__FILE__])
+            ->append([__FILE__]),
     )
 ;
 
