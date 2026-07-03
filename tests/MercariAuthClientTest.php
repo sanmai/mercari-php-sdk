@@ -81,7 +81,7 @@ class MercariAuthClientTest extends TestCase
             'xclient_id',
             $this->buildHttpClient($responses),
             $this->serializer,
-            new DuoClock()
+            new DuoClock(),
         );
         $url = $client->getAuthUrl($tokenRequest);
 
@@ -124,7 +124,7 @@ class MercariAuthClientTest extends TestCase
             'xclient_id',
             $this->buildHttpClient($responses),
             $this->serializer,
-            $timekeeper
+            $timekeeper,
         );
 
         $tokenRequest = TokenRequest::authorizationCode($redirectUrl, $code);

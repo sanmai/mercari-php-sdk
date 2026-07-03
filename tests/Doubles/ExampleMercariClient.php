@@ -38,7 +38,7 @@ class ExampleMercariClient extends AbstractMercariClient
     public function getOptionalDefault(
         string $type,
         string $uri,
-        array $query
+        array $query,
     ) {
         return parent::getOptional($type, $uri, $query);
     }

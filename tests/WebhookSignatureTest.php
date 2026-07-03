@@ -87,7 +87,7 @@ class WebhookSignatureTest extends TestCase
             '8f742231b10e8888abcd99yyyzzz85a5',
             '{"webhook_type":"test_webhook"}',
             self::TEST_TIME,
-            'v0:249e47edc1980531306517e4435b54ef1ff224020029284bdf19c8eda99aa325'
+            'v0:249e47edc1980531306517e4435b54ef1ff224020029284bdf19c8eda99aa325',
         );
 
         $this->assertSame($valid, $signature->isValid($timekeeper));
@@ -104,7 +104,7 @@ class WebhookSignatureTest extends TestCase
             '8f742231b10e8888abcd99yyyzzz85a5',
             '{"webhook_type":"test_webhook"}',
             self::TEST_TIME,
-            'v0:249e47edc1980531306517e4435b54ef1ff224020029284bdf19c8eda99aa325'
+            'v0:249e47edc1980531306517e4435b54ef1ff224020029284bdf19c8eda99aa325',
         );
 
         $this->assertTrue($signature->isValid($timekeeper));
@@ -122,7 +122,7 @@ class WebhookSignatureTest extends TestCase
 
         $signature = new WebhookSignature(
             '8f742231b10e8888abcd99yyyzzz85a5',
-            '{"webhook_type":"test_webhook"}'
+            '{"webhook_type":"test_webhook"}',
         );
 
         $this->assertSame($valid, $signature->isValid($timekeeper));
