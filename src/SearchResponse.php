@@ -36,7 +36,9 @@ class SearchResponse extends ListResponse
     #[Type('array<Mercari\DTO\ItemDetail>')]
     public array $data = [];
 
-    public SearchResponseMeta $meta;
+    public function __construct(
+        public SearchResponseMeta $meta = new SearchResponseMeta()
+    ) {}
 
     /**
      * @return ArrayIterator<array-key, ItemDetail>

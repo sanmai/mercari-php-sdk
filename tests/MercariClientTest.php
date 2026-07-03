@@ -125,13 +125,16 @@ class MercariClientTest extends TestCase
         $response = new SearchResponse();
 
         $this->clientExpects(
-            'get',
+            'getOptional',
             $response,
             $this->stringContains('search'),
             $this->logicalAnd(
                 $this->arrayHasKey('keyword'),
                 $this->containsIdentical('foo')
-            )
+            ),
+            $this->identicalTo([
+                HttpResponse::HTTP_BAD_REQUEST,
+            ])
         );
 
         $request = new SearchRequest();
@@ -140,6 +143,20 @@ class MercariClientTest extends TestCase
         $responseActual = $this->client->search($request);
 
         $this->assertSame($response, $responseActual);
+    }
+
+    public function testSearchNotFound(): void
+    {
+        $this->client->expects($this->once())
+            ->method('getOptional')
+            ->willReturn(null);
+
+        $request = new SearchRequest();
+        $response = $this->client->search($request);
+
+        $this->assertInstanceOf(SearchResponse::class, $response);
+        $this->assertSame(0, $response->meta->num_found);
+        $this->assertSame(false, $response->meta->has_next);
     }
 
     public function testItems()
