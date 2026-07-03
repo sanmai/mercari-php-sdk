@@ -31,9 +31,8 @@ class ExampleMercariClient extends AbstractMercariClient
         string $uri,
         array $query = [],
         array $error_codes = [HttpResponse::HTTP_NOT_FOUND],
-        array $headers = []
     ) {
-        return parent::getOptional($type, $uri, $query, $error_codes, $headers);
+        return parent::getOptional($type, $uri, $query, $error_codes);
     }
 
     public function getOptionalDefault(
