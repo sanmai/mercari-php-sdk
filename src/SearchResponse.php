@@ -36,7 +36,9 @@ class SearchResponse extends ListResponse
      */
     public array $data = [];
 
-    public SearchResponseMeta $meta;
+    public function __construct(
+        public SearchResponseMeta $meta = new SearchResponseMeta()
+    ) {}
 
     /**
      * @return ArrayIterator<array-key, ItemDetail>

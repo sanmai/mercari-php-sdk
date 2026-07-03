@@ -123,11 +123,21 @@ class MercariClient extends AbstractMercariClient
 
     public function search(SearchRequest $request): SearchResponse
     {
-        return $this->get(
+        return $this->getOptional(
             SearchResponse::class,
             self::SEARCH_ITEMS_V3,
-            $request->getRequestParams()
-        );
+            $request->getRequestParams(),
+            error_codes: [HttpResponse::HTTP_BAD_REQUEST]
+        ) ?? $this->emptySearchResponse();
+    }
+
+    private function emptySearchResponse(): SearchResponse
+    {
+        $response = new SearchResponse();
+        $response->meta->has_next = false;
+        $response->meta->num_found = 0;
+
+        return $response;
     }
 
     public function items(array $items): ItemsResponse
