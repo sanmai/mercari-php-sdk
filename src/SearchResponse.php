@@ -37,7 +37,7 @@ class SearchResponse extends ListResponse
     public array $data = [];
 
     public function __construct(
-        public SearchResponseMeta $meta = new SearchResponseMeta()
+        public SearchResponseMeta $meta = new SearchResponseMeta(),
     ) {}
 
     /**

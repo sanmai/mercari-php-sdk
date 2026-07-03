@@ -109,7 +109,7 @@ class SerializationTest extends TestCase
         string $basename,
         string $file,
         ?string $className = null,
-        bool $normalize_id = true
+        bool $normalize_id = true,
     ): void {
         if ($className === null) {
             $this->markTestIncomplete("No matching class for $basename");

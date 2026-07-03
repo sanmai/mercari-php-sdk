@@ -65,7 +65,7 @@ abstract class AbstractMercariClient
 
         $this->stack->push(Middleware::log(
             $logger,
-            new MessageFormatter($template)
+            new MessageFormatter($template),
         ));
 
         return $this;
@@ -80,7 +80,7 @@ abstract class AbstractMercariClient
         string $type,
         string $uri,
         array $query = [],
-        array $error_codes = [HttpResponse::HTTP_NOT_FOUND]
+        array $error_codes = [HttpResponse::HTTP_NOT_FOUND],
     ) {
         try {
             return $this->get($type, $uri, $query);
@@ -121,7 +121,7 @@ abstract class AbstractMercariClient
     {
         $response = $this->client->post(
             $uri,
-            ['json' => $json]
+            ['json' => $json],
         );
 
         return $this->responseToType($response, $type);
@@ -191,7 +191,7 @@ abstract class AbstractMercariClient
         return $this->serializer->deserialize(
             $body->getContents(),
             $type,
-            'json'
+            'json',
         );
     }
 }

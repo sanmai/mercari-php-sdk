@@ -64,7 +64,7 @@ class MercariAuthClient
             $clientId,
             $httpClient,
             Serializer::withJSONOptions(),
-            new DuoClock()
+            new DuoClock(),
         );
     }
 
@@ -83,7 +83,7 @@ class MercariAuthClient
         string $clientId,
         Client $client,
         SerializerInterface $serializer,
-        DuoClock $timekeeper
+        DuoClock $timekeeper,
     ) {
         $this->clientId = $clientId;
         $this->client = $client;
@@ -100,7 +100,7 @@ class MercariAuthClient
 
         $response = $this->client->post(
             self::TOKEN,
-            ['form_params' => $request->getRequestParams()]
+            ['form_params' => $request->getRequestParams()],
         );
 
         $content = $response->getBody()->getContents();
@@ -123,7 +123,7 @@ class MercariAuthClient
             [
                 'query' => $request->getRequestParams(),
                 'auth' => null,
-            ]
+            ],
         )->getHeader('Location')[0];
     }
 }

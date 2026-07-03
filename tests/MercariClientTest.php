@@ -130,11 +130,11 @@ class MercariClientTest extends TestCase
             $this->stringContains('search'),
             $this->logicalAnd(
                 $this->arrayHasKey('keyword'),
-                $this->containsIdentical('foo')
+                $this->containsIdentical('foo'),
             ),
             $this->identicalTo([
                 HttpResponse::HTTP_BAD_REQUEST,
-            ])
+            ]),
         );
 
         $request = new SearchRequest();
@@ -169,8 +169,8 @@ class MercariClientTest extends TestCase
             $this->stringContains('items'),
             $this->logicalAnd(
                 $this->arrayHasKey('item_ids'),
-                $this->containsIdentical(['foo'])
-            )
+                $this->containsIdentical(['foo']),
+            ),
         );
 
         $responseActual = $this->client->items(['foo']);
@@ -187,7 +187,7 @@ class MercariClientTest extends TestCase
             $response,
             $this->logicalAnd(
                 $this->stringContains('item'),
-                $this->stringContains('foo')
+                $this->stringContains('foo'),
             ),
             $this->identicalTo([]),
             $this->identicalTo([
@@ -195,7 +195,7 @@ class MercariClientTest extends TestCase
                 HttpResponse::HTTP_BAD_REQUEST,
                 HttpResponse::HTTP_FORBIDDEN,
                 HttpResponse::HTTP_PRECONDITION_FAILED,
-            ])
+            ]),
         );
 
         $responseActual = $this->client->item('foo');
@@ -212,7 +212,7 @@ class MercariClientTest extends TestCase
             $response,
             $this->logicalAnd(
                 $this->stringContains('item'),
-                $this->stringContains('foo')
+                $this->stringContains('foo'),
             ),
             $this->identicalTo(['prefecture' => 'bar']),
             $this->identicalTo([
@@ -220,7 +220,7 @@ class MercariClientTest extends TestCase
                 HttpResponse::HTTP_BAD_REQUEST,
                 HttpResponse::HTTP_FORBIDDEN,
                 HttpResponse::HTTP_PRECONDITION_FAILED,
-            ])
+            ]),
         );
 
         $responseActual = $this->client->item('foo', 'bar');
@@ -238,8 +238,8 @@ class MercariClientTest extends TestCase
             $this->logicalAnd(
                 $this->stringContains('item'),
                 $this->stringContains('foo'),
-                $this->stringContains('comments')
-            )
+                $this->stringContains('comments'),
+            ),
         );
 
         $responseActual = $this->client->itemComments('foo');
@@ -257,11 +257,11 @@ class MercariClientTest extends TestCase
             $this->logicalAnd(
                 $this->stringContains('item'),
                 $this->stringContains('comments'),
-                $this->stringContains('foo')
+                $this->stringContains('foo'),
             ),
             $this->logicalAnd(
                 $this->containsIdentical('bar'),
-            )
+            ),
         );
 
         $responseActual = $this->client->addComment('foo', 'bar');
@@ -278,13 +278,13 @@ class MercariClientTest extends TestCase
             $response,
             $this->logicalAnd(
                 $this->stringContains('user'),
-                $this->stringContains('foo')
+                $this->stringContains('foo'),
             ),
             $this->identicalTo([]),
             $this->identicalTo([
                 HttpResponse::HTTP_NOT_FOUND,
                 HttpResponse::HTTP_BAD_REQUEST,
-            ])
+            ]),
         );
 
         $responseActual = $this->client->user('foo');
@@ -302,11 +302,11 @@ class MercariClientTest extends TestCase
             $this->logicalAnd(
                 $this->stringContains('item'),
                 $this->stringContains('foo'),
-                $this->stringContains('similar_items')
+                $this->stringContains('similar_items'),
             ),
             $this->identicalTo([
                 'marketplace' => MercariClient::MARKETPLACE_ALL,
-            ])
+            ]),
         );
 
         $responseActual = $this->client->similarItems('foo');
@@ -324,9 +324,9 @@ class MercariClientTest extends TestCase
             $this->logicalAnd(
                 $this->stringContains('item'),
                 $this->stringContains('foo'),
-                $this->stringContains('similar_items')
+                $this->stringContains('similar_items'),
             ),
-            $this->identicalTo([])
+            $this->identicalTo([]),
         );
 
         $responseActual = $this->client->similarItems('foo', 0);
@@ -354,7 +354,7 @@ class MercariClientTest extends TestCase
             'postFallback',
             $response,
             $this->stringContains('purchase'),
-            $this->identicalTo($params)
+            $this->identicalTo($params),
         );
 
         $responseActual = $this->client->purchase($request);
@@ -372,7 +372,7 @@ class MercariClientTest extends TestCase
             $this->stringContains('todolist'),
             $this->identicalTo([
                 'limit' => 10,
-            ])
+            ]),
         );
 
         $responseActual = $this->client->todoList();
@@ -391,7 +391,7 @@ class MercariClientTest extends TestCase
             $this->identicalTo([
                 'limit' => 20,
                 'page_token' => 'foo',
-            ])
+            ]),
         );
 
         $responseActual = $this->client->todoList(20, 'foo');
@@ -409,7 +409,7 @@ class MercariClientTest extends TestCase
             $this->logicalAnd(
                 $this->stringContains('transaction'),
                 $this->stringContains('foo'),
-            )
+            ),
         );
 
         $responseActual = $this->client->transaction('foo');
@@ -427,7 +427,7 @@ class MercariClientTest extends TestCase
             $this->logicalAnd(
                 $this->stringContains('transaction'),
                 $this->stringContains('foo'),
-            )
+            ),
         );
 
         $responseActual = $this->client->itemTransaction('foo');
@@ -446,7 +446,7 @@ class MercariClientTest extends TestCase
                 $this->stringContains('transaction'),
                 $this->stringContains('foo'),
                 $this->stringContains('messages'),
-            )
+            ),
         );
 
         $responseActual = $this->client->transactionMessages('foo');
@@ -468,7 +468,7 @@ class MercariClientTest extends TestCase
             ),
             $this->identicalTo([
                 'message' => 'bar',
-            ])
+            ]),
         );
 
         $responseActual = $this->client->transactionMessage('foo', 'bar');
@@ -495,7 +495,7 @@ class MercariClientTest extends TestCase
                 'fame' => 'good',
                 'message' => 'bar',
                 'subject' => 'seller',
-            ])
+            ]),
         );
 
         $this->client->transactionReview('foo', 'bar');
@@ -520,7 +520,7 @@ class MercariClientTest extends TestCase
                 'fame' => 'bad',
                 'message' => 'bar',
                 'subject' => 'seller',
-            ])
+            ]),
         );
 
         $this->client->transactionReview('foo', 'bar', 'bad');
@@ -594,7 +594,7 @@ class MercariClientTest extends TestCase
             ->method($method)
             ->with(
                 $responseClass,
-                ...$args
+                ...$args,
             )
             ->willReturn($return);
     }

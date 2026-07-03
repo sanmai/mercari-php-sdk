@@ -117,7 +117,7 @@ class MercariClient extends AbstractMercariClient
         return new MercariClient(
             $httpClient,
             $stack,
-            Serializer::withJSONOptions()
+            Serializer::withJSONOptions(),
         );
     }
 
@@ -127,7 +127,7 @@ class MercariClient extends AbstractMercariClient
             SearchResponse::class,
             self::SEARCH_ITEMS_V3,
             $request->getRequestParams(),
-            error_codes: [HttpResponse::HTTP_BAD_REQUEST]
+            error_codes: [HttpResponse::HTTP_BAD_REQUEST],
         ) ?? $this->emptySearchResponse();
     }
 
@@ -145,7 +145,7 @@ class MercariClient extends AbstractMercariClient
         return $this->postFallback(
             ItemsResponse::class,
             self::ITEMS,
-            ['item_ids' => $items]
+            ['item_ids' => $items],
         );
     }
 
@@ -163,7 +163,7 @@ class MercariClient extends AbstractMercariClient
     {
         $response = $this->getOptional(
             CommentsResponse::class,
-            sprintf(self::ITEM_COMMENTS, $id)
+            sprintf(self::ITEM_COMMENTS, $id),
         );
 
         return $response ?? new CommentsResponse();
@@ -174,7 +174,7 @@ class MercariClient extends AbstractMercariClient
         return $this->post(
             NewCommentResponse::class,
             sprintf(self::ITEM_COMMENTS, $id),
-            ['message' => $message]
+            ['message' => $message],
         );
     }
 
@@ -192,7 +192,7 @@ class MercariClient extends AbstractMercariClient
         $response = $this->getOptional(
             ItemsResponse::class,
             sprintf(self::SIMILAR_ITEMS, $id),
-            array_filter(['marketplace' => $marketplace])
+            array_filter(['marketplace' => $marketplace]),
         );
 
         return $response ?? new ItemsResponse();
@@ -203,7 +203,7 @@ class MercariClient extends AbstractMercariClient
         return $this->postFallback(
             PurchaseResponse::class,
             self::PURCHASE,
-            $request->getRequestParams()
+            $request->getRequestParams(),
         );
     }
 
@@ -215,7 +215,7 @@ class MercariClient extends AbstractMercariClient
             array_filter([
                 'limit' => $limit,
                 'page_token' => $page_token,
-            ])
+            ]),
         );
     }
 
@@ -223,7 +223,7 @@ class MercariClient extends AbstractMercariClient
     {
         return $this->getOptional(
             Transaction::class,
-            sprintf(self::TRANSACTION, $transaction_id)
+            sprintf(self::TRANSACTION, $transaction_id),
         );
     }
 
@@ -231,7 +231,7 @@ class MercariClient extends AbstractMercariClient
     {
         return $this->getOptional(
             Transaction::class,
-            sprintf(self::TRANSACTION_ITEM, $item_id)
+            sprintf(self::TRANSACTION_ITEM, $item_id),
         );
     }
 
@@ -239,7 +239,7 @@ class MercariClient extends AbstractMercariClient
     {
         $response = $this->getOptional(
             MessagesResponse::class,
-            sprintf(self::TRANSACTION_MESSAGES, $transaction_id)
+            sprintf(self::TRANSACTION_MESSAGES, $transaction_id),
         );
 
         return $response ?? new MessagesResponse();
@@ -250,7 +250,7 @@ class MercariClient extends AbstractMercariClient
         return $this->post(
             TransactionMessage::class,
             sprintf(self::TRANSACTION_MESSAGES, $transaction_id),
-            ['message' => $message]
+            ['message' => $message],
         );
     }
 
@@ -264,7 +264,7 @@ class MercariClient extends AbstractMercariClient
                 'fame' => $fame,
                 'message' => $message,
                 'subject' => 'seller',
-            ]
+            ],
         );
 
         if ($response->isSuccess()) {

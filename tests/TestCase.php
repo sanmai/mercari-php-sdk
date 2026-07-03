@@ -104,8 +104,8 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
             sprintf(
                 "Failed to deserialize %s to %s",
                 str_replace(dirname(__DIR__), '.', $file),
-                get_class($response)
-            )
+                get_class($response),
+            ),
         );
     }
 
