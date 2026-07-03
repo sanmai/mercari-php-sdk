@@ -102,7 +102,7 @@ abstract class AbstractMercariClient
         string $type,
         string $uri,
         array $query = [],
-        array $headers = []
+        array $headers = [],
     ) {
         $response = $this->client->get($uri, [
             'query' => $query,
