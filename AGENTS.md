@@ -6,7 +6,7 @@ It is designed to be type-safe and easy to use, providing a structured way to in
 
 - **PHP Version:** 8.2 or newer.
 - **Core Architecture:**
-    - **Clients:** `MercariAuthClient` (for OAuth2 tokens) and `MercariClient` (for API requests).
+    - **Clients:** `MercariAuthClient` (for OAuth 2 tokens) and `MercariClient` (for API requests).
     - **Requests:** Typed objects (e.g., `SearchRequest`) that encapsulate request parameters.
     - **Responses/DTOs:** Typed objects returned by the clients. List responses are both `IteratorAggregate` and `Countable`.
 - **End-user documentation:** @README.md
