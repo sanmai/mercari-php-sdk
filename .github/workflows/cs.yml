@@ -28,7 +28,7 @@ jobs:
           tools: composer:v2
 
       - name: Cache dependencies
-        uses: actions/cache@v6
+        uses: actions/cache@v6.1.0
         with:
           path: ~/.cache/composer
           key: composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.*') }}
