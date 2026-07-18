@@ -124,7 +124,7 @@ class MercariClientTest extends TestCase
         $client = MercariClient::createInstance(
             'sandbox-api.example.com',
             'token',
-            clientOptions: ['timeout' => 5, 'connect_timeout' => 1],
+            clientOptions: ['timeout' => 42, 'connect_timeout' => 67],
         );
 
         $this->assertInstanceOf(MercariClient::class, $client);
@@ -132,8 +132,8 @@ class MercariClientTest extends TestCase
         /** @var Client $httpClient */
         $httpClient = $this->getPropertyValue($client, 'client');
 
-        $this->assertSame(5, $httpClient->getConfig('timeout'));
-        $this->assertSame(1, $httpClient->getConfig('connect_timeout'));
+        $this->assertSame(42, $httpClient->getConfig('timeout'));
+        $this->assertSame(67, $httpClient->getConfig('connect_timeout'));
 
         // defaults preserved when not overridden
         $this->assertTrue($httpClient->getConfig('http_errors'));
