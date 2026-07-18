@@ -136,6 +136,7 @@ class MercariClientTest extends TestCase
         $this->assertSame(67, $httpClient->getConfig('connect_timeout'));
 
         // defaults preserved when not overridden
+        $this->assertSame("Bearer token", $httpClient->getConfig('headers')['Authorization']);
         $this->assertTrue($httpClient->getConfig('http_errors'));
         $this->assertFalse($httpClient->getConfig('allow_redirects'));
     }
