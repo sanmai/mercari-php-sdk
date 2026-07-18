@@ -399,7 +399,9 @@ try {
 
 ### Client Configuration
 
-Both `createInstance()` factories take optional `$extraHeaders` and `$retryOptions` arrays after their required arguments - use them to send extra headers (a custom User-Agent, say) or tune the bundled retry middleware. The client enables automatic retries for transient errors by default; you can customize this behavior via `$retryOptions`. The factory signatures in `src/` list the defaults.
+Both `createInstance()` factories take optional `$extraHeaders`, `$retryOptions`, and `$clientOptions` arrays after their required arguments - use them to send extra headers (a custom User-Agent, say), tune the bundled retry middleware for transient errors, or override defaults like `timeout` or `connect_timeout`.
+
+The factory signatures in `src/` list the defaults.
 
 ### Debug Logging
 
