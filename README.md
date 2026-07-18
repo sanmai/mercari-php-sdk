@@ -401,8 +401,6 @@ try {
 
 Both `createInstance()` factories take optional `$extraHeaders`, `$retryOptions`, and `$clientOptions` arrays after their required arguments - use them to send extra headers (a custom User-Agent, say), tune the bundled retry middleware for transient errors, or override defaults like `timeout` or `connect_timeout`.
 
-The factory signatures in `src/` list the defaults.
-
 ### Debug Logging
 
 `MercariClient` accepts any PSR-3 logger through `setLogger()`, which logs full request and response bodies - handy while you're experimenting:
