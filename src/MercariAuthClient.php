@@ -41,15 +41,21 @@ class MercariAuthClient
 
     public const REDIRECT = '/jp/v1/authorize';
 
-    public static function createInstance(string $authHost, string $clientId, string $clientSecret, array $extraHeaders = [], array $retryOptions = []): self
-    {
+    public static function createInstance(
+        string $authHost,
+        string $clientId,
+        string $clientSecret,
+        array $extraHeaders = [],
+        array $retryOptions = [],
+        array $clientOptions = [],
+    ): self {
         $stack = HandlerStack::create();
 
         $stack->push(GuzzleRetryMiddleware::factory(array_merge([
             'retry_on_timeout' => true,
         ], $retryOptions)), 'retry_on_status');
 
-        $httpClient = new Client([
+        $httpClient = new Client(array_merge([
             'base_uri' => sprintf('https://%s', $authHost),
             'auth' => [$clientId, $clientSecret],
             'connect_timeout' => 3,
@@ -58,7 +64,7 @@ class MercariAuthClient
             'allow_redirects' => false,
             'headers' => $extraHeaders,
             'handler' => $stack,
-        ]);
+        ], $clientOptions));
 
         return new MercariAuthClient(
             $clientId,

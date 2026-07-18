@@ -65,6 +65,32 @@ class MercariAuthClientTest extends TestCase
         $this->assertSame(10, $httpClient->getConfig('timeout'));
     }
 
+    public function testCreateInstanceWithClientOptions(): void
+    {
+        $client = MercariAuthClient::createInstance(
+            'sandbox.example.com',
+            'client_id',
+            'secret',
+            clientOptions: ['timeout' => 42, 'connect_timeout' => 67],
+        );
+
+        $this->assertInstanceOf(MercariAuthClient::class, $client);
+
+        $reflection = new ReflectionObject($client);
+        $property = $reflection->getProperty('client');
+        $property->setAccessible(true);
+
+        /** @var Client $httpClient */
+        $httpClient = $property->getValue($client);
+
+        $this->assertSame(42, $httpClient->getConfig('timeout'));
+        $this->assertSame(67, $httpClient->getConfig('connect_timeout'));
+
+        // defaults preserved when not overridden
+        $this->assertTrue($httpClient->getConfig('http_errors'));
+        $this->assertFalse($httpClient->getConfig('allow_redirects'));
+    }
+
     public function testLoginUrlRequest()
     {
         $redirectUrl = 'https://www.example.com/mercari/return';
