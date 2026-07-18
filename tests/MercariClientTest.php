@@ -108,6 +108,17 @@ class MercariClientTest extends TestCase
         $this->assertCount(6, $statusCodes);
     }
 
+    private function getRetryMiddleware(HandlerStack $handler): GuzzleRetryMiddleware
+    {
+        $stack = $this->getPropertyValue($handler, 'stack');
+        foreach ($stack as $item) {
+            if ($item[1] === "retry_on_status") {
+                return $item[0](fn() => null);
+            }
+        }
+
+        $this->fail('retry_on_status middleware not found');
+    }
     public function testCreateInstanceWithClientOptions(): void
     {
         $client = MercariClient::createInstance(
@@ -128,19 +139,6 @@ class MercariClientTest extends TestCase
         $this->assertTrue($httpClient->getConfig('http_errors'));
         $this->assertFalse($httpClient->getConfig('allow_redirects'));
     }
-
-    private function getRetryMiddleware(HandlerStack $handler): GuzzleRetryMiddleware
-    {
-        $stack = $this->getPropertyValue($handler, 'stack');
-        foreach ($stack as $item) {
-            if ($item[1] === "retry_on_status") {
-                return $item[0](fn() => null);
-            }
-        }
-
-        $this->fail('retry_on_status middleware not found');
-    }
-
     public function testSearch(): void
     {
         $response = new SearchResponse();
