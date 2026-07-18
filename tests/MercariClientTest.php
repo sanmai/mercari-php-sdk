@@ -119,7 +119,27 @@ class MercariClientTest extends TestCase
 
         $this->fail('retry_on_status middleware not found');
     }
+    public function testCreateInstanceWithClientOptions(): void
+    {
+        $client = MercariClient::createInstance(
+            'sandbox-api.example.com',
+            'token',
+            clientOptions: ['timeout' => 42, 'connect_timeout' => 67],
+        );
 
+        $this->assertInstanceOf(MercariClient::class, $client);
+
+        /** @var Client $httpClient */
+        $httpClient = $this->getPropertyValue($client, 'client');
+
+        $this->assertSame(42, $httpClient->getConfig('timeout'));
+        $this->assertSame(67, $httpClient->getConfig('connect_timeout'));
+
+        // defaults preserved when not overridden
+        $this->assertSame("Bearer token", $httpClient->getConfig('headers')['Authorization']);
+        $this->assertTrue($httpClient->getConfig('http_errors'));
+        $this->assertFalse($httpClient->getConfig('allow_redirects'));
+    }
     public function testSearch(): void
     {
         $response = new SearchResponse();

@@ -41,15 +41,31 @@ class MercariAuthClient
 
     public const REDIRECT = '/jp/v1/authorize';
 
-    public static function createInstance(string $authHost, string $clientId, string $clientSecret, array $extraHeaders = [], array $retryOptions = []): self
-    {
+    /**
+     * Build a new authentication client instance.
+     *
+     * @param string $authHost Auth hostname
+     * @param string $clientId Mercari client ID
+     * @param string $clientSecret Mercari client secret
+     * @param array<string, string> $extraHeaders Additional HTTP headers to send with every request
+     * @param array<string, mixed> $retryOptions Options passed to GuzzleRetryMiddleware (retry_on_status, etc.)
+     * @param array<string, mixed> $clientOptions Extra Guzzle client options (timeout, connect_timeout, etc.) merged after defaults
+     */
+    public static function createInstance(
+        string $authHost,
+        string $clientId,
+        string $clientSecret,
+        array $extraHeaders = [],
+        array $retryOptions = [],
+        array $clientOptions = [],
+    ): self {
         $stack = HandlerStack::create();
 
         $stack->push(GuzzleRetryMiddleware::factory(array_merge([
             'retry_on_timeout' => true,
         ], $retryOptions)), 'retry_on_status');
 
-        $httpClient = new Client([
+        $httpClient = new Client(array_merge([
             'base_uri' => sprintf('https://%s', $authHost),
             'auth' => [$clientId, $clientSecret],
             'connect_timeout' => 3,
@@ -58,7 +74,7 @@ class MercariAuthClient
             'allow_redirects' => false,
             'headers' => $extraHeaders,
             'handler' => $stack,
-        ]);
+        ], $clientOptions));
 
         return new MercariAuthClient(
             $clientId,
