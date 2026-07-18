@@ -41,6 +41,16 @@ class MercariAuthClient
 
     public const REDIRECT = '/jp/v1/authorize';
 
+    /**
+     * Build a new authentication client instance.
+     *
+     * @param string $authHost Auth hostname
+     * @param string $clientId Mercari client ID
+     * @param string $clientSecret Mercari client secret
+     * @param array<string, string> $extraHeaders Additional HTTP headers to send with every request
+     * @param array<string, mixed> $retryOptions Options passed to GuzzleRetryMiddleware (retry_on_status, etc.)
+     * @param array<string, mixed> $clientOptions Extra Guzzle client options (timeout, connect_timeout, etc.) merged after defaults
+     */
     public static function createInstance(
         string $authHost,
         string $clientId,

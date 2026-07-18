@@ -93,6 +93,15 @@ class MercariClient extends AbstractMercariClient
         HttpResponse::HTTP_BAD_REQUEST,
     ];
 
+    /**
+     * Build a new client instance.
+     *
+     * @param string $apiHost API hostname
+     * @param string $authToken Bearer token from MercariAuthClient
+     * @param array<string, string> $extraHeaders Additional HTTP headers to send with every request
+     * @param array<string, mixed> $retryOptions Options passed to GuzzleRetryMiddleware (retry_on_status, etc.)
+     * @param array<string, mixed> $clientOptions Extra Guzzle client options (timeout, connect_timeout, etc.) merged after defaults
+     */
     public static function createInstance(
         string $apiHost,
         string $authToken,
