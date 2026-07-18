@@ -93,8 +93,13 @@ class MercariClient extends AbstractMercariClient
         HttpResponse::HTTP_BAD_REQUEST,
     ];
 
-    public static function createInstance(string $apiHost, string $authToken, array $extraHeaders = [], array $retryOptions = []): self
-    {
+    public static function createInstance(
+        string $apiHost,
+        string $authToken,
+        array $extraHeaders = [],
+        array $retryOptions = [],
+        array $clientOptions = [],
+    ): self {
         $stack = HandlerStack::create();
 
         $stack->push(GuzzleRetryMiddleware::factory(array_merge([
@@ -102,7 +107,7 @@ class MercariClient extends AbstractMercariClient
             'retry_on_status' => self::RETRY_ON_STATUS,
         ], $retryOptions)), 'retry_on_status');
 
-        $httpClient = new Client([
+        $httpClient = new Client(array_merge([
             'base_uri' => sprintf('https://%s', $apiHost),
             'connect_timeout' => 3,
             'timeout' => 120,
@@ -112,7 +117,7 @@ class MercariClient extends AbstractMercariClient
                 'Authorization' => "Bearer $authToken",
             ], $extraHeaders),
             'handler' => $stack,
-        ]);
+        ], $clientOptions));
 
         return new MercariClient(
             $httpClient,

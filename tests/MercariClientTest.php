@@ -108,6 +108,27 @@ class MercariClientTest extends TestCase
         $this->assertCount(6, $statusCodes);
     }
 
+    public function testCreateInstanceWithClientOptions(): void
+    {
+        $client = MercariClient::createInstance(
+            'sandbox-api.example.com',
+            'token',
+            clientOptions: ['timeout' => 5, 'connect_timeout' => 1],
+        );
+
+        $this->assertInstanceOf(MercariClient::class, $client);
+
+        /** @var Client $httpClient */
+        $httpClient = $this->getPropertyValue($client, 'client');
+
+        $this->assertSame(5, $httpClient->getConfig('timeout'));
+        $this->assertSame(1, $httpClient->getConfig('connect_timeout'));
+
+        // defaults preserved when not overridden
+        $this->assertTrue($httpClient->getConfig('http_errors'));
+        $this->assertFalse($httpClient->getConfig('allow_redirects'));
+    }
+
     private function getRetryMiddleware(HandlerStack $handler): GuzzleRetryMiddleware
     {
         $stack = $this->getPropertyValue($handler, 'stack');
