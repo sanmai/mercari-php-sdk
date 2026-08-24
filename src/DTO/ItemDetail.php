@@ -150,6 +150,8 @@ class ItemDetail
 
     public string $language_code;
 
+    public string $listing_type;
+
     /**
      * @var array<string,array<string>>
      */

@@ -1,0 +1,15 @@
+{
+    "master_categories": [
+        {
+            "id": "123123123",
+            "name": "カード",
+            "item_auth_supported": true
+        },
+        {
+            "id": "3434343434",
+            "name": "ダウンロード",
+            "level": "1",
+            "parent_id": "7565656"
+        }
+    ]
+}
