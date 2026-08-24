@@ -23,6 +23,7 @@ use DuoClock\DuoClock;
 
 use function abs;
 use function file_get_contents;
+use function gzdecode;
 use function hash_equals;
 use function hash_hmac;
 use function intval;
@@ -42,13 +43,22 @@ class WebhookSignature
     public function __construct(string $signingSecret, ?string $requestBody = null, ?int $timestamp = null, ?string $signature = null)
     {
         $this->signingSecret = $signingSecret;
-        $this->requestBody = $requestBody ?? file_get_contents('php://input');
+        $this->requestBody = self::decode($requestBody ?? file_get_contents('php://input'));
 
         // X-Mercari-Request-Timestamp
         $this->timestamp = $timestamp ?? intval($_SERVER['HTTP_X_MERCARI_REQUEST_TIMESTAMP'] ?? 0);
 
         // X-Mercari-Signature
         $this->signature = $signature ?? $_SERVER['HTTP_X_MERCARI_SIGNATURE'] ?? '';
+    }
+
+    private static function decode(string $requestBody): string
+    {
+        if (($_SERVER['HTTP_CONTENT_ENCODING'] ?? '') !== 'gzip') {
+            return $requestBody;
+        }
+
+        return (string) gzdecode($requestBody);
     }
 
     public function isValid(?DuoClock $timekeeper = null, int $validityWindow = self::VALIDITY_WINDOW): bool

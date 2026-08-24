@@ -1,0 +1,19 @@
+{
+    "id": "747717374",
+    "status": "wait_review",
+    "item_id": "m04771746908",
+    "seller_id": "531716953",
+    "updated_time": 1225150621,
+    "price": 69000,
+    "paid_price": 69120,
+    "shipping_info": {
+        "shipping_method_name": "らくらくメルカリ便",
+        "tracking_number": "12345612",
+        "status": "shipped",
+        "buyer_shipping_fee": 120
+    },
+    "shipping_info_from_service_provider": {
+        "carrier_code": "yamato",
+        "tracking_number": "11223311"
+    }
+}

@@ -44,6 +44,7 @@ use function count;
  * @property string $delivery_identifier An optional identifier to be included in the delivery address
  * @property int $coupon_id Item's coupon ID
  * @property int $shops_shipping_fee Shops buyer shipping fee
+ * @property bool $item_authentication Request the item authentication service (only for eligible items)
  * @property string $country_code Two-character country or region code representing the shipping address of the user
  * @property string $buyer_id Buyer's ID number
  */

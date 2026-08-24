@@ -22,6 +22,8 @@ namespace Tests\Mercari;
 use Mercari\WebhookSignature;
 use DuoClock\TimeSpy;
 
+use function gzencode;
+
 /**
  * @covers \Mercari\WebhookSignature
  */
@@ -128,9 +130,36 @@ class WebhookSignatureTest extends TestCase
         $this->assertSame($valid, $signature->isValid($timekeeper));
     }
 
+    public function testValidGzip()
+    {
+        $_SERVER['HTTP_CONTENT_ENCODING'] = 'gzip';
+
+        $signature = new WebhookSignature(
+            '8f742231b10e8888abcd99yyyzzz85a5',
+            gzencode('{"webhook_type":"test_webhook"}'),
+            self::TEST_TIME,
+            'v0:249e47edc1980531306517e4435b54ef1ff224020029284bdf19c8eda99aa325',
+        );
+
+        $this->assertTrue($signature->isValid(new TimeSpy(self::TEST_TIME)));
+    }
+
+    public function testInvalidWithoutGzipHeader()
+    {
+        $signature = new WebhookSignature(
+            '8f742231b10e8888abcd99yyyzzz85a5',
+            gzencode('{"webhook_type":"test_webhook"}'),
+            self::TEST_TIME,
+            'v0:249e47edc1980531306517e4435b54ef1ff224020029284bdf19c8eda99aa325',
+        );
+
+        $this->assertFalse($signature->isValid(new TimeSpy(self::TEST_TIME)));
+    }
+
     public function tearDown(): void
     {
         unset($_SERVER['HTTP_X_MERCARI_REQUEST_TIMESTAMP']);
         unset($_SERVER['HTTP_X_MERCARI_SIGNATURE']);
+        unset($_SERVER['HTTP_CONTENT_ENCODING']);
     }
 }

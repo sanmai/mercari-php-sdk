@@ -19,10 +19,8 @@
 
 namespace Mercari\DTO;
 
-class ShippingInfo
+class ProviderShippingInfo
 {
-    public string $shipping_method_name;
+    public string $carrier_code;
     public string $tracking_number;
-    public string $status;
-    public int $buyer_shipping_fee;
 }

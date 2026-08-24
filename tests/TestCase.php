@@ -109,6 +109,11 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
         );
     }
 
+    /**
+     * @template T of object
+     * @param class-string<T> $type
+     * @return T
+     */
     protected function deserializeFile(string $file, string $type)
     {
         if (!is_file($file) && isset($_SERVER['CI'])) {

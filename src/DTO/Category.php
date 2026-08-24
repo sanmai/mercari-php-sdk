@@ -28,4 +28,6 @@ class Category
     public string $level;
 
     public string $parent_id;
+
+    public bool $item_auth_supported;
 }

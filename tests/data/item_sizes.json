@@ -1,0 +1,19 @@
+{
+    "id": "m09876543210",
+    "status": "on_sale",
+    "checksum": "ffcf333dcbbfc0dcfbedfa2f1bf3fffa",
+    "item_sizes": [
+        {
+            "id": 4,
+            "name": "M"
+        },
+        {
+            "id": 5,
+            "name": "L"
+        }
+    ],
+    "seller": {
+        "id": 737031173,
+        "name": "テスト"
+    }
+}

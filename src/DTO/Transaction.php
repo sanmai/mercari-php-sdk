@@ -33,6 +33,13 @@ class Transaction
 
     public int $updated_time;
 
+    public int $price;
+
+    public int $paid_price;
+
     #[Type('Mercari\DTO\ShippingInfo')]
     public ShippingInfo $shipping_info;
+
+    #[Type('Mercari\DTO\ProviderShippingInfo')]
+    public ProviderShippingInfo $shipping_info_from_service_provider;
 }

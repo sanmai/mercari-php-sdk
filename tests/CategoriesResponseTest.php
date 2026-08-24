@@ -34,6 +34,8 @@ class CategoriesResponseTest extends TestCase
     {
         yield 'master_categories.json' => [__DIR__ . '/data/master_categories.json', 4];
 
+        yield 'master_categories_auth.json' => [__DIR__ . '/data/master_categories_auth.json', 2];
+
         if (is_file(__DIR__ . '/data/master_categories_all.json')) {
             yield 'master_categories_all.json' => [__DIR__ . '/data/master_categories_all.json'];
         }
