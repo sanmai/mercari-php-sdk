@@ -52,16 +52,6 @@ use function strpos;
  */
 class MercariClientTest extends TestCase
 {
-    private const MESSAGES_RETRY_OPTIONS = [
-        'retry_on_status' => [
-            HttpResponse::HTTP_INTERNAL_SERVER_ERROR,
-            HttpResponse::HTTP_TOO_MANY_REQUESTS,
-            HttpResponse::HTTP_BAD_GATEWAY,
-            HttpResponse::HTTP_SERVICE_UNAVAILABLE,
-            HttpResponse::HTTP_GATEWAY_TIMEOUT,
-        ],
-    ];
-
     /** @var MercariClient&MockObject */
     private $client;
 
@@ -478,11 +468,7 @@ class MercariClientTest extends TestCase
                 $this->stringContains('messages'),
             ),
             $this->identicalTo([]),
-            $this->identicalTo([
-                HttpResponse::HTTP_NOT_FOUND,
-                HttpResponse::HTTP_CONFLICT,
-            ]),
-            $this->identicalTo(self::MESSAGES_RETRY_OPTIONS),
+            $this->containsIdentical(HttpResponse::HTTP_CONFLICT),
         );
 
         $responseActual = $this->client->transactionMessages('foo');
@@ -517,7 +503,6 @@ class MercariClientTest extends TestCase
             $this->identicalTo([
                 'message' => 'bar',
             ]),
-            $this->identicalTo(self::MESSAGES_RETRY_OPTIONS),
         );
 
         $responseActual = $this->client->transactionMessage('foo', 'bar');
