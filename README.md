@@ -159,6 +159,8 @@ do {
 echo "{$response->meta->num_found} items in total\n";
 ```
 
+An item with `has_promotions` set is on sale. Set `$request->time_sale = true` to search for discounted items only, and `$request->with_offer_price_promotion = true` to include seller-initiated (offer to everyone) discounts. A discounted item reports its combined discount in `->discounts` (`total_return_percent`, `total_return_absolute`) with a per-discount breakdown, alongside the platform-initiated coupon in `->item_discount`.
+
 ### Fetching Items
 
 Fetch a single item by ID. When the item does not exist, `item()` returns `null`:
