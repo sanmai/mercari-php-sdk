@@ -40,9 +40,6 @@ class Transaction
     #[Type('Mercari\DTO\ShippingInfo')]
     public ShippingInfo $shipping_info;
 
-    /**
-     * Shipping from the authentication service provider to the buyer; present only for authenticated items.
-     */
     #[Type('Mercari\DTO\ProviderShippingInfo')]
     public ProviderShippingInfo $shipping_info_from_service_provider;
 }

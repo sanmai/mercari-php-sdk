@@ -19,9 +19,6 @@
 
 namespace Mercari\DTO;
 
-/**
- * Shipping info from the authentication service provider to the buyer.
- */
 class ProviderShippingInfo
 {
     public string $carrier_code;
