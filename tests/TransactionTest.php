@@ -35,8 +35,6 @@ class TransactionTest extends TestCase
         $file = __DIR__ . '/data/transaction.json';
 
         $response = $this->deserializeFile($file, Transaction::class);
-
-        /** @var Transaction $response */
         $this->assertSame('wait_shipping', $response->status);
 
         $this->assertDeserializedSame($file, $response, false);
@@ -47,8 +45,6 @@ class TransactionTest extends TestCase
         $file = __DIR__ . '/data/transaction_anshin.json';
 
         $response = $this->deserializeFile($file, Transaction::class);
-
-        /** @var Transaction $response */
         $this->assertSame(69000, $response->price);
         $this->assertSame(69120, $response->paid_price);
         $this->assertSame(120, $response->shipping_info->buyer_shipping_fee);
