@@ -72,13 +72,29 @@ class MercariClient extends AbstractMercariClient
 
     private const CATEGORIES = '/v1/master/item_categories';
 
-    private const RETRY_ON_STATUS = [
+    private const RETRY_ON_STATUS_TRANSIENT = [
         HttpResponse::HTTP_INTERNAL_SERVER_ERROR,
-        HttpResponse::HTTP_CONFLICT,
         HttpResponse::HTTP_TOO_MANY_REQUESTS,
         HttpResponse::HTTP_BAD_GATEWAY,
         HttpResponse::HTTP_SERVICE_UNAVAILABLE,
         HttpResponse::HTTP_GATEWAY_TIMEOUT,
+    ];
+
+    private const RETRY_ON_STATUS = [
+        HttpResponse::HTTP_CONFLICT,
+        ...self::RETRY_ON_STATUS_TRANSIENT,
+    ];
+
+    /**
+     * No retries on 409 for the message board.
+     */
+    private const MESSAGES_RETRY_OPTIONS = [
+        'retry_on_status' => self::RETRY_ON_STATUS_TRANSIENT,
+    ];
+
+    private const MESSAGES_UNAVAILABLE_ON_STATUS = [
+        HttpResponse::HTTP_NOT_FOUND,
+        HttpResponse::HTTP_CONFLICT,
     ];
 
     private const ITEM_NOT_FOUND_ON_STATUS = [
@@ -254,6 +270,8 @@ class MercariClient extends AbstractMercariClient
         $response = $this->getOptional(
             MessagesResponse::class,
             sprintf(self::TRANSACTION_MESSAGES, $transaction_id),
+            error_codes: self::MESSAGES_UNAVAILABLE_ON_STATUS,
+            options: self::MESSAGES_RETRY_OPTIONS,
         );
 
         return $response ?? new MessagesResponse();
@@ -265,6 +283,7 @@ class MercariClient extends AbstractMercariClient
             TransactionMessage::class,
             sprintf(self::TRANSACTION_MESSAGES, $transaction_id),
             ['message' => $message],
+            self::MESSAGES_RETRY_OPTIONS,
         );
     }
 

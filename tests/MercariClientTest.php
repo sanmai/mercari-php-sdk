@@ -467,11 +467,25 @@ class MercariClientTest extends TestCase
                 $this->stringContains('foo'),
                 $this->stringContains('messages'),
             ),
+            $this->identicalTo([]),
+            $this->containsIdentical(HttpResponse::HTTP_CONFLICT),
         );
 
         $responseActual = $this->client->transactionMessages('foo');
 
         $this->assertSame($response, $responseActual);
+    }
+
+    public function testTransactionMessagesUnavailable(): void
+    {
+        $this->client->expects($this->once())
+            ->method('getOptional')
+            ->willReturn(null);
+
+        $response = $this->client->transactionMessages('foo');
+
+        $this->assertInstanceOf(MessagesResponse::class, $response);
+        $this->assertCount(0, $response);
     }
 
     public function testTransactionMessage()

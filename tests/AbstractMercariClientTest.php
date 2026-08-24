@@ -102,6 +102,25 @@ class AbstractMercariClientTest extends TestCase
         $this->assertSame('/example?foo=bar', (string) $request->getUri());
     }
 
+    /**
+     * @dataProvider provideGetMethods
+     */
+    public function testGetWithOptions(string $method): void
+    {
+        $responses = [
+            new Response(HttpResponse::HTTP_OK, [], ExampleResponse::JSON),
+        ];
+
+        $client = $this->buildExampleClient($responses);
+
+        $client->$method(ExampleResponse::class, '/example', ['foo' => 'bar'], options: [
+            'retry_on_status' => [HttpResponse::HTTP_GATEWAY_TIMEOUT],
+        ]);
+
+        $this->assertSame([HttpResponse::HTTP_GATEWAY_TIMEOUT], $this->getLastOptions()['retry_on_status']);
+        $this->assertSame('/example?foo=bar', (string) $this->getLastRequest()->getUri());
+    }
+
     public function testGetWithHeaders(): void
     {
         $responses = [
@@ -145,6 +164,22 @@ class AbstractMercariClientTest extends TestCase
         $this->assertSame('POST', $request->getMethod());
         $this->assertSame('/example', (string) $request->getUri());
         $this->assertSame('{"foo":"bar"}', $request->getBody()->getContents());
+    }
+
+    public function testPostWithOptions(): void
+    {
+        $responses = [
+            new Response(HttpResponse::HTTP_OK, [], ExampleResponse::JSON),
+        ];
+
+        $client = $this->buildExampleClient($responses);
+
+        $client->post(ExampleResponse::class, '/example', ['foo' => 'bar'], [
+            'retry_on_status' => [HttpResponse::HTTP_GATEWAY_TIMEOUT],
+        ]);
+
+        $this->assertSame([HttpResponse::HTTP_GATEWAY_TIMEOUT], $this->getLastOptions()['retry_on_status']);
+        $this->assertSame('{"foo":"bar"}', $this->getLastRequest()->getBody()->getContents());
     }
 
     public function testGetFallbackHappyPath(): void
