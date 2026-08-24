@@ -75,6 +75,7 @@ abstract class AbstractMercariClient
      * @template T
      * @param class-string<T> $type
      * @return T|null
+     * @internal
      */
     protected function getOptional(
         string $type,
@@ -98,6 +99,7 @@ abstract class AbstractMercariClient
      * @template T
      * @param class-string<T> $type
      * @return T
+     * @internal
      */
     protected function get(
         string $type,
@@ -118,6 +120,7 @@ abstract class AbstractMercariClient
      * @template T
      * @param class-string<T> $type
      * @return T
+     * @internal
      */
     protected function post(string $type, string $uri, array $json, array $options = [])
     {
@@ -133,6 +136,7 @@ abstract class AbstractMercariClient
      * @template T
      * @param class-string<T> $type
      * @return T
+     * @internal
      */
     protected function postFallback(string $type, string $uri, array $json)
     {
@@ -147,6 +151,7 @@ abstract class AbstractMercariClient
      * @template T
      * @param class-string<T> $type
      * @return T
+     * @internal
      */
     protected function handleRequestException(RequestException $clientError, string $type)
     {
@@ -177,6 +182,7 @@ abstract class AbstractMercariClient
      * @template T
      * @param class-string<T> $type
      * @return T
+     * @internal
      */
     protected function responseToType(ResponseInterface $response, string $type)
     {
