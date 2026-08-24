@@ -52,6 +52,16 @@ use function strpos;
  */
 class MercariClientTest extends TestCase
 {
+    private const MESSAGES_RETRY_OPTIONS = [
+        'retry_on_status' => [
+            HttpResponse::HTTP_INTERNAL_SERVER_ERROR,
+            HttpResponse::HTTP_TOO_MANY_REQUESTS,
+            HttpResponse::HTTP_BAD_GATEWAY,
+            HttpResponse::HTTP_SERVICE_UNAVAILABLE,
+            HttpResponse::HTTP_GATEWAY_TIMEOUT,
+        ],
+    ];
+
     /** @var MercariClient&MockObject */
     private $client;
 
@@ -467,11 +477,29 @@ class MercariClientTest extends TestCase
                 $this->stringContains('foo'),
                 $this->stringContains('messages'),
             ),
+            $this->identicalTo([]),
+            $this->identicalTo([
+                HttpResponse::HTTP_NOT_FOUND,
+                HttpResponse::HTTP_CONFLICT,
+            ]),
+            $this->identicalTo(self::MESSAGES_RETRY_OPTIONS),
         );
 
         $responseActual = $this->client->transactionMessages('foo');
 
         $this->assertSame($response, $responseActual);
+    }
+
+    public function testTransactionMessagesUnavailable(): void
+    {
+        $this->client->expects($this->once())
+            ->method('getOptional')
+            ->willReturn(null);
+
+        $response = $this->client->transactionMessages('foo');
+
+        $this->assertInstanceOf(MessagesResponse::class, $response);
+        $this->assertCount(0, $response);
     }
 
     public function testTransactionMessage()
@@ -489,6 +517,7 @@ class MercariClientTest extends TestCase
             $this->identicalTo([
                 'message' => 'bar',
             ]),
+            $this->identicalTo(self::MESSAGES_RETRY_OPTIONS),
         );
 
         $responseActual = $this->client->transactionMessage('foo', 'bar');

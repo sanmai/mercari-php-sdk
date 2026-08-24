@@ -31,8 +31,9 @@ class ExampleMercariClient extends AbstractMercariClient
         string $uri,
         array $query = [],
         array $error_codes = [HttpResponse::HTTP_NOT_FOUND],
+        array $options = [],
     ) {
-        return parent::getOptional($type, $uri, $query, $error_codes);
+        return parent::getOptional($type, $uri, $query, $error_codes, $options);
     }
 
     public function getOptionalDefault(
@@ -43,14 +44,14 @@ class ExampleMercariClient extends AbstractMercariClient
         return parent::getOptional($type, $uri, $query);
     }
 
-    public function get(string $type, string $uri, array $query = [], array $headers = [])
+    public function get(string $type, string $uri, array $query = [], array $headers = [], array $options = [])
     {
-        return parent::get($type, $uri, $query, $headers);
+        return parent::get($type, $uri, $query, $headers, $options);
     }
 
-    public function post(string $type, string $uri, array $json)
+    public function post(string $type, string $uri, array $json, array $options = [])
     {
-        return parent::post($type, $uri, $json);
+        return parent::post($type, $uri, $json, $options);
     }
 
     public function postFallback(string $type, string $uri, array $json)

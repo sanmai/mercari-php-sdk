@@ -154,4 +154,9 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     {
         return end($this->requests)['request'];
     }
+
+    protected function getLastOptions(): array
+    {
+        return end($this->requests)['options'];
+    }
 }
