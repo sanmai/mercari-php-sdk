@@ -102,6 +102,9 @@ class ItemDetail
     #[Type('Mercari\DTO\ItemDiscount')]
     public ItemDiscount $item_discount;
 
+    #[Type('Mercari\DTO\Discounts')]
+    public Discounts $discounts;
+
     #[Type('Mercari\DTO\ItemSize')]
     public ItemSize $item_size;
 

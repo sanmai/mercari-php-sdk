@@ -35,6 +35,8 @@ namespace Mercari;
  * @property int $item_condition_id The condition ID.
  * @property int $shipping_payer_id The shipping payer ID.
  * @property string $status Comma-separated list of item statuses ("on_sale,trading,sold_out" used by default).
+ * @property bool $time_sale Search for Time-Sale (discounted) items only.
+ * @property bool $with_offer_price_promotion Include the offer-to-everyone discount in the returned discount details.
  * @property int $marketplace Preferred marketplace for the search; defaults to Mercari.
  * @property string $sort Sort using the given field.
  * @property string $order Sorting order ('desc' by default)
