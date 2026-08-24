@@ -24,4 +24,5 @@ class ShippingInfo
     public string $shipping_method_name;
     public string $tracking_number;
     public string $status;
+    public int $buyer_shipping_fee;
 }

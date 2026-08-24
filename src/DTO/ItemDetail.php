@@ -73,7 +73,7 @@ class ItemDetail
     public int $price;
 
     /**
-     * ItemType to distinguish mercari or shops item ("mercari", "shops")
+     * ItemType to distinguish mercari or shops item ("mercari", "shop")
      */
     public string $item_type;
 
@@ -107,6 +107,12 @@ class ItemDetail
 
     #[Type('Mercari\DTO\ItemSize')]
     public ItemSize $item_size;
+
+    /**
+     * @var ItemSize[]
+     */
+    #[Type('array<Mercari\DTO\ItemSize>')]
+    public array $item_sizes;
 
     #[Type('Mercari\DTO\ItemBrand')]
     public ItemBrand $item_brand;
