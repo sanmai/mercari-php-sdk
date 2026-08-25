@@ -19,9 +19,13 @@
 
 namespace Tests\Mercari;
 
+use Mercari\BrandsResponse;
 use Mercari\CategoriesResponse;
 use Mercari\CommentsResponse;
 use Mercari\Failure;
+use Mercari\PartnerOffersResponse;
+use Mercari\ReturnResponse;
+use Mercari\DTO\ShopsOrder;
 use Mercari\ItemsResponse;
 use Mercari\MessagesResponse;
 use Mercari\NewCommentResponse;
@@ -49,6 +53,10 @@ class SerializationTest extends TestCase
 {
     private const PREFIX_CLASS_MAP = [
         'master_categories' => CategoriesResponse::class,
+        'master_brands' => BrandsResponse::class,
+        'partner_offers' => PartnerOffersResponse::class,
+        'return' => ReturnResponse::class,
+        'shops_order' => ShopsOrder::class,
         'comments' => CommentsResponse::class,
         'failure' => Failure::class,
         'similar_items' => ItemsResponse::class,
@@ -67,6 +75,10 @@ class SerializationTest extends TestCase
 
     private const NORMALIZE_IDS = [
         CategoriesResponse::class => false,
+        BrandsResponse::class => false,
+        PartnerOffersResponse::class => false,
+        ReturnResponse::class => false,
+        ShopsOrder::class => false,
         Transaction::class => false,
         MessagesResponse::class => false,
         CommentsResponse::class => false,
@@ -75,6 +87,7 @@ class SerializationTest extends TestCase
     private const SKIP_FILES = [
         'todolist_null.json',
         'similar_items_null.json',
+        'partner_offers_empty.json',
     ];
 
     public static function provideFiles(): iterable

@@ -27,6 +27,7 @@ use GuzzleRetry\GuzzleRetryMiddleware;
 use JSONSerializer\Serializer;
 use Mercari\DTO\ItemDetail;
 use Mercari\DTO\Seller;
+use Mercari\DTO\ShopsOrder;
 use Mercari\DTO\Transaction;
 use Mercari\DTO\TransactionMessage;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
@@ -45,6 +46,20 @@ class MercariClient extends AbstractMercariClient
     public const MARKETPLACE_SHOP = 2;
 
     public const MARKETPLACE_ALL = 3;
+
+    public const DECLINE_REASON_01 = 'c2b_01';
+
+    public const DECLINE_REASON_02 = 'c2b_02';
+
+    public const DECLINE_REASON_03 = 'c2b_03';
+
+    public const DECLINE_REASON_04 = 'c2b_04';
+
+    public const SERVICE_STATUS_WAIT_PROCESSING = 'wait_processing';
+
+    public const SERVICE_STATUS_CANCELED = 'canceled';
+
+    public const SERVICE_STATUS_DONE = 'done';
 
     private const SEARCH_ITEMS_V3 = '/v3/items/search';
 
@@ -71,6 +86,20 @@ class MercariClient extends AbstractMercariClient
     private const TRANSACTION_REVIEW = '/v1/transactions/%s/post_review';
 
     private const CATEGORIES = '/v1/master/item_categories';
+
+    private const BRANDS = '/v1/master/item_brands';
+
+    private const GET_PARTNER_OFFERS = '/v1/get_partner_offers';
+
+    private const ACCEPT_TRANSACTION = '/v1/accept_transaction';
+
+    private const DECLINE_TRANSACTION = '/v1/decline_transaction';
+
+    private const RETURN_TRACKING_ID = '/v1/return_tracking_id';
+
+    private const SHOPS_ORDER = '/v1/shops_order/%s';
+
+    private const ADDITIONAL_SERVICE_STATUS = '/v1/items/%s/additional_service_status';
 
     private const RETRY_ON_STATUS_TRANSIENT = [
         HttpResponse::HTTP_INTERNAL_SERVER_ERROR,
@@ -105,6 +134,11 @@ class MercariClient extends AbstractMercariClient
     ];
 
     private const USER_NOT_FOUND_ON_STATUS = [
+        HttpResponse::HTTP_NOT_FOUND,
+        HttpResponse::HTTP_BAD_REQUEST,
+    ];
+
+    private const SHOPS_ORDER_NOT_FOUND_ON_STATUS = [
         HttpResponse::HTTP_NOT_FOUND,
         HttpResponse::HTTP_BAD_REQUEST,
     ];
@@ -313,6 +347,90 @@ class MercariClient extends AbstractMercariClient
             CategoriesResponse::class,
             self::CATEGORIES,
             headers: $headers,
+        );
+    }
+
+    /**
+     * @throws NotModifiedException When the list did not change since the last call.
+     */
+    public function brands(array $headers = []): BrandsResponse
+    {
+        return $this->get(
+            BrandsResponse::class,
+            self::BRANDS,
+            headers: $headers,
+        );
+    }
+
+    public function partnerOffers(int $page = 0, int $limit = 50, ?string $item_id = null): PartnerOffersResponse
+    {
+        $response = $this->getOptional(
+            PartnerOffersResponse::class,
+            self::GET_PARTNER_OFFERS,
+            ['page' => $page, 'limit' => $limit] + array_filter(['item_id' => $item_id]),
+        );
+
+        return $response ?? new PartnerOffersResponse();
+    }
+
+    public function acceptTransaction(AcceptTransactionRequest $request): PurchaseResponse
+    {
+        return $this->postFallback(
+            PurchaseResponse::class,
+            self::ACCEPT_TRANSACTION,
+            $request->getRequestParams(),
+        );
+    }
+
+    public function declineTransaction(string $transaction_id, string $cancellation_reason): PurchaseResponse
+    {
+        return $this->postFallback(
+            PurchaseResponse::class,
+            self::DECLINE_TRANSACTION,
+            [
+                'transaction_id' => $transaction_id,
+                'cancellation_reason' => $cancellation_reason,
+            ],
+        );
+    }
+
+    public function returnTransaction(string $transaction_id, string $tracking_id, string $shipping_carrier_name): ReturnResponse
+    {
+        return $this->postFallback(
+            ReturnResponse::class,
+            self::RETURN_TRACKING_ID,
+            [
+                'transaction_id' => $transaction_id,
+                'tracking_id' => $tracking_id,
+                'shipping_carrier_name' => $shipping_carrier_name,
+            ],
+        );
+    }
+
+    public function shopsOrder(string $order_id): ?ShopsOrder
+    {
+        return $this->getOptional(
+            ShopsOrder::class,
+            sprintf(self::SHOPS_ORDER, $order_id),
+            error_codes: self::SHOPS_ORDER_NOT_FOUND_ON_STATUS,
+        );
+    }
+
+    /**
+     * @param array<array{code: string, note?: string}> $reasons
+     */
+    public function updateAdditionalServiceStatus(
+        string $item_id,
+        string $status,
+        ?string $tracking_number = null,
+        array $reasons = [],
+    ): void {
+        $this->put(
+            sprintf(self::ADDITIONAL_SERVICE_STATUS, $item_id),
+            ['status' => $status] + array_filter([
+                'tracking_number' => $tracking_number,
+                'reasons' => $reasons,
+            ]),
         );
     }
 }

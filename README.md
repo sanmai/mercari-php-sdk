@@ -30,13 +30,13 @@ Please note that this is not an official SDK but rather an independent, communit
 - [x] Post Comment
 - [x] Get Item Categories
 - [x] Webhook Signature Validation
-- [ ] Get Item Brands
-- [ ] Accept Transaction
-- [ ] Reject Transaction
-- [ ] Return Transaction
-- [ ] Get Shops Order
-- [ ] Get Partner Offers
-- [ ] Update Additional Service Status
+- [x] Get Item Brands
+- [x] Accept Transaction
+- [x] Reject Transaction
+- [x] Return Transaction
+- [x] Get Shops Order
+- [x] Get Partner Offers
+- [x] Update Additional Service Status
 
 ## Overview
 
@@ -205,13 +205,68 @@ foreach ($client->itemComments('m1234567890') as $comment) {
 }
 ```
 
-### Categories
+### Categories and Brands
 
 ```php
 $categories = $client->categories();
+
+$brands = $client->brands();
 ```
 
-You may pass optional headers when fetching categories.
+You may pass optional headers when fetching either. Both are master-data lists meant to be cached locally: if you request the brands again within an hour of an unchanged list, the call throws a `Mercari\NotModifiedException` instead of returning a fresh copy.
+
+### Partner Offers
+
+Offers come in pages of `limit` (50 by default); `page` is zero-indexed. There is no "has more" flag, so read until you get an empty page:
+
+```php
+for ($page = 0; count($offers = $client->partnerOffers($page)) > 0; $page++) {
+    foreach ($offers as $offer) {
+        echo "{$offer->item_id}\t{$offer->status}\t{$offer->price}\n";
+    }
+}
+```
+
+You may filter offers for a single item by passing its ID: `$client->partnerOffers(item_id: 'm1234567890')`.
+
+### Accepting, Declining, and Returning Transactions
+
+Partners assessing purchased items can accept a transaction, decline it, or register the return shipment's tracking number after declining. Accepting takes a filled-in `AcceptTransactionRequest`; both accept and decline return the same response type as `purchase()`:
+
+```php
+$request = new Mercari\AcceptTransactionRequest($transactionId);
+$request->item_information = 'A watch, as described';
+$request->item_condition = 2;
+$request->purchase_quantity = 1;
+$request->paying_out_company_name = 'Example Trading Co.';
+$request->paying_out_company_address = 'Tokyo';
+$request->paying_out_name = 'Yamada Taro';
+$request->paying_out_address = 'Tokyo';
+$request->paying_out_occupation = 'Buyer';
+$request->paying_out_department = 'Purchasing';
+$request->paying_out_age = 40;
+
+$response = $client->acceptTransaction($request);
+
+if (!$response->isSuccess()) {
+    echo "Not accepted: {$response->failure_details->code} {$response->failure_details->reasons}\n";
+}
+```
+
+Only one of accept-or-decline can be used per transaction. Declining requires one of the `MercariClient::DECLINE_REASON_*` codes, and a successful decline response includes the address to ship the item back to:
+
+```php
+$response = $client->declineTransaction($transactionId, Mercari\MercariClient::DECLINE_REASON_01);
+
+$address = $response->transaction_details->user_address;
+
+// After shipping the item back, register the tracking number
+$response = $client->returnTransaction($transactionId, '1234567890', 'ヤマト運輸');
+
+if (!$response->isSuccess()) {
+    echo "Not registered: {$response->failure_details->code} {$response->failure_details->reasons}\n";
+}
+```
 
 ## Part 2: Acting as a User
 
@@ -361,6 +416,37 @@ do {
     $pageToken = $response->next_page_token;
 } while ($pageToken !== '');
 ```
+
+### Shops Orders
+
+A purchase on Mercari Shops yields a `shop_order_id` rather than a transaction ID; look the order up with it. `shopsOrder()` returns `null` when there is no such order:
+
+```php
+$order = $client->shopsOrder($shopOrderId);
+
+if ($order === null) {
+    echo "Order not found\n";
+    return;
+}
+
+echo "{$order->status}: {$order->shipping_info->tracking_number}\n";
+```
+
+### Additional Service Status
+
+Providers of additional services (such as data deletion) report progress on an item's service with `updateAdditionalServiceStatus()`. It returns nothing on success; a `tracking_number` is required when the status is `canceled` or `done`, and cancellations may include reasons:
+
+```php
+use Mercari\MercariClient;
+
+$client->updateAdditionalServiceStatus($itemId, MercariClient::SERVICE_STATUS_DONE, '1234567890');
+
+$client->updateAdditionalServiceStatus($itemId, MercariClient::SERVICE_STATUS_CANCELED, '1234567890', [
+    ['code' => 'anshin_data_deletion_001', 'note' => ''],
+]);
+```
+
+An illegal status transition fails with a Guzzle `RequestException` reporting HTTP 412.
 
 ### Posting a Comment
 

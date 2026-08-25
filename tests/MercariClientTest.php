@@ -19,9 +19,13 @@
 
 namespace Tests\Mercari;
 
+use Mercari\AcceptTransactionRequest;
+use Mercari\BrandsResponse;
 use Mercari\CategoriesResponse;
 use Mercari\CommentsResponse;
 use Mercari\DTO;
+use Mercari\PartnerOffersResponse;
+use Mercari\ReturnResponse;
 use Mercari\DTO\ItemDetail;
 use Mercari\DTO\Seller;
 use Mercari\DTO\Transaction;
@@ -62,6 +66,7 @@ class MercariClientTest extends TestCase
             ->onlyMethods([
                 'get',
                 'post',
+                'put',
                 'getOptional',
                 'postFallback',
             ])
@@ -612,6 +617,216 @@ class MercariClientTest extends TestCase
         $responseActual = $this->client->categories(['x-some-header' => 'true']);
 
         $this->assertInstanceOf(CategoriesResponse::class, $responseActual);
+    }
+
+    public function testBrands()
+    {
+        $response = new BrandsResponse();
+
+        $this->clientExpects(
+            'get',
+            $response,
+            $this->stringContains('brands'),
+            [],
+            [],
+        );
+
+        $responseActual = $this->client->brands();
+
+        $this->assertSame($response, $responseActual);
+    }
+
+    public function testBrandsWithHeaders(): void
+    {
+        $this->clientExpects(
+            'get',
+            new BrandsResponse(),
+            $this->stringContains('brands'),
+            [],
+            ['x-some-header' => 'true'],
+        );
+
+        $responseActual = $this->client->brands(['x-some-header' => 'true']);
+
+        $this->assertInstanceOf(BrandsResponse::class, $responseActual);
+    }
+
+    public function testPartnerOffers(): void
+    {
+        $response = new PartnerOffersResponse();
+
+        $this->clientExpects(
+            'getOptional',
+            $response,
+            $this->stringContains('partner_offers'),
+            $this->identicalTo([
+                'page' => 0,
+                'limit' => 50,
+            ]),
+        );
+
+        $responseActual = $this->client->partnerOffers();
+
+        $this->assertSame($response, $responseActual);
+    }
+
+    public function testPartnerOffersItemId(): void
+    {
+        $response = new PartnerOffersResponse();
+
+        $this->clientExpects(
+            'getOptional',
+            $response,
+            $this->stringContains('partner_offers'),
+            $this->identicalTo([
+                'page' => 2,
+                'limit' => 100,
+                'item_id' => 'foo',
+            ]),
+        );
+
+        $responseActual = $this->client->partnerOffers(2, 100, 'foo');
+
+        $this->assertSame($response, $responseActual);
+    }
+
+    public function testPartnerOffersNotFound(): void
+    {
+        $this->client->expects($this->once())
+            ->method('getOptional')
+            ->willReturn(null);
+
+        $response = $this->client->partnerOffers();
+
+        $this->assertInstanceOf(PartnerOffersResponse::class, $response);
+        $this->assertCount(0, $response);
+    }
+
+    public function testAcceptTransaction(): void
+    {
+        $response = new PurchaseResponse();
+
+        $this->clientExpects(
+            'postFallback',
+            $response,
+            $this->stringContains('accept_transaction'),
+            $this->identicalTo([
+                'transaction_id' => 'foo',
+            ]),
+        );
+
+        $responseActual = $this->client->acceptTransaction(new AcceptTransactionRequest('foo'));
+
+        $this->assertSame($response, $responseActual);
+    }
+
+    public function testDeclineTransaction(): void
+    {
+        $response = new PurchaseResponse();
+
+        $this->clientExpects(
+            'postFallback',
+            $response,
+            $this->stringContains('decline_transaction'),
+            $this->identicalTo([
+                'transaction_id' => 'foo',
+                'cancellation_reason' => MercariClient::DECLINE_REASON_01,
+            ]),
+        );
+
+        $responseActual = $this->client->declineTransaction('foo', MercariClient::DECLINE_REASON_01);
+
+        $this->assertSame($response, $responseActual);
+    }
+
+    public function testReturnTransaction(): void
+    {
+        $response = new ReturnResponse();
+
+        $this->clientExpects(
+            'postFallback',
+            $response,
+            $this->stringContains('return_tracking_id'),
+            $this->identicalTo([
+                'transaction_id' => 'foo',
+                'tracking_id' => 'bar',
+                'shipping_carrier_name' => 'baz',
+            ]),
+        );
+
+        $responseActual = $this->client->returnTransaction('foo', 'bar', 'baz');
+
+        $this->assertSame($response, $responseActual);
+    }
+
+    public function testShopsOrder(): void
+    {
+        $response = new DTO\ShopsOrder();
+
+        $this->clientExpects(
+            'getOptional',
+            $response,
+            $this->logicalAnd(
+                $this->stringContains('shops_order'),
+                $this->stringContains('foo'),
+            ),
+            $this->identicalTo([]),
+            $this->identicalTo([
+                HttpResponse::HTTP_NOT_FOUND,
+                HttpResponse::HTTP_BAD_REQUEST,
+            ]),
+        );
+
+        $responseActual = $this->client->shopsOrder('foo');
+
+        $this->assertSame($response, $responseActual);
+    }
+
+    public function testShopsOrderNotFound(): void
+    {
+        $this->client->expects($this->once())
+            ->method('getOptional')
+            ->willReturn(null);
+
+        $this->assertNull($this->client->shopsOrder('foo'));
+    }
+
+    public function testUpdateAdditionalServiceStatus(): void
+    {
+        $this->client->expects($this->once())
+            ->method('put')
+            ->with(
+                $this->logicalAnd(
+                    $this->stringContains('additional_service_status'),
+                    $this->stringContains('foo'),
+                ),
+                $this->identicalTo([
+                    'status' => MercariClient::SERVICE_STATUS_DONE,
+                    'tracking_number' => 'bar',
+                    'reasons' => [['code' => 'baz', 'note' => '']],
+                ]),
+            );
+
+        $this->client->updateAdditionalServiceStatus(
+            'foo',
+            MercariClient::SERVICE_STATUS_DONE,
+            'bar',
+            [['code' => 'baz', 'note' => '']],
+        );
+    }
+
+    public function testUpdateAdditionalServiceStatusMinimal(): void
+    {
+        $this->client->expects($this->once())
+            ->method('put')
+            ->with(
+                $this->stringContains('additional_service_status'),
+                $this->identicalTo([
+                    'status' => MercariClient::SERVICE_STATUS_WAIT_PROCESSING,
+                ]),
+            );
+
+        $this->client->updateAdditionalServiceStatus('foo', MercariClient::SERVICE_STATUS_WAIT_PROCESSING);
     }
 
     private function clientExpects($method, $response, ...$args)

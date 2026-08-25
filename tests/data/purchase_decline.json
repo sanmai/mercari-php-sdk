@@ -1,0 +1,22 @@
+{
+    "request_id": "2ab559aa-a98a-389a-9491-a1ba3240aaab",
+    "transaction_status": "success",
+    "transaction_details": {
+        "trx_id": 511111151,
+        "item_id": "m02614384231",
+        "checksum": "c3ad0f4e22f3fff0424ef011ffa1f4ff",
+        "user_address": {
+            "zip_code1": "120",
+            "zip_code2": "0023",
+            "family_name": "山田",
+            "first_name": "花子",
+            "family_name_kana": "ヤマダ",
+            "first_name_kana": "ハナコ",
+            "prefecture": "東京都",
+            "city": "足立区",
+            "address1": "千住曙町４２－４",
+            "address2": "足立郵便局",
+            "telephone": "4442314944"
+        }
+    }
+}

@@ -1,0 +1,8 @@
+{
+    "request_id": "30a8aa35-abaa-3aa5-9aaa-3a21a332b030",
+    "transaction_status": "failure",
+    "failure_details": {
+        "code": "F0000",
+        "reasons": "Transaction is not in a state that allows a return."
+    }
+}
