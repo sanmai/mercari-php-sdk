@@ -47,20 +47,6 @@ class MercariClient extends AbstractMercariClient
 
     public const MARKETPLACE_ALL = 3;
 
-    public const DECLINE_REASON_01 = 'c2b_01';
-
-    public const DECLINE_REASON_02 = 'c2b_02';
-
-    public const DECLINE_REASON_03 = 'c2b_03';
-
-    public const DECLINE_REASON_04 = 'c2b_04';
-
-    public const SERVICE_STATUS_WAIT_PROCESSING = 'wait_processing';
-
-    public const SERVICE_STATUS_CANCELED = 'canceled';
-
-    public const SERVICE_STATUS_DONE = 'done';
-
     private const SEARCH_ITEMS_V3 = '/v3/items/search';
 
     private const ITEMS = '/v1/items/fetch';
@@ -382,14 +368,14 @@ class MercariClient extends AbstractMercariClient
         );
     }
 
-    public function declineTransaction(string $transaction_id, string $cancellation_reason): PurchaseResponse
+    public function declineTransaction(string $transaction_id, DeclineReason $cancellation_reason): PurchaseResponse
     {
         return $this->postFallback(
             PurchaseResponse::class,
             self::DECLINE_TRANSACTION,
             [
                 'transaction_id' => $transaction_id,
-                'cancellation_reason' => $cancellation_reason,
+                'cancellation_reason' => $cancellation_reason->value,
             ],
         );
     }
@@ -421,13 +407,13 @@ class MercariClient extends AbstractMercariClient
      */
     public function updateAdditionalServiceStatus(
         string $item_id,
-        string $status,
+        AdditionalServiceStatus $status,
         ?string $tracking_number = null,
         array $reasons = [],
     ): void {
         $this->put(
             sprintf(self::ADDITIONAL_SERVICE_STATUS, $item_id),
-            ['status' => $status] + array_filter([
+            ['status' => $status->value] + array_filter([
                 'tracking_number' => $tracking_number,
                 'reasons' => $reasons,
             ]),

@@ -19,7 +19,7 @@
 
 namespace Tests\Mercari;
 
-use Mercari\DTO\PartnerOffer;
+use Mercari\DTO\PartnerOfferStatus;
 use Mercari\PartnerOffersResponse;
 
 /**
@@ -37,7 +37,7 @@ class PartnerOffersResponseTest extends TestCase
         $this->assertCount(2, $response);
 
         foreach ($response as $offer) {
-            $this->assertSame(PartnerOffer::STATUS_PENDING, $offer->status);
+            $this->assertSame(PartnerOfferStatus::Pending, $offer->getStatus());
             break;
         }
 

@@ -253,10 +253,10 @@ if (!$response->isSuccess()) {
 }
 ```
 
-Only one of accept-or-decline can be used per transaction. Declining requires one of the `MercariClient::DECLINE_REASON_*` codes, and a successful decline response includes the address to ship the item back to:
+Only one of accept-or-decline can be used per transaction. Declining requires a `DeclineReason` case, and a successful decline response includes the address to ship the item back to:
 
 ```php
-$response = $client->declineTransaction($transactionId, Mercari\MercariClient::DECLINE_REASON_01);
+$response = $client->declineTransaction($transactionId, Mercari\DeclineReason::C2B_01);
 
 $address = $response->transaction_details->user_address;
 
@@ -434,14 +434,14 @@ echo "{$order->status}: {$order->shipping_info->tracking_number}\n";
 
 ### Additional Service Status
 
-Providers of additional services (such as data deletion) report progress on an item's service with `updateAdditionalServiceStatus()`. It returns nothing on success; a `tracking_number` is required when the status is `canceled` or `done`, and cancellations may include reasons:
+Providers of additional services (such as data deletion) report progress on an item's service with `updateAdditionalServiceStatus()`. It returns nothing on success; a `tracking_number` is required when the status is `Canceled` or `Done`, and cancellations may include reasons:
 
 ```php
-use Mercari\MercariClient;
+use Mercari\AdditionalServiceStatus;
 
-$client->updateAdditionalServiceStatus($itemId, MercariClient::SERVICE_STATUS_DONE, '1234567890');
+$client->updateAdditionalServiceStatus($itemId, AdditionalServiceStatus::Done, '1234567890');
 
-$client->updateAdditionalServiceStatus($itemId, MercariClient::SERVICE_STATUS_CANCELED, '1234567890', [
+$client->updateAdditionalServiceStatus($itemId, AdditionalServiceStatus::Canceled, '1234567890', [
     ['code' => 'anshin_data_deletion_001', 'note' => ''],
 ]);
 ```

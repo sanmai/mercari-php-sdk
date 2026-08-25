@@ -17,27 +17,15 @@
  * limitations under the License.
  */
 
-namespace Mercari\DTO;
+namespace Mercari;
 
-class PartnerOffer
+enum DeclineReason: string
 {
-    public string $id;
+    case C2B_01 = 'c2b_01';
 
-    public string $item_id;
+    case C2B_02 = 'c2b_02';
 
-    /**
-     * One of the PartnerOfferStatus values.
-     */
-    public string $status;
+    case C2B_03 = 'c2b_03';
 
-    public function getStatus(): ?PartnerOfferStatus
-    {
-        return PartnerOfferStatus::tryFrom($this->status);
-    }
-
-    public int $price;
-
-    public int $updated;
-
-    public int $created;
+    case C2B_04 = 'c2b_04';
 }

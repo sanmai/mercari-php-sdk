@@ -17,27 +17,13 @@
  * limitations under the License.
  */
 
-namespace Mercari\DTO;
+namespace Mercari;
 
-class PartnerOffer
+enum AdditionalServiceStatus: string
 {
-    public string $id;
+    case WaitProcessing = 'wait_processing';
 
-    public string $item_id;
+    case Canceled = 'canceled';
 
-    /**
-     * One of the PartnerOfferStatus values.
-     */
-    public string $status;
-
-    public function getStatus(): ?PartnerOfferStatus
-    {
-        return PartnerOfferStatus::tryFrom($this->status);
-    }
-
-    public int $price;
-
-    public int $updated;
-
-    public int $created;
+    case Done = 'done';
 }

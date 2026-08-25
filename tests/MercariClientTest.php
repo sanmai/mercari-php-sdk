@@ -20,7 +20,9 @@
 namespace Tests\Mercari;
 
 use Mercari\AcceptTransactionRequest;
+use Mercari\AdditionalServiceStatus;
 use Mercari\BrandsResponse;
+use Mercari\DeclineReason;
 use Mercari\CategoriesResponse;
 use Mercari\CommentsResponse;
 use Mercari\DTO;
@@ -730,11 +732,11 @@ class MercariClientTest extends TestCase
             $this->stringContains('decline_transaction'),
             $this->identicalTo([
                 'transaction_id' => 'foo',
-                'cancellation_reason' => MercariClient::DECLINE_REASON_01,
+                'cancellation_reason' => 'c2b_01',
             ]),
         );
 
-        $responseActual = $this->client->declineTransaction('foo', MercariClient::DECLINE_REASON_01);
+        $responseActual = $this->client->declineTransaction('foo', DeclineReason::C2B_01);
 
         $this->assertSame($response, $responseActual);
     }
@@ -801,7 +803,7 @@ class MercariClientTest extends TestCase
                     $this->stringContains('foo'),
                 ),
                 $this->identicalTo([
-                    'status' => MercariClient::SERVICE_STATUS_DONE,
+                    'status' => 'done',
                     'tracking_number' => 'bar',
                     'reasons' => [['code' => 'baz', 'note' => '']],
                 ]),
@@ -809,7 +811,7 @@ class MercariClientTest extends TestCase
 
         $this->client->updateAdditionalServiceStatus(
             'foo',
-            MercariClient::SERVICE_STATUS_DONE,
+            AdditionalServiceStatus::Done,
             'bar',
             [['code' => 'baz', 'note' => '']],
         );
@@ -822,11 +824,11 @@ class MercariClientTest extends TestCase
             ->with(
                 $this->stringContains('additional_service_status'),
                 $this->identicalTo([
-                    'status' => MercariClient::SERVICE_STATUS_WAIT_PROCESSING,
+                    'status' => 'wait_processing',
                 ]),
             );
 
-        $this->client->updateAdditionalServiceStatus('foo', MercariClient::SERVICE_STATUS_WAIT_PROCESSING);
+        $this->client->updateAdditionalServiceStatus('foo', AdditionalServiceStatus::WaitProcessing);
     }
 
     private function clientExpects($method, $response, ...$args)

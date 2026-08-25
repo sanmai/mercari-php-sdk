@@ -19,25 +19,13 @@
 
 namespace Mercari\DTO;
 
-class PartnerOffer
+enum PartnerOfferStatus: string
 {
-    public string $id;
+    case Accepted = 'accepted';
 
-    public string $item_id;
+    case Declined = 'declined';
 
-    /**
-     * One of the PartnerOfferStatus values.
-     */
-    public string $status;
+    case Expired = 'expired';
 
-    public function getStatus(): ?PartnerOfferStatus
-    {
-        return PartnerOfferStatus::tryFrom($this->status);
-    }
-
-    public int $price;
-
-    public int $updated;
-
-    public int $created;
+    case Pending = 'pending';
 }
