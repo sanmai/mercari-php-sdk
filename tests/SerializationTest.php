@@ -29,7 +29,6 @@ use Mercari\ReturnResponse;
 use Mercari\ItemsResponse;
 use Mercari\MessagesResponse;
 use Mercari\NewCommentResponse;
-use Mercari\PartnerOffersResponse;
 use Mercari\PurchaseResponse;
 use Mercari\ReviewResponse;
 use Mercari\SearchResponse;

@@ -35,7 +35,6 @@ use Mercari\ItemsResponse;
 use Mercari\MercariClient;
 use Mercari\MessagesResponse;
 use Mercari\NewCommentResponse;
-use Mercari\PartnerOffersResponse;
 use Mercari\PurchaseRequest;
 use Mercari\PurchaseResponse;
 use Mercari\ReviewResponse;
