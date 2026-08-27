@@ -268,6 +268,20 @@ if (!$response->isSuccess()) {
 }
 ```
 
+### Partner Offers
+
+Offers come in pages of `limit` (50 by default); `page` is zero-indexed.
+
+```php
+for ($page = 0; count($offers = $client->partnerOffers($page)) > 0; $page++) {
+    foreach ($offers as $offer) {
+        echo "{$offer->item_id}\t{$offer->status}\t{$offer->price}\n";
+    }
+}
+```
+
+You may filter offers for a single item by passing its ID: `$client->partnerOffers(item_id: 'm1234567890')`.
+
 ## Part 2: Acting as a User
 
 Purchasing, your transactions and their messages, reviews, your todo list, and posting comments all act in the context of a specific Mercari user, so they need a user access token from the OAuth2 **authorization-code** flow rather than client credentials. Purchasing in particular requires it.
