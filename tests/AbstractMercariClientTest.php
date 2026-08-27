@@ -182,6 +182,41 @@ class AbstractMercariClientTest extends TestCase
         $this->assertSame('{"foo":"bar"}', $this->getLastRequest()->getBody()->getContents());
     }
 
+    public function testPut(): void
+    {
+        $responses = [
+            new Response(HttpResponse::HTTP_OK),
+        ];
+
+        $client = $this->buildExampleClient($responses);
+
+        $client->put('/example', ['foo' => 'bar']);
+
+        $this->assertSame(1, $this->getRequestsCount());
+
+        $request = $this->getLastRequest();
+
+        $this->assertSame('PUT', $request->getMethod());
+        $this->assertSame('/example', (string) $request->getUri());
+        $this->assertSame('{"foo":"bar"}', $request->getBody()->getContents());
+    }
+
+    public function testPutWithOptions(): void
+    {
+        $responses = [
+            new Response(HttpResponse::HTTP_OK),
+        ];
+
+        $client = $this->buildExampleClient($responses);
+
+        $client->put('/example', ['foo' => 'bar'], [
+            'retry_on_status' => [HttpResponse::HTTP_GATEWAY_TIMEOUT],
+        ]);
+
+        $this->assertSame([HttpResponse::HTTP_GATEWAY_TIMEOUT], $this->getLastOptions()['retry_on_status']);
+        $this->assertSame('{"foo":"bar"}', $this->getLastRequest()->getBody()->getContents());
+    }
+
     public function testGetFallbackHappyPath(): void
     {
         $responses = [
