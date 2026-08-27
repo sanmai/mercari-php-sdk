@@ -19,6 +19,7 @@
 
 namespace Tests\Mercari;
 
+use Mercari\BrandsResponse;
 use Mercari\CategoriesResponse;
 use Mercari\CommentsResponse;
 use Mercari\DTO;
@@ -612,6 +613,38 @@ class MercariClientTest extends TestCase
         $responseActual = $this->client->categories(['x-some-header' => 'true']);
 
         $this->assertInstanceOf(CategoriesResponse::class, $responseActual);
+    }
+
+    public function testBrands()
+    {
+        $response = new BrandsResponse();
+
+        $this->clientExpects(
+            'get',
+            $response,
+            $this->stringContains('brands'),
+            [],
+            [],
+        );
+
+        $responseActual = $this->client->brands();
+
+        $this->assertSame($response, $responseActual);
+    }
+
+    public function testBrandsWithHeaders(): void
+    {
+        $this->clientExpects(
+            'get',
+            new BrandsResponse(),
+            $this->stringContains('brands'),
+            [],
+            ['x-some-header' => 'true'],
+        );
+
+        $responseActual = $this->client->brands(['x-some-header' => 'true']);
+
+        $this->assertInstanceOf(BrandsResponse::class, $responseActual);
     }
 
     public function testShopsOrder(): void

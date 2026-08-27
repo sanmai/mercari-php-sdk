@@ -19,6 +19,7 @@
 
 namespace Tests\Mercari;
 
+use Mercari\BrandsResponse;
 use Mercari\CategoriesResponse;
 use Mercari\CommentsResponse;
 use Mercari\DTO\ShopsOrder;
@@ -50,6 +51,7 @@ class SerializationTest extends TestCase
 {
     private const PREFIX_CLASS_MAP = [
         'master_categories' => CategoriesResponse::class,
+        'master_brands' => BrandsResponse::class,
         'shops_order' => ShopsOrder::class,
         'comments' => CommentsResponse::class,
         'failure' => Failure::class,
@@ -69,6 +71,7 @@ class SerializationTest extends TestCase
 
     private const NORMALIZE_IDS = [
         CategoriesResponse::class => false,
+        BrandsResponse::class => false,
         ShopsOrder::class => false,
         Transaction::class => false,
         MessagesResponse::class => false,

@@ -1,0 +1,14 @@
+{
+    "master_brands": [
+        {
+            "id": "740074",
+            "name_ja": "テストブランド",
+            "name_en": "Test Brand"
+        },
+        {
+            "id": "510051",
+            "name_ja": "サンプルブランド",
+            "name_en": "Sample Brand"
+        }
+    ]
+}

@@ -73,6 +73,8 @@ class MercariClient extends AbstractMercariClient
 
     private const CATEGORIES = '/v1/master/item_categories';
 
+    private const BRANDS = '/v1/master/item_brands';
+
     private const SHOPS_ORDER = '/v1/shops_order/%s';
 
     private const RETRY_ON_STATUS_TRANSIENT = [
@@ -320,6 +322,18 @@ class MercariClient extends AbstractMercariClient
         return $this->get(
             CategoriesResponse::class,
             self::CATEGORIES,
+            headers: $headers,
+        );
+    }
+
+    /**
+     * @throws NotModifiedException When the list did not change since the last call.
+     */
+    public function brands(array $headers = []): BrandsResponse
+    {
+        return $this->get(
+            BrandsResponse::class,
+            self::BRANDS,
             headers: $headers,
         );
     }
