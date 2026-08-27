@@ -85,8 +85,6 @@ class MercariClient extends AbstractMercariClient
 
     private const SHOPS_ORDER = '/v1/shops_order/%s';
 
-    private const ADDITIONAL_SERVICE_STATUS = '/v1/items/%s/additional_service_status';
-
     private const RETRY_ON_STATUS_TRANSIENT = [
         HttpResponse::HTTP_INTERNAL_SERVER_ERROR,
         HttpResponse::HTTP_TOO_MANY_REQUESTS,
@@ -399,24 +397,6 @@ class MercariClient extends AbstractMercariClient
             ShopsOrder::class,
             sprintf(self::SHOPS_ORDER, $order_id),
             error_codes: self::SHOPS_ORDER_NOT_FOUND_ON_STATUS,
-        );
-    }
-
-    /**
-     * @param array<array{code: string, note?: string}> $reasons
-     */
-    public function updateAdditionalServiceStatus(
-        string $item_id,
-        AdditionalServiceStatus $status,
-        ?string $tracking_number = null,
-        array $reasons = [],
-    ): void {
-        $this->put(
-            sprintf(self::ADDITIONAL_SERVICE_STATUS, $item_id),
-            ['status' => $status->value] + array_filter([
-                'tracking_number' => $tracking_number,
-                'reasons' => $reasons,
-            ]),
         );
     }
 }
