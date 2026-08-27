@@ -614,6 +614,38 @@ class MercariClientTest extends TestCase
         $this->assertInstanceOf(CategoriesResponse::class, $responseActual);
     }
 
+    public function testShopsOrder(): void
+    {
+        $response = new DTO\ShopsOrder();
+
+        $this->clientExpects(
+            'getOptional',
+            $response,
+            $this->logicalAnd(
+                $this->stringContains('shops_order'),
+                $this->stringContains('foo'),
+            ),
+            $this->identicalTo([]),
+            $this->identicalTo([
+                HttpResponse::HTTP_NOT_FOUND,
+                HttpResponse::HTTP_BAD_REQUEST,
+            ]),
+        );
+
+        $responseActual = $this->client->shopsOrder('foo');
+
+        $this->assertSame($response, $responseActual);
+    }
+
+    public function testShopsOrderNotFound(): void
+    {
+        $this->client->expects($this->once())
+            ->method('getOptional')
+            ->willReturn(null);
+
+        $this->assertNull($this->client->shopsOrder('foo'));
+    }
+
     private function clientExpects($method, $response, ...$args)
     {
         $responseClass = is_string($response) ? $response : get_class($response);

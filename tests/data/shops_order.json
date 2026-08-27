@@ -1,0 +1,20 @@
+{
+    "id": "mnpq7Zx4Rt8Kv2Ws1mnpq7",
+    "created_at": "6578244765",
+    "total_price": 3700,
+    "status": "completed",
+    "shipping_info": {
+        "shipping_method_name": "yamato_shipping",
+        "tracking_number": "12345612",
+        "status": "STATUS_SHIPPED",
+        "buyer_shipping_fee": 700
+    },
+    "order_product": {
+        "name": "テスト商品",
+        "product_id": "abXw3Nc5Qe9Lp4Dt6abXw3",
+        "product_variant_id": "kfRz2Vm8Yh1Sn7Gj5kfRz2",
+        "variant_name": "M",
+        "price": 3000,
+        "paid_price": 2900
+    }
+}
