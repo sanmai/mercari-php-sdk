@@ -30,7 +30,7 @@ Please note that this is not an official SDK but rather an independent, communit
 - [x] Post Comment
 - [x] Get Item Categories
 - [x] Webhook Signature Validation
-- [ ] Get Item Brands
+- [x] Get Item Brands
 - [ ] Accept Transaction
 - [ ] Reject Transaction
 - [ ] Return Transaction
@@ -205,13 +205,15 @@ foreach ($client->itemComments('m1234567890') as $comment) {
 }
 ```
 
-### Categories
+### Categories and Brands
 
 ```php
 $categories = $client->categories();
+
+$brands = $client->brands();
 ```
 
-You may pass optional headers when fetching categories.
+You may pass optional headers when fetching either. Both master-data lists meant to be cached locally. The calls may throw a `NotModifiedException` if the list hasn't changed.
 
 ## Part 2: Acting as a User
 
