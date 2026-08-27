@@ -35,8 +35,8 @@ Please note that this is not an official SDK but rather an independent, communit
 - [ ] Reject Transaction
 - [ ] Return Transaction
 - [x] Get Shops Order
-- [ ] Get Partner Offers
 - [x] Update Additional Service Status
+- [x] Get Partner Offers
 
 ## Overview
 
@@ -214,6 +214,20 @@ $brands = $client->brands();
 ```
 
 You may pass optional headers when fetching either. Both master-data lists meant to be cached locally. The calls may throw a `NotModifiedException` if the list hasn't changed.
+
+### Partner Offers
+
+Offers come in pages of `limit` (50 by default); `page` is zero-indexed.
+
+```php
+for ($page = 0; count($offers = $client->partnerOffers($page)) > 0; $page++) {
+    foreach ($offers as $offer) {
+        echo "{$offer->item_id}\t{$offer->status}\t{$offer->price}\n";
+    }
+}
+```
+
+You may filter offers for a single item by passing its ID: `$client->partnerOffers(item_id: 'm1234567890')`.
 
 ## Part 2: Acting as a User
 

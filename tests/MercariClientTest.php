@@ -32,6 +32,7 @@ use Mercari\ItemsResponse;
 use Mercari\MercariClient;
 use Mercari\MessagesResponse;
 use Mercari\NewCommentResponse;
+use Mercari\PartnerOffersResponse;
 use Mercari\PurchaseRequest;
 use Mercari\PurchaseResponse;
 use Mercari\ReviewResponse;
@@ -647,6 +648,57 @@ class MercariClientTest extends TestCase
         $responseActual = $this->client->brands(['x-some-header' => 'true']);
 
         $this->assertInstanceOf(BrandsResponse::class, $responseActual);
+    }
+
+    public function testPartnerOffers(): void
+    {
+        $response = new PartnerOffersResponse();
+
+        $this->clientExpects(
+            'getOptional',
+            $response,
+            $this->stringContains('partner_offers'),
+            $this->identicalTo([
+                'page' => 0,
+                'limit' => 50,
+            ]),
+        );
+
+        $responseActual = $this->client->partnerOffers();
+
+        $this->assertSame($response, $responseActual);
+    }
+
+    public function testPartnerOffersItemId(): void
+    {
+        $response = new PartnerOffersResponse();
+
+        $this->clientExpects(
+            'getOptional',
+            $response,
+            $this->stringContains('partner_offers'),
+            $this->identicalTo([
+                'page' => 2,
+                'limit' => 100,
+                'item_id' => 'foo',
+            ]),
+        );
+
+        $responseActual = $this->client->partnerOffers(2, 100, 'foo');
+
+        $this->assertSame($response, $responseActual);
+    }
+
+    public function testPartnerOffersNotFound(): void
+    {
+        $this->client->expects($this->once())
+            ->method('getOptional')
+            ->willReturn(null);
+
+        $response = $this->client->partnerOffers();
+
+        $this->assertInstanceOf(PartnerOffersResponse::class, $response);
+        $this->assertCount(0, $response);
     }
 
     public function testShopsOrder(): void

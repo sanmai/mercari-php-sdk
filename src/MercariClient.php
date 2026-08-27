@@ -75,6 +75,8 @@ class MercariClient extends AbstractMercariClient
 
     private const BRANDS = '/v1/master/item_brands';
 
+    private const GET_PARTNER_OFFERS = '/v1/get_partner_offers';
+
     private const SHOPS_ORDER = '/v1/shops_order/%s';
 
     private const ADDITIONAL_SERVICE_STATUS = '/v1/items/%s/additional_service_status';
@@ -338,6 +340,17 @@ class MercariClient extends AbstractMercariClient
             self::BRANDS,
             headers: $headers,
         );
+    }
+
+    public function partnerOffers(int $page = 0, int $limit = 50, ?string $item_id = null): PartnerOffersResponse
+    {
+        $response = $this->getOptional(
+            PartnerOffersResponse::class,
+            self::GET_PARTNER_OFFERS,
+            ['page' => $page, 'limit' => $limit] + array_filter(['item_id' => $item_id]),
+        );
+
+        return $response ?? new PartnerOffersResponse();
     }
 
     public function shopsOrder(string $order_id): ?ShopsOrder
