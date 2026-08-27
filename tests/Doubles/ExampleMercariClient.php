@@ -54,6 +54,11 @@ class ExampleMercariClient extends AbstractMercariClient
         return parent::post($type, $uri, $json, $options);
     }
 
+    public function put(string $uri, array $json, array $options = []): void
+    {
+        parent::put($uri, $json, $options);
+    }
+
     public function postFallback(string $type, string $uri, array $json)
     {
         return parent::postFallback($type, $uri, $json);

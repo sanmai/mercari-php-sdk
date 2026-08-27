@@ -133,6 +133,17 @@ abstract class AbstractMercariClient
     }
 
     /**
+     * @internal
+     */
+    protected function put(string $uri, array $json, array $options = []): void
+    {
+        $this->client->put(
+            $uri,
+            ['json' => $json] + $options,
+        );
+    }
+
+    /**
      * @template T
      * @param class-string<T> $type
      * @return T
