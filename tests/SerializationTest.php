@@ -26,7 +26,6 @@ use Mercari\DTO\ShopsOrder;
 use Mercari\Failure;
 use Mercari\PartnerOffersResponse;
 use Mercari\ReturnResponse;
-use Mercari\DTO\ShopsOrder;
 use Mercari\ItemsResponse;
 use Mercari\MessagesResponse;
 use Mercari\NewCommentResponse;
