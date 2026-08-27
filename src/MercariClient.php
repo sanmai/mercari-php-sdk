@@ -27,6 +27,7 @@ use GuzzleRetry\GuzzleRetryMiddleware;
 use JSONSerializer\Serializer;
 use Mercari\DTO\ItemDetail;
 use Mercari\DTO\Seller;
+use Mercari\DTO\ShopsOrder;
 use Mercari\DTO\Transaction;
 use Mercari\DTO\TransactionMessage;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
@@ -72,6 +73,8 @@ class MercariClient extends AbstractMercariClient
 
     private const CATEGORIES = '/v1/master/item_categories';
 
+    private const SHOPS_ORDER = '/v1/shops_order/%s';
+
     private const RETRY_ON_STATUS_TRANSIENT = [
         HttpResponse::HTTP_INTERNAL_SERVER_ERROR,
         HttpResponse::HTTP_TOO_MANY_REQUESTS,
@@ -105,6 +108,11 @@ class MercariClient extends AbstractMercariClient
     ];
 
     private const USER_NOT_FOUND_ON_STATUS = [
+        HttpResponse::HTTP_NOT_FOUND,
+        HttpResponse::HTTP_BAD_REQUEST,
+    ];
+
+    private const SHOPS_ORDER_NOT_FOUND_ON_STATUS = [
         HttpResponse::HTTP_NOT_FOUND,
         HttpResponse::HTTP_BAD_REQUEST,
     ];
@@ -313,6 +321,15 @@ class MercariClient extends AbstractMercariClient
             CategoriesResponse::class,
             self::CATEGORIES,
             headers: $headers,
+        );
+    }
+
+    public function shopsOrder(string $order_id): ?ShopsOrder
+    {
+        return $this->getOptional(
+            ShopsOrder::class,
+            sprintf(self::SHOPS_ORDER, $order_id),
+            error_codes: self::SHOPS_ORDER_NOT_FOUND_ON_STATUS,
         );
     }
 }

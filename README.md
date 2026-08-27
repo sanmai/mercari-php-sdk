@@ -34,7 +34,7 @@ Please note that this is not an official SDK but rather an independent, communit
 - [ ] Accept Transaction
 - [ ] Reject Transaction
 - [ ] Return Transaction
-- [ ] Get Shops Order
+- [x] Get Shops Order
 - [ ] Get Partner Offers
 - [ ] Update Additional Service Status
 
@@ -360,6 +360,21 @@ do {
 
     $pageToken = $response->next_page_token;
 } while ($pageToken !== '');
+```
+
+### Shops Orders
+
+Looks up shop orders using `shop_order_id` rather than a transaction ID. `shopsOrder()` returns `null` when there is no such order:
+
+```php
+$order = $client->shopsOrder($shopOrderId);
+
+if ($order === null) {
+    echo "Order not found\n";
+    return;
+}
+
+echo "{$order->status}: {$order->shipping_info->tracking_number}\n";
 ```
 
 ### Posting a Comment
