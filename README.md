@@ -213,7 +213,7 @@ $categories = $client->categories();
 $brands = $client->brands();
 ```
 
-You may pass optional headers when fetching either. Both are master-data lists meant to be cached locally. The calls may throw a `NotModifiedException` if the list hasn't changed.
+You may pass optional headers when fetching either. Both master-data lists meant to be cached locally. The calls may throw a `NotModifiedException` if the list hasn't changed.
 
 ## Part 2: Acting as a User
 
