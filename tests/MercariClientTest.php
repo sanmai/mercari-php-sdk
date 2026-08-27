@@ -19,6 +19,7 @@
 
 namespace Tests\Mercari;
 
+use Mercari\AdditionalServiceStatus;
 use Mercari\BrandsResponse;
 use Mercari\CategoriesResponse;
 use Mercari\CommentsResponse;
@@ -63,6 +64,7 @@ class MercariClientTest extends TestCase
             ->onlyMethods([
                 'get',
                 'post',
+                'put',
                 'getOptional',
                 'postFallback',
             ])
@@ -677,6 +679,44 @@ class MercariClientTest extends TestCase
             ->willReturn(null);
 
         $this->assertNull($this->client->shopsOrder('foo'));
+    }
+
+    public function testUpdateAdditionalServiceStatus(): void
+    {
+        $this->client->expects($this->once())
+            ->method('put')
+            ->with(
+                $this->logicalAnd(
+                    $this->stringContains('additional_service_status'),
+                    $this->stringContains('foo'),
+                ),
+                $this->identicalTo([
+                    'status' => 'done',
+                    'tracking_number' => 'bar',
+                    'reasons' => [['code' => 'baz', 'note' => '']],
+                ]),
+            );
+
+        $this->client->updateAdditionalServiceStatus(
+            'foo',
+            AdditionalServiceStatus::Done,
+            'bar',
+            [['code' => 'baz', 'note' => '']],
+        );
+    }
+
+    public function testUpdateAdditionalServiceStatusMinimal(): void
+    {
+        $this->client->expects($this->once())
+            ->method('put')
+            ->with(
+                $this->stringContains('additional_service_status'),
+                $this->identicalTo([
+                    'status' => 'wait_processing',
+                ]),
+            );
+
+        $this->client->updateAdditionalServiceStatus('foo', AdditionalServiceStatus::WaitProcessing);
     }
 
     private function clientExpects($method, $response, ...$args)
