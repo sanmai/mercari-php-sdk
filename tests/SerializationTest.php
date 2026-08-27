@@ -22,6 +22,7 @@ namespace Tests\Mercari;
 use Mercari\BrandsResponse;
 use Mercari\CategoriesResponse;
 use Mercari\CommentsResponse;
+use Mercari\DTO\ShopsOrder;
 use Mercari\Failure;
 use Mercari\PartnerOffersResponse;
 use Mercari\ReturnResponse;
