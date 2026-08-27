@@ -20,7 +20,6 @@
 namespace Tests\Mercari;
 
 use Mercari\AcceptTransactionRequest;
-use Mercari\AdditionalServiceStatus;
 use Mercari\BrandsResponse;
 use Mercari\DeclineReason;
 use Mercari\CategoriesResponse;
