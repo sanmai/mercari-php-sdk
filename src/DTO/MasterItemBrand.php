@@ -27,8 +27,5 @@ class MasterItemBrand
 
     public string $name_en;
 
-    /**
-     * Present only for clients with access to the item authentication service.
-     */
     public bool $item_auth_supported;
 }
