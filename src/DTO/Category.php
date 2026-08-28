@@ -19,7 +19,7 @@
 
 namespace Mercari\DTO;
 
-class Category
+class Category implements NamedItem
 {
     public string $id;
 
@@ -30,4 +30,14 @@ class Category
     public string $parent_id;
 
     public bool $item_auth_supported;
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
 }

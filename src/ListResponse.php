@@ -27,7 +27,7 @@ use Override;
 use function iterator_count;
 
 /**
- * @template T
+ * @template-covariant T
  * @template-implements IteratorAggregate<array-key, T>
  */
 abstract class ListResponse implements IteratorAggregate, Countable

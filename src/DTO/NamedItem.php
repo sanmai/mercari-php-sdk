@@ -19,19 +19,14 @@
 
 namespace Mercari\DTO;
 
-class NamedDetail implements NamedItem
+/**
+ * An API entity with an identifier and a display name.
+ *
+ * Extend a DTO and replace getName() to give a different name, a translated one for example.
+ */
+interface NamedItem
 {
-    public int $id;
+    public function getId(): int|string;
 
-    public string $name;
-
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
+    public function getName(): string;
 }

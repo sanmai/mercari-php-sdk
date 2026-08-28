@@ -17,21 +17,24 @@
  * limitations under the License.
  */
 
-namespace Mercari\DTO;
+namespace Tests\Mercari\DTO;
 
-class NamedDetail implements NamedItem
+use Mercari\DTO\MasterItemBrand;
+use Tests\Mercari\TestCase;
+
+/**
+ * @covers \Mercari\DTO\MasterItemBrand
+ */
+class MasterItemBrandTest extends TestCase
 {
-    public int $id;
-
-    public string $name;
-
-    public function getId(): int
+    public function testNamedItem()
     {
-        return $this->id;
-    }
+        $brand = new MasterItemBrand();
+        $brand->id = '9012';
+        $brand->name_ja = 'サンプルブランド';
+        $brand->name_en = 'Sample Brand';
 
-    public function getName(): string
-    {
-        return $this->name;
+        $this->assertSame('9012', $brand->getId());
+        $this->assertSame('サンプルブランド', $brand->getName());
     }
 }
