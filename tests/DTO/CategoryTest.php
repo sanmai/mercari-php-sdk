@@ -37,6 +37,21 @@ class CategoryTest extends TestCase
         $this->assertSame('サンプルカテゴリー', $category->getName());
     }
 
+    public function testIsRootWithoutParent()
+    {
+        $category = new Category();
+
+        $this->assertTrue($category->isRoot());
+    }
+
+    public function testIsRootWithParent()
+    {
+        $category = new Category();
+        $category->parent_id = '1234';
+
+        $this->assertFalse($category->isRoot());
+    }
+
     public function testNameCanBeReplaced()
     {
         $category = new class extends Category {

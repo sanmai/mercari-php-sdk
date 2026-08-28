@@ -40,4 +40,9 @@ class Category implements NamedItem
     {
         return $this->name;
     }
+
+    public function isRoot(): bool
+    {
+        return !isset($this->parent_id);
+    }
 }
