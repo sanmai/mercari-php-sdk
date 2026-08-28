@@ -215,6 +215,15 @@ $brands = $client->brands();
 
 You may pass optional headers when fetching either. Both master-data lists meant to be cached locally. The calls may throw a `NotModifiedException` if the list hasn't changed.
 
+To find an entry, use `get()`:
+
+```php
+$category = $categories->get('6144061');
+$brand = $brands->get('740074');
+
+echo $category?->getName(), "\n";
+```
+
 ### Partner Offers
 
 Offers come in pages of `limit` (50 by default); `page` is zero-indexed.

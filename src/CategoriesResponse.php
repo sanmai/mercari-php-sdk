@@ -28,10 +28,10 @@ use Traversable;
 use function iterator_count;
 
 /**
- * @extends ListResponse<Category>
+ * @extends NamedListResponse<Category>
  * @template-implements \Countable<Category>
  */
-class CategoriesResponse extends ListResponse
+class CategoriesResponse extends NamedListResponse
 {
     /**
      * @var Category[]
