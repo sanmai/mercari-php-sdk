@@ -52,17 +52,12 @@ abstract class NamedListResponse extends ListResponse
         return $this->index[$id] ?? null;
     }
 
-    /**
-     * @return array<int|string, T>
-     */
-    private function indexById(): array
+    private function indexById(): void
     {
         $this->index = [];
 
         foreach ($this as $item) {
             $this->index[$item->getId()] = $item;
         }
-
-        return $this->index;
     }
 }
