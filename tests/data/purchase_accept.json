@@ -1,0 +1,13 @@
+{
+    "request_id": "a1ab049a-149a-3a9a-845a-54481a50ba3a",
+    "transaction_status": "success",
+    "transaction_details": {
+        "trx_id": 511111151,
+        "paid_method": "card",
+        "price": 3001,
+        "paid_price": 3001,
+        "buyer_shipping_fee": 701,
+        "item_id": "m02614384231",
+        "checksum": "2ffef2fffa10311f02db42faf0fdef4f"
+    }
+}

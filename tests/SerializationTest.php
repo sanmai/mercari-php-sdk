@@ -24,10 +24,11 @@ use Mercari\CategoriesResponse;
 use Mercari\CommentsResponse;
 use Mercari\DTO\ShopsOrder;
 use Mercari\Failure;
+use Mercari\PartnerOffersResponse;
+use Mercari\ReturnResponse;
 use Mercari\ItemsResponse;
 use Mercari\MessagesResponse;
 use Mercari\NewCommentResponse;
-use Mercari\PartnerOffersResponse;
 use Mercari\PurchaseResponse;
 use Mercari\ReviewResponse;
 use Mercari\SearchResponse;
@@ -54,6 +55,7 @@ class SerializationTest extends TestCase
         'master_categories' => CategoriesResponse::class,
         'master_brands' => BrandsResponse::class,
         'partner_offers' => PartnerOffersResponse::class,
+        'return' => ReturnResponse::class,
         'shops_order' => ShopsOrder::class,
         'comments' => CommentsResponse::class,
         'failure' => Failure::class,
@@ -75,6 +77,7 @@ class SerializationTest extends TestCase
         CategoriesResponse::class => false,
         BrandsResponse::class => false,
         PartnerOffersResponse::class => false,
+        ReturnResponse::class => false,
         ShopsOrder::class => false,
         Transaction::class => false,
         MessagesResponse::class => false,

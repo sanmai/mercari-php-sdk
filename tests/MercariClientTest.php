@@ -19,10 +19,14 @@
 
 namespace Tests\Mercari;
 
+use Mercari\AcceptTransactionRequest;
 use Mercari\BrandsResponse;
+use Mercari\DeclineReason;
 use Mercari\CategoriesResponse;
 use Mercari\CommentsResponse;
 use Mercari\DTO;
+use Mercari\PartnerOffersResponse;
+use Mercari\ReturnResponse;
 use Mercari\DTO\ItemDetail;
 use Mercari\DTO\Seller;
 use Mercari\DTO\Transaction;
@@ -31,7 +35,6 @@ use Mercari\ItemsResponse;
 use Mercari\MercariClient;
 use Mercari\MessagesResponse;
 use Mercari\NewCommentResponse;
-use Mercari\PartnerOffersResponse;
 use Mercari\PurchaseRequest;
 use Mercari\PurchaseResponse;
 use Mercari\ReviewResponse;
@@ -697,6 +700,63 @@ class MercariClientTest extends TestCase
 
         $this->assertInstanceOf(PartnerOffersResponse::class, $response);
         $this->assertCount(0, $response);
+    }
+
+    public function testAcceptTransaction(): void
+    {
+        $response = new PurchaseResponse();
+
+        $this->clientExpects(
+            'postFallback',
+            $response,
+            $this->stringContains('accept_transaction'),
+            $this->identicalTo([
+                'transaction_id' => 'foo',
+            ]),
+        );
+
+        $responseActual = $this->client->acceptTransaction(new AcceptTransactionRequest('foo'));
+
+        $this->assertSame($response, $responseActual);
+    }
+
+    public function testDeclineTransaction(): void
+    {
+        $response = new PurchaseResponse();
+
+        $this->clientExpects(
+            'postFallback',
+            $response,
+            $this->stringContains('decline_transaction'),
+            $this->identicalTo([
+                'transaction_id' => 'foo',
+                'cancellation_reason' => 'c2b_01',
+            ]),
+        );
+
+        $responseActual = $this->client->declineTransaction('foo', DeclineReason::C2B_01);
+
+        $this->assertSame($response, $responseActual);
+    }
+
+    public function testReturnTransaction(): void
+    {
+        $response = new ReturnResponse();
+
+        $this->clientExpects(
+            'postFallback',
+            $response,
+            $this->stringContains('return_tracking_id'),
+            $this->identicalTo([
+                'transaction_id' => 'foo',
+                'tracking_id' => 'bar',
+                'shipping_carrier_name' => 'baz',
+            ]),
+        );
+
+        $responseActual = $this->client->returnTransaction('foo', 'bar', 'baz');
+
+        $this->assertSame($response, $responseActual);
     }
 
     public function testShopsOrder(): void

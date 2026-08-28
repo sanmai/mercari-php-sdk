@@ -31,12 +31,12 @@ Please note that this is not an official SDK but rather an independent, communit
 - [x] Get Item Categories
 - [x] Webhook Signature Validation
 - [x] Get Item Brands
-- [ ] Accept Transaction
-- [ ] Reject Transaction
-- [ ] Return Transaction
+- [x] Accept Transaction
+- [x] Reject Transaction
+- [x] Return Transaction
 - [x] Get Shops Order
 - [x] Get Partner Offers
-- [ ] Update Additional Service Status
+- [x] Update Additional Service Status
 
 ## Overview
 
@@ -213,7 +213,60 @@ $categories = $client->categories();
 $brands = $client->brands();
 ```
 
-You may pass optional headers when fetching either. Both master-data lists meant to be cached locally. The calls may throw a `NotModifiedException` if the list hasn't changed.
+You may pass optional headers when fetching either. Both are master-data lists meant to be cached locally: if you request the brands again within an hour of an unchanged list, the call throws a `Mercari\NotModifiedException` instead of returning a fresh copy.
+
+### Partner Offers
+
+Offers come in pages of `limit` (50 by default); `page` is zero-indexed. There is no "has more" flag, so read until you get an empty page:
+
+```php
+for ($page = 0; count($offers = $client->partnerOffers($page)) > 0; $page++) {
+    foreach ($offers as $offer) {
+        echo "{$offer->item_id}\t{$offer->status}\t{$offer->price}\n";
+    }
+}
+```
+
+You may filter offers for a single item by passing its ID: `$client->partnerOffers(item_id: 'm1234567890')`.
+
+### Accepting, Declining, and Returning Transactions
+
+Partners assessing purchased items can accept a transaction, decline it, or register the return shipment's tracking number after declining. Accepting takes a filled-in `AcceptTransactionRequest`; both accept and decline return the same response type as `purchase()`:
+
+```php
+$request = new Mercari\AcceptTransactionRequest($transactionId);
+$request->item_information = 'A watch, as described';
+$request->item_condition = 2;
+$request->purchase_quantity = 1;
+$request->paying_out_company_name = 'Example Trading Co.';
+$request->paying_out_company_address = 'Tokyo';
+$request->paying_out_name = 'Yamada Taro';
+$request->paying_out_address = 'Tokyo';
+$request->paying_out_occupation = 'Buyer';
+$request->paying_out_department = 'Purchasing';
+$request->paying_out_age = 40;
+
+$response = $client->acceptTransaction($request);
+
+if (!$response->isSuccess()) {
+    echo "Not accepted: {$response->failure_details->code} {$response->failure_details->reasons}\n";
+}
+```
+
+Only one of accept-or-decline can be used per transaction. Declining requires a `DeclineReason` case, and a successful decline response includes the address to ship the item back to:
+
+```php
+$response = $client->declineTransaction($transactionId, Mercari\DeclineReason::C2B_01);
+
+$address = $response->transaction_details->user_address;
+
+// After shipping the item back, register the tracking number
+$response = $client->returnTransaction($transactionId, '1234567890', 'ヤマト運輸');
+
+if (!$response->isSuccess()) {
+    echo "Not registered: {$response->failure_details->code} {$response->failure_details->reasons}\n";
+}
+```
 
 To find an entry, use `get()`:
 
@@ -389,7 +442,7 @@ do {
 
 ### Shops Orders
 
-Looks up shop orders using `shop_order_id` rather than a transaction ID. `shopsOrder()` returns `null` when there is no such order:
+A purchase on Mercari Shops yields a `shop_order_id` rather than a transaction ID; look the order up with it. `shopsOrder()` returns `null` when there is no such order:
 
 ```php
 $order = $client->shopsOrder($shopOrderId);

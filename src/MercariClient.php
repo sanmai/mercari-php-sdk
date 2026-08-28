@@ -77,6 +77,12 @@ class MercariClient extends AbstractMercariClient
 
     private const GET_PARTNER_OFFERS = '/v1/get_partner_offers';
 
+    private const ACCEPT_TRANSACTION = '/v1/accept_transaction';
+
+    private const DECLINE_TRANSACTION = '/v1/decline_transaction';
+
+    private const RETURN_TRACKING_ID = '/v1/return_tracking_id';
+
     private const SHOPS_ORDER = '/v1/shops_order/%s';
 
     private const RETRY_ON_STATUS_TRANSIENT = [
@@ -349,6 +355,40 @@ class MercariClient extends AbstractMercariClient
         );
 
         return $response ?? new PartnerOffersResponse();
+    }
+
+    public function acceptTransaction(AcceptTransactionRequest $request): PurchaseResponse
+    {
+        return $this->postFallback(
+            PurchaseResponse::class,
+            self::ACCEPT_TRANSACTION,
+            $request->getRequestParams(),
+        );
+    }
+
+    public function declineTransaction(string $transaction_id, DeclineReason $cancellation_reason): PurchaseResponse
+    {
+        return $this->postFallback(
+            PurchaseResponse::class,
+            self::DECLINE_TRANSACTION,
+            [
+                'transaction_id' => $transaction_id,
+                'cancellation_reason' => $cancellation_reason->value,
+            ],
+        );
+    }
+
+    public function returnTransaction(string $transaction_id, string $tracking_id, string $shipping_carrier_name): ReturnResponse
+    {
+        return $this->postFallback(
+            ReturnResponse::class,
+            self::RETURN_TRACKING_ID,
+            [
+                'transaction_id' => $transaction_id,
+                'tracking_id' => $tracking_id,
+                'shipping_carrier_name' => $shipping_carrier_name,
+            ],
+        );
     }
 
     public function shopsOrder(string $order_id): ?ShopsOrder

@@ -1,0 +1,8 @@
+{
+    "request_id": "5050ba3a-4029-328a-8a42-55aaa40a5aaa",
+    "transaction_status": "failure",
+    "failure_details": {
+        "code": "F00T6",
+        "reasons": "Transaction is not in a state that allows an acceptance."
+    }
+}
