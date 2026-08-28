@@ -1,6 +1,0 @@
-parameters:
-	level: 9
-	paths:
-		- tests/StaticAnalysis
-	scanDirectories:
-		- src

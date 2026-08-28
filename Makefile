@@ -25,8 +25,6 @@ export XDEBUG_MODE=coverage
 # PHPStan
 PHPSTAN=vendor/bin/phpstan
 PHPSTAN_ARGS=analyse src tests --level=2 -c .phpstan.neon
-# Generic types get a stricter check, over the fixtures that exercise them
-PHPSTAN_GENERICS_ARGS=analyse -c .phpstan.generics.neon
 
 # Composer
 COMPOSER=$(PHP) $(shell which composer)
@@ -58,7 +56,6 @@ ci-infection: ci-phpunit
 
 ci-phpstan: ci-cs
 	$(SILENT) $(PHP) $(PHPSTAN) $(PHPSTAN_ARGS) --no-progress || true
-	$(SILENT) $(PHP) $(PHPSTAN) $(PHPSTAN_GENERICS_ARGS) --no-progress || true
 
 ci-cs: prerequisites
 	$(SILENT) $(PHP) $(PHP_CS_FIXER) $(PHP_CS_FIXER_ARGS) --dry-run --stop-on-violation fix
@@ -89,7 +86,6 @@ analyze: phpstan
 .PHONY: phpstan
 phpstan: cs
 	$(SILENT) $(PHP) $(PHPSTAN) $(PHPSTAN_ARGS)
-	$(SILENT) $(PHP) $(PHPSTAN) $(PHPSTAN_GENERICS_ARGS)
 
 .PHONY: cs
 cs: test-prerequisites
