@@ -35,8 +35,8 @@ Please note that this is not an official SDK but rather an independent, communit
 - [ ] Reject Transaction
 - [ ] Return Transaction
 - [x] Get Shops Order
+- [x] Update Additional Service Status
 - [x] Get Partner Offers
-- [ ] Update Additional Service Status
 
 ## Overview
 
@@ -401,6 +401,22 @@ if ($order === null) {
 
 echo "{$order->status}: {$order->shipping_info->tracking_number}\n";
 ```
+
+### Additional Service Status
+
+Providers of additional services (such as data deletion) report progress on an item's service with `updateAdditionalServiceStatus()`. It returns nothing on success; a `tracking_number` is required when the status is `Canceled` or `Done`, and cancellations may include reasons:
+
+```php
+use Mercari\AdditionalServiceStatus;
+
+$client->updateAdditionalServiceStatus($itemId, AdditionalServiceStatus::Done, '1234567890');
+
+$client->updateAdditionalServiceStatus($itemId, AdditionalServiceStatus::Canceled, '1234567890', [
+    ['code' => 'anshin_data_deletion_001', 'note' => ''],
+]);
+```
+
+An illegal status transition fails with a Guzzle `RequestException` reporting HTTP 412.
 
 ### Posting a Comment
 
