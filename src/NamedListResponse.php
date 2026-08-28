@@ -23,8 +23,6 @@ use JMS\Serializer\Annotation\Exclude;
 use Mercari\DTO\NamedItem;
 
 /**
- * A list of named items that the API gives in no particular order.
- *
  * @template-covariant T of NamedItem
  * @extends ListResponse<T>
  */
@@ -37,10 +35,6 @@ abstract class NamedListResponse extends ListResponse
     private array $index;
 
     /**
-     * Find an item by its ID. Gives null when the list has no such item.
-     *
-     * The index is built on the first lookup, from the list as it is at that moment.
-     *
      * @return T|null
      */
     public function get(int|string $id): ?NamedItem
