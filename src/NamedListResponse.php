@@ -19,38 +19,39 @@
 
 namespace Mercari;
 
-use JMS\Serializer\Annotation\Type;
-use Mercari\DTO\Category;
-use ArrayIterator;
-use Override;
-use Traversable;
-
-use function iterator_count;
+use JMS\Serializer\Annotation\Exclude;
+use Mercari\DTO\NamedItem;
 
 /**
- * @extends NamedListResponse<Category>
- * @template-implements \Countable<Category>
+ * @template-covariant T of NamedItem
+ * @extends ListResponse<T>
  */
-class CategoriesResponse extends NamedListResponse
+abstract class NamedListResponse extends ListResponse
 {
     /**
-     * @var Category[]
+     * @var array<int|string, T>
      */
-    #[Type('array<Mercari\DTO\Category>')]
-    public array $master_categories = [];
+    #[Exclude]
+    private array $index;
 
     /**
-     * @return ArrayIterator<array-key, Category>
+     * @return T|null
      */
-    #[Override]
-    public function getIterator(): Traversable
+    public function get(int|string $id): ?NamedItem
     {
-        return new ArrayIterator($this->master_categories);
+        if (!isset($this->index)) {
+            $this->indexById();
+        }
+
+        return $this->index[$id] ?? null;
     }
 
-    #[Override]
-    public function count(): int
+    private function indexById(): void
     {
-        return iterator_count($this->getIterator());
+        $this->index = [];
+
+        foreach ($this as $item) {
+            $this->index[$item->getId()] = $item;
+        }
     }
 }

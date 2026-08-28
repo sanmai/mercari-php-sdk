@@ -26,9 +26,9 @@ use Override;
 use Traversable;
 
 /**
- * @extends ListResponse<MasterItemBrand>
+ * @extends NamedListResponse<MasterItemBrand>
  */
-class BrandsResponse extends ListResponse
+class BrandsResponse extends NamedListResponse
 {
     /**
      * @var MasterItemBrand[]
