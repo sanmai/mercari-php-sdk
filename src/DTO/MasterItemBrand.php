@@ -19,7 +19,7 @@
 
 namespace Mercari\DTO;
 
-class MasterItemBrand
+class MasterItemBrand implements NamedItem
 {
     public string $id;
 
@@ -28,4 +28,17 @@ class MasterItemBrand
     public string $name_en;
 
     public bool $item_auth_supported;
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    /**
+     * The Japanese name. Replace this method to give the name in another language.
+     */
+    public function getName(): string
+    {
+        return $this->name_ja;
+    }
 }
