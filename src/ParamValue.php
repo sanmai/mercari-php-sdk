@@ -21,38 +21,30 @@ declare(strict_types=1);
 
 namespace Mercari;
 
-use JsonSerializable;
-use Override;
+use BackedEnum;
 
 use function array_map;
+use function implode;
+use function is_array;
 
-abstract class GenericRequest implements JsonSerializable
+/**
+ * @internal
+ */
+final class ParamValue
 {
-    private array $data;
-
-    public function __construct(array $data = [])
+    /**
+     * An enum becomes its backing value; an array becomes a comma-separated list.
+     */
+    public static function of(mixed $value): mixed
     {
-        $this->data = $data;
-    }
+        if ($value instanceof BackedEnum) {
+            return $value->value;
+        }
 
-    public function __get(string $name)
-    {
-        return $this->data[$name] ?? null;
-    }
+        if (is_array($value)) {
+            return implode(',', array_map(self::of(...), $value));
+        }
 
-    public function __set(string $name, $value): void
-    {
-        $this->data[$name] = $value;
-    }
-
-    public function getRequestParams(): array
-    {
-        return array_map(ParamValue::of(...), $this->data);
-    }
-
-    #[Override]
-    public function jsonSerialize(): mixed
-    {
-        return $this->getRequestParams();
+        return $value;
     }
 }
