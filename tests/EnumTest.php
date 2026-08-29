@@ -19,6 +19,7 @@
 
 namespace Tests\Mercari;
 
+use Mercari\Enum\Color;
 use Mercari\Enum\ItemCondition;
 use Mercari\Enum\ItemStatus;
 use Mercari\Enum\Marketplace;
@@ -29,6 +30,7 @@ use Mercari\MercariClient;
 use BackedEnum;
 
 /**
+ * @covers \Mercari\Enum\Color
  * @covers \Mercari\Enum\ItemCondition
  * @covers \Mercari\Enum\ItemStatus
  * @covers \Mercari\Enum\Marketplace
@@ -41,7 +43,7 @@ class EnumTest extends TestCase
     public static function provideCases(): iterable
     {
         yield ItemCondition::class => [ItemCondition::class, [
-            'New' => 1,
+            'BrandNew' => 1,
             'LikeNew' => 2,
             'NoNoticeableDamage' => 3,
             'SlightDamage' => 4,
@@ -52,6 +54,21 @@ class EnumTest extends TestCase
         yield ShippingPayer::class => [ShippingPayer::class, [
             'Buyer' => 1,
             'Seller' => 2,
+        ]];
+
+        yield Color::class => [Color::class, [
+            'Black' => 1,
+            'White' => 2,
+            'Grey' => 3,
+            'Brown' => 4,
+            'Red' => 5,
+            'Pink' => 6,
+            'Purple' => 7,
+            'Blue' => 8,
+            'Beige' => 9,
+            'Green' => 10,
+            'Yellow' => 11,
+            'Orange' => 12,
         ]];
 
         yield Marketplace::class => [Marketplace::class, [

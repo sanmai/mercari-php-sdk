@@ -21,6 +21,7 @@ declare(strict_types=1);
 
 namespace Mercari;
 
+use Mercari\Enum\Color;
 use Mercari\Enum\ItemCondition;
 use Mercari\Enum\ItemStatus;
 use Mercari\Enum\Marketplace;
@@ -39,7 +40,7 @@ use Mercari\Enum\SortOrder;
  * @property int $seller_id The seller ID.
  * @property int $size_id The size ID.
  * @property string $shop_id The Shop ID.
- * @property int $color_id The color ID.
+ * @property int|Color|list<int|Color> $color_id The color ID, or several of them.
  * @property int $price_min The minimum item price.
  * @property int $price_max The maximum item price.
  * @property int|ItemCondition|list<int|ItemCondition> $item_condition_id The condition ID, or several of them.

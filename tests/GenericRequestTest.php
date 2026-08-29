@@ -62,7 +62,7 @@ class GenericRequestTest extends TestCase
         $request = new ExampleRequest();
 
         $request->foo = ItemStatus::OnSale;
-        $request->bar = [ItemCondition::New, 3];
+        $request->bar = [ItemCondition::BrandNew, 3];
         $request->zap = ['on_sale', ItemStatus::Trading];
 
         $this->assertSame(ItemStatus::OnSale, $request->foo);

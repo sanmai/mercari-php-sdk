@@ -141,28 +141,30 @@ $request = (new Mercari\SearchRequest())->searchShopsOnly();
 
 ### Filters Without Magic Numbers
 
-The enums in `Mercari\Enum` name the values a search accepts: `ItemCondition`, `ShippingPayer`, `ItemStatus`, `Marketplace`, `SortBy`, and `SortOrder`. Assign one where the request expects an ID, or assign a list where the API takes a comma-separated string - the request turns a list into that string for you:
+The enums in `Mercari\Enum` name the values a search accepts: `ItemCondition`, `ShippingPayer`, `Color`, `ItemStatus`, `Marketplace`, `SortBy`, and `SortOrder`. Assign one where the request expects an ID, or assign a list where the API takes a comma-separated string - the request turns a list into that string for you:
 
 ```php
+use Mercari\Enum\Color;
 use Mercari\Enum\ItemCondition;
 use Mercari\Enum\ItemStatus;
 use Mercari\Enum\ShippingPayer;
 use Mercari\Enum\SortBy;
 
 $request = new Mercari\SearchRequest();
-$request->item_condition_id = [ItemCondition::New, ItemCondition::LikeNew]; // "1,2"
-$request->status = [ItemStatus::OnSale, ItemStatus::Trading];               // "on_sale,trading"
-$request->shipping_payer_id = ShippingPayer::Seller;                        // 2
-$request->sort = SortBy::Price;                                             // "price"
+$request->item_condition_id = [ItemCondition::BrandNew, ItemCondition::LikeNew]; // "1,2"
+$request->status = [ItemStatus::OnSale, ItemStatus::Trading];                    // "on_sale,trading"
+$request->shipping_payer_id = ShippingPayer::Seller;                             // 2
+$request->color_id = Color::Black;                                               // 1
+$request->sort = SortBy::Price;                                                  // "price"
 ```
 
-`ItemCondition::used()` gives every condition but `New`, for when you want second-hand items only:
+`ItemCondition::used()` gives every condition but `BrandNew`, for when you want second-hand items only:
 
 ```php
 $request->item_condition_id = ItemCondition::used(); // "2,3,4,5,6"
 ```
 
-Plain scalars still work everywhere an enum does, and a list of scalars is joined the same way.
+Plain scalars still work everywhere an enum does, and a list of scalars is joined the same way. There is no "any" case anywhere: to search across every condition, color, or status, leave the property unset.
 
 Results are paginated. `->meta` reports the total and whether more pages exist; advance by raising the request's `page`, which is zero-indexed (the first page is `0`):
 
