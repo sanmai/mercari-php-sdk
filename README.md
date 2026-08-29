@@ -166,6 +166,14 @@ $request->item_condition_id = ItemCondition::used(); // "2,3,4,5,6"
 
 Plain scalars still work everywhere an enum does, and a list of scalars is joined the same way. There is no "any" case anywhere: to search across every condition, color, or status, leave the property unset.
 
+Responses carry their statuses as plain strings. `ItemStatus`, `TransactionStatus`, and `ShippingStatus` name the values you are likely to meet; read one with `tryFrom()`:
+
+```php
+$status = Mercari\Enum\TransactionStatus::tryFrom($transaction->status);
+```
+
+Mercari does not publish the full set of transaction and shipping statuses, so a `null` here means "a status this SDK does not list yet", not an error. Match on the cases you act upon and let the rest fall through.
+
 Results are paginated. `->meta` reports the total and whether more pages exist; advance by raising the request's `page`, which is zero-indexed (the first page is `0`):
 
 ```php
@@ -199,6 +207,15 @@ if ($item === null) {
 }
 
 echo "{$item->name}: {$item->status}\n";
+```
+
+Pass a prefecture to have the Shops buyer shipping fee calculated for it. `Mercari\Enum\Prefecture` names all 47, and `id()` gives the code that `shipping_from_area` reports back:
+
+```php
+$item = $client->item('m1234567890', Mercari\Enum\Prefecture::Tokyo); // 東京都
+
+Mercari\Enum\Prefecture::Tokyo->id();  // 13
+Mercari\Enum\Prefecture::fromId(13);   // Prefecture::Tokyo, or null for an unknown code
 ```
 
 Fetch several items at once, or find items similar to a given one:
@@ -392,8 +409,9 @@ foreach ($client->transactionMessages($transaction->id) as $message) {
 
 $client->transactionMessage($transaction->id, '初めまして、購入させていただきました。短い間ではございますが、よろしくお願いします。');
 
-// Leave a review; the rating is "good" (default) or "bad"
+// Leave a review; the rating is Fame::Good (default) or Fame::Bad
 $client->transactionReview($transaction->id, 'この度はお取引ありがとうございました。');
+$client->transactionReview($transaction->id, '残念でした。', Mercari\Enum\Fame::Bad);
 ```
 
 ### Your Todo List

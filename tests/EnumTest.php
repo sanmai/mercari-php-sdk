@@ -25,19 +25,24 @@ use Mercari\Enum\ItemCondition;
 use Mercari\Enum\ItemStatus;
 use Mercari\Enum\Marketplace;
 use Mercari\Enum\ShippingPayer;
+use Mercari\Enum\ShippingStatus;
 use Mercari\Enum\SortBy;
 use Mercari\Enum\SortOrder;
+use Mercari\Enum\TransactionStatus;
 use Mercari\MercariClient;
 use BackedEnum;
 
 /**
  * @covers \Mercari\Enum\Color
+ * @covers \Mercari\Enum\Fame
  * @covers \Mercari\Enum\ItemCondition
  * @covers \Mercari\Enum\ItemStatus
  * @covers \Mercari\Enum\Marketplace
  * @covers \Mercari\Enum\ShippingPayer
+ * @covers \Mercari\Enum\ShippingStatus
  * @covers \Mercari\Enum\SortBy
  * @covers \Mercari\Enum\SortOrder
+ * @covers \Mercari\Enum\TransactionStatus
  */
 class EnumTest extends TestCase
 {
