@@ -122,7 +122,7 @@ class EnumTest extends TestCase
             'Shipped' => 'shipped',
             'Done' => 'done',
             'Publish' => 'publish',
-            'Fillin' => 'fillin',
+            'Filling' => 'fillin',
             'FixSize' => 'fix_size',
             'WaitPickup' => 'wait_pickup',
             'HandOver' => 'hand_over',

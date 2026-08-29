@@ -40,7 +40,7 @@ enum ShippingStatus: string
 
     case Publish = 'publish';
 
-    case Fillin = 'fillin';
+    case Filling = 'fillin';
 
     case FixSize = 'fix_size';
 
