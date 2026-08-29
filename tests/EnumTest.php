@@ -20,6 +20,7 @@
 namespace Tests\Mercari;
 
 use Mercari\Enum\Color;
+use Mercari\Enum\Fame;
 use Mercari\Enum\ItemCondition;
 use Mercari\Enum\ItemStatus;
 use Mercari\Enum\Marketplace;
@@ -96,6 +97,30 @@ class EnumTest extends TestCase
         yield SortOrder::class => [SortOrder::class, [
             'Desc' => 'desc',
             'Asc' => 'asc',
+        ]];
+
+        yield Fame::class => [Fame::class, [
+            'Good' => 'good',
+            'Bad' => 'bad',
+        ]];
+
+        yield TransactionStatus::class => [TransactionStatus::class, [
+            'WaitShipping' => 'wait_shipping',
+            'WaitReview' => 'wait_review',
+            'WaitDone' => 'wait_done',
+            'Done' => 'done',
+        ]];
+
+        yield ShippingStatus::class => [ShippingStatus::class, [
+            'WaitShipping' => 'wait_shipping',
+            'Shipping' => 'shipping',
+            'Shipped' => 'shipped',
+            'Done' => 'done',
+            'Publish' => 'publish',
+            'Fillin' => 'fillin',
+            'FixSize' => 'fix_size',
+            'WaitPickup' => 'wait_pickup',
+            'HandOver' => 'hand_over',
         ]];
     }
 
