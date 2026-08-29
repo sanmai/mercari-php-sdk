@@ -17,14 +17,18 @@
  * limitations under the License.
  */
 
-namespace Tests\Mercari\Doubles;
+declare(strict_types=1);
 
-use Mercari\GenericRequest;
+namespace Mercari\Enum;
 
 /**
- * @property mixed $bar
- * @property mixed $baz
- * @property mixed $foo
- * @property mixed $zap
+ * Who pays for the shipping, as used by the shipping_payer_id search filter.
  */
-class ExampleRequest extends GenericRequest {}
+enum ShippingPayer: int
+{
+    /** 着払い(購入者負担) */
+    case Buyer = 1;
+
+    /** 送料込み(出品者負担) */
+    case Seller = 2;
+}

@@ -17,14 +17,30 @@
  * limitations under the License.
  */
 
-namespace Tests\Mercari\Doubles;
+declare(strict_types=1);
 
-use Mercari\GenericRequest;
+namespace Mercari\Enum;
 
 /**
- * @property mixed $bar
- * @property mixed $baz
- * @property mixed $foo
- * @property mixed $zap
+ * Item status, as reported by items and accepted by the status search filter.
  */
-class ExampleRequest extends GenericRequest {}
+enum ItemStatus: string
+{
+    /** The item is on sale. */
+    case OnSale = 'on_sale';
+
+    /** The item has been purchased. */
+    case Trading = 'trading';
+
+    /** The trading for this item has ended. */
+    case SoldOut = 'sold_out';
+
+    /** The item has been suspended. */
+    case Stop = 'stop';
+
+    /** The item has been deleted. */
+    case Cancel = 'cancel';
+
+    /** The item has been deleted by an administrator. */
+    case AdminCancel = 'admin_cancel';
+}

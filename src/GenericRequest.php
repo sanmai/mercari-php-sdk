@@ -21,8 +21,13 @@ declare(strict_types=1);
 
 namespace Mercari;
 
+use BackedEnum;
 use JsonSerializable;
 use Override;
+
+use function array_map;
+use function implode;
+use function is_array;
 
 abstract class GenericRequest implements JsonSerializable
 {
@@ -45,7 +50,23 @@ abstract class GenericRequest implements JsonSerializable
 
     public function getRequestParams(): array
     {
-        return $this->data;
+        return array_map(self::toParam(...), $this->data);
+    }
+
+    /**
+     * An enum becomes its backing value; an array becomes a comma-separated list.
+     */
+    private static function toParam(mixed $value): mixed
+    {
+        if ($value instanceof BackedEnum) {
+            return $value->value;
+        }
+
+        if (is_array($value)) {
+            return implode(',', array_map(self::toParam(...), $value));
+        }
+
+        return $value;
     }
 
     #[Override]

@@ -17,14 +17,21 @@
  * limitations under the License.
  */
 
-namespace Tests\Mercari\Doubles;
+declare(strict_types=1);
 
-use Mercari\GenericRequest;
+namespace Mercari\Enum;
 
 /**
- * @property mixed $bar
- * @property mixed $baz
- * @property mixed $foo
- * @property mixed $zap
+ * Marketplace to search, as used by the marketplace search filter.
  */
-class ExampleRequest extends GenericRequest {}
+enum Marketplace: int
+{
+    /** The flea market only. */
+    case Mercari = 1;
+
+    /** Mercari Shops only. */
+    case Shops = 2;
+
+    /** Both marketplaces. */
+    case All = 3;
+}
