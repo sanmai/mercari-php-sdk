@@ -27,6 +27,8 @@ use Mercari\Enum\SortOrder;
 use Mercari\MercariClient;
 use Mercari\SearchRequest;
 
+use function json_encode;
+
 /**
  * @covers \Mercari\SearchRequest
  */
@@ -79,5 +81,10 @@ class SearchRequestTest extends TestCase
             'sort' => 'price',
             'order' => 'asc',
         ], $request->getRequestParams());
+
+        $this->assertSame(
+            '{"item_condition_id":"2,3,4,5,6","shipping_payer_id":2,"status":"on_sale,trading","sort":"price","order":"asc"}',
+            json_encode($request),
+        );
     }
 }

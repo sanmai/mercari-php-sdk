@@ -614,7 +614,6 @@ class MercariClientTest extends TestCase
         $this->client->transactionReview('foo', 'bar', Fame::Bad);
     }
 
-
     public function testTransactionReviewException()
     {
         $response = $this->createMock(ReviewResponse::class);

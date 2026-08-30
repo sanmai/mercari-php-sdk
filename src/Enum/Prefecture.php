@@ -125,9 +125,6 @@ enum Prefecture: string
 
     case Okinawa = '沖縄県';
 
-    /**
-     * The prefecture code, from 1 for Hokkaido to 47 for Okinawa.
-     */
     public function id(): int
     {
         return array_search($this, self::cases(), true) + 1;

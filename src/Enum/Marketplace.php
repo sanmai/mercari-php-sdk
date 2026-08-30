@@ -26,12 +26,9 @@ namespace Mercari\Enum;
  */
 enum Marketplace: int
 {
-    /** The flea market only. */
     case Mercari = 1;
 
-    /** Mercari Shops only. */
     case Shops = 2;
 
-    /** Both marketplaces. */
     case All = 3;
 }

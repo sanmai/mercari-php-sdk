@@ -26,7 +26,6 @@ namespace Mercari\Enum;
  */
 enum ItemStatus: string
 {
-    /** The item is on sale. */
     case OnSale = 'on_sale';
 
     /** The item has been purchased. */

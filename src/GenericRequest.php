@@ -24,8 +24,6 @@ namespace Mercari;
 use JsonSerializable;
 use Override;
 
-use function array_map;
-
 abstract class GenericRequest implements JsonSerializable
 {
     private array $data;
@@ -47,7 +45,7 @@ abstract class GenericRequest implements JsonSerializable
 
     public function getRequestParams(): array
     {
-        return array_map(ParamValue::of(...), $this->data);
+        return $this->data;
     }
 
     #[Override]

@@ -25,9 +25,12 @@ use Mercari\Enum\Color;
 use Mercari\Enum\ItemCondition;
 use Mercari\Enum\ItemStatus;
 use Mercari\Enum\Marketplace;
+use Override;
 use Mercari\Enum\ShippingPayer;
 use Mercari\Enum\SortBy;
 use Mercari\Enum\SortOrder;
+
+use function array_map;
 
 /**
  * Where a property takes an enum, it takes the plain scalar just as well.
@@ -84,5 +87,11 @@ class SearchRequest extends GenericRequest
         $this->marketplace = MercariClient::MARKETPLACE_ALL;
 
         return $this;
+    }
+
+    #[Override]
+    public function getRequestParams(): array
+    {
+        return array_map(ParamValue::of(...), parent::getRequestParams());
     }
 }
