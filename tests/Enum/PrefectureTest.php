@@ -17,9 +17,10 @@
  * limitations under the License.
  */
 
-namespace Tests\Mercari;
+namespace Tests\Mercari\Enum;
 
 use Mercari\Enum\Prefecture;
+use Tests\Mercari\TestCase;
 
 /**
  * @covers \Mercari\Enum\Prefecture
