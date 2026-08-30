@@ -17,14 +17,31 @@
  * limitations under the License.
  */
 
-namespace Tests\Mercari\Doubles;
+declare(strict_types=1);
 
-use Mercari\GenericRequest;
+namespace Tests\Mercari\Enum;
+
+use Mercari\Enum\Marketplace;
 
 /**
- * @property mixed $bar
- * @property mixed $baz
- * @property mixed $foo
- * @property mixed $zap
+ * The literals are the API contract (1 is Mercari, 2 is Shops, 3 is both),
+ * not the MercariClient constants derived from this enum.
+ *
+ * @covers \Mercari\Enum\Marketplace
  */
-class ExampleRequest extends GenericRequest {}
+class MarketplaceTest extends BackedEnumTestCase
+{
+    public function enumClass(): string
+    {
+        return Marketplace::class;
+    }
+
+    public function expectedValues(): array
+    {
+        return [
+            'Mercari' => 1,
+            'Shops' => 2,
+            'All' => 3,
+        ];
+    }
+}

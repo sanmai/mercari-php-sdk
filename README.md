@@ -139,6 +139,41 @@ $request = (new Mercari\SearchRequest())->searchShopsOnly();
 // or ->searchMercariOnly(), or ->searchBothMarketplaces()
 ```
 
+### Filters Without Magic Numbers
+
+The enums in `Mercari\Enum` name the values a search accepts: `ItemCondition`, `ShippingPayer`, `Color`, `ItemStatus`, `Marketplace`, `SortBy`, and `SortOrder`. Assign one where the request expects an ID, or assign a list where the API takes a comma-separated string - the request turns a list into that string for you:
+
+```php
+use Mercari\Enum\Color;
+use Mercari\Enum\ItemCondition;
+use Mercari\Enum\ItemStatus;
+use Mercari\Enum\ShippingPayer;
+use Mercari\Enum\SortBy;
+
+$request = new Mercari\SearchRequest();
+$request->item_condition_id = [ItemCondition::BrandNew, ItemCondition::LikeNew]; // "1,2"
+$request->status = [ItemStatus::OnSale, ItemStatus::Trading];                    // "on_sale,trading"
+$request->shipping_payer_id = ShippingPayer::Seller;                             // 2
+$request->color_id = Color::Black;                                               // 1
+$request->sort = SortBy::Price;                                                  // "price"
+```
+
+`ItemCondition::used()` gives every condition but `BrandNew`, for when you want second-hand items only:
+
+```php
+$request->item_condition_id = ItemCondition::used(); // "2,3,4,5,6"
+```
+
+Plain scalars still work everywhere an enum does, and a list of scalars is joined the same way. There is no "any" case anywhere: to search across every condition, color, or status, leave the property unset.
+
+Responses carry their statuses as plain strings. `ItemStatus`, `TransactionStatus`, and `ShippingStatus` name the values you are likely to meet; read one with `tryFrom()`:
+
+```php
+$status = Mercari\Enum\TransactionStatus::tryFrom($transaction->status);
+```
+
+Mercari does not publish the full set of transaction and shipping statuses, so a `null` here means "a status this SDK does not list yet", not an error. Match on the cases you act upon and let the rest fall through.
+
 Results are paginated. `->meta` reports the total and whether more pages exist; advance by raising the request's `page`, which is zero-indexed (the first page is `0`):
 
 ```php
@@ -172,6 +207,15 @@ if ($item === null) {
 }
 
 echo "{$item->name}: {$item->status}\n";
+```
+
+Pass a prefecture to have the Shops buyer shipping fee calculated for it. `Mercari\Enum\Prefecture` names all 47, and `id()` gives the code that `shipping_from_area` reports back:
+
+```php
+$item = $client->item('m1234567890', Mercari\Enum\Prefecture::Tokyo);
+
+Mercari\Enum\Prefecture::Tokyo->id();  // 13
+Mercari\Enum\Prefecture::fromId(13);   // Prefecture::Tokyo, or null for an unknown code
 ```
 
 Fetch several items at once, or find items similar to a given one:
@@ -365,8 +409,9 @@ foreach ($client->transactionMessages($transaction->id) as $message) {
 
 $client->transactionMessage($transaction->id, '初めまして、購入させていただきました。短い間ではございますが、よろしくお願いします。');
 
-// Leave a review; the rating is "good" (default) or "bad"
+// Leave a review; the rating is Fame::Good (default) or Fame::Bad
 $client->transactionReview($transaction->id, 'この度はお取引ありがとうございました。');
+$client->transactionReview($transaction->id, '残念でした。', Mercari\Enum\Fame::Bad);
 ```
 
 ### Your Todo List

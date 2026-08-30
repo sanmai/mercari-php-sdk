@@ -17,14 +17,27 @@
  * limitations under the License.
  */
 
-namespace Tests\Mercari\Doubles;
+declare(strict_types=1);
 
-use Mercari\GenericRequest;
+namespace Tests\Mercari\Enum;
+
+use Mercari\Enum\SortOrder;
 
 /**
- * @property mixed $bar
- * @property mixed $baz
- * @property mixed $foo
- * @property mixed $zap
+ * @covers \Mercari\Enum\SortOrder
  */
-class ExampleRequest extends GenericRequest {}
+class SortOrderTest extends BackedEnumTestCase
+{
+    public function enumClass(): string
+    {
+        return SortOrder::class;
+    }
+
+    public function expectedValues(): array
+    {
+        return [
+            'Desc' => 'desc',
+            'Asc' => 'asc',
+        ];
+    }
+}

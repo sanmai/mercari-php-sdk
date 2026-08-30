@@ -17,14 +17,29 @@
  * limitations under the License.
  */
 
-namespace Tests\Mercari\Doubles;
+declare(strict_types=1);
 
-use Mercari\GenericRequest;
+namespace Tests\Mercari\Enum;
+
+use Mercari\Enum\TransactionStatus;
 
 /**
- * @property mixed $bar
- * @property mixed $baz
- * @property mixed $foo
- * @property mixed $zap
+ * @covers \Mercari\Enum\TransactionStatus
  */
-class ExampleRequest extends GenericRequest {}
+class TransactionStatusTest extends BackedEnumTestCase
+{
+    public function enumClass(): string
+    {
+        return TransactionStatus::class;
+    }
+
+    public function expectedValues(): array
+    {
+        return [
+            'WaitShipping' => 'wait_shipping',
+            'WaitReview' => 'wait_review',
+            'WaitDone' => 'wait_done',
+            'Done' => 'done',
+        ];
+    }
+}

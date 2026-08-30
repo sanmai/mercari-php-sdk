@@ -17,14 +17,34 @@
  * limitations under the License.
  */
 
-namespace Tests\Mercari\Doubles;
+declare(strict_types=1);
 
-use Mercari\GenericRequest;
+namespace Mercari;
+
+use BackedEnum;
+
+use function array_map;
+use function implode;
+use function is_array;
 
 /**
- * @property mixed $bar
- * @property mixed $baz
- * @property mixed $foo
- * @property mixed $zap
+ * @internal
  */
-class ExampleRequest extends GenericRequest {}
+final class ParamValue
+{
+    /**
+     * An enum becomes its backing value; an array becomes a comma-separated list.
+     */
+    public static function of(mixed $value): mixed
+    {
+        if ($value instanceof BackedEnum) {
+            return $value->value;
+        }
+
+        if (is_array($value)) {
+            return implode(',', array_map(self::of(...), $value));
+        }
+
+        return $value;
+    }
+}

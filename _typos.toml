@@ -1,0 +1,3 @@
+[default.extend-words]
+# Mercari sends this shipping status verbatim; we cannot spell it correctly.
+fillin = "fillin"

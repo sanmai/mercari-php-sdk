@@ -27,6 +27,8 @@ use Mercari\DTO\ItemDetail;
 use Mercari\DTO\Seller;
 use Mercari\DTO\Transaction;
 use Mercari\DTO\TransactionMessage;
+use Mercari\Enum\Fame;
+use Mercari\Enum\Prefecture;
 use Mercari\ItemsResponse;
 use Mercari\MercariClient;
 use Mercari\MessagesResponse;
@@ -246,6 +248,31 @@ class MercariClientTest extends TestCase
         );
 
         $responseActual = $this->client->item('foo', 'bar');
+
+        $this->assertSame($response, $responseActual);
+    }
+
+    public function testItemPrefectureEnum(): void
+    {
+        $response = new ItemDetail();
+
+        $this->clientExpects(
+            'getOptional',
+            $response,
+            $this->logicalAnd(
+                $this->stringContains('item'),
+                $this->stringContains('foo'),
+            ),
+            $this->identicalTo(['prefecture' => '東京都']),
+            $this->identicalTo([
+                HttpResponse::HTTP_NOT_FOUND,
+                HttpResponse::HTTP_BAD_REQUEST,
+                HttpResponse::HTTP_FORBIDDEN,
+                HttpResponse::HTTP_PRECONDITION_FAILED,
+            ]),
+        );
+
+        $responseActual = $this->client->item('foo', Prefecture::Tokyo);
 
         $this->assertSame($response, $responseActual);
     }
@@ -562,6 +589,30 @@ class MercariClientTest extends TestCase
         $this->client->transactionReview('foo', 'bar', 'bad');
     }
 
+    public function testTransactionReviewFameEnum(): void
+    {
+        $response = $this->createMock(ReviewResponse::class);
+        $response->expects($this->once())
+            ->method('isSuccess')
+            ->willReturn(true);
+
+        $this->clientExpects(
+            'postFallback',
+            $response,
+            $this->logicalAnd(
+                $this->stringContains('transaction'),
+                $this->stringContains('foo'),
+                $this->stringContains('review'),
+            ),
+            $this->identicalTo([
+                'fame' => 'bad',
+                'message' => 'bar',
+                'subject' => 'seller',
+            ]),
+        );
+
+        $this->client->transactionReview('foo', 'bar', Fame::Bad);
+    }
 
     public function testTransactionReviewException()
     {

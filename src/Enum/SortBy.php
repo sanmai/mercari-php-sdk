@@ -17,14 +17,21 @@
  * limitations under the License.
  */
 
-namespace Tests\Mercari\Doubles;
+declare(strict_types=1);
 
-use Mercari\GenericRequest;
+namespace Mercari\Enum;
 
 /**
- * @property mixed $bar
- * @property mixed $baz
- * @property mixed $foo
- * @property mixed $zap
+ * Field to sort search results by. Sorting may be inconsistent, so do not rely on it.
  */
-class ExampleRequest extends GenericRequest {}
+enum SortBy: string
+{
+    /** Recommendation score. */
+    case Score = 'score';
+
+    case CreatedTime = 'created_time';
+
+    case Price = 'price';
+
+    case NumLikes = 'num_likes';
+}

@@ -17,14 +17,23 @@
  * limitations under the License.
  */
 
-namespace Tests\Mercari\Doubles;
+declare(strict_types=1);
 
-use Mercari\GenericRequest;
+namespace Mercari\Enum;
 
 /**
- * @property mixed $bar
- * @property mixed $baz
- * @property mixed $foo
- * @property mixed $zap
+ * Status of a flea-market transaction.
+ *
+ * The API does not publish the full set, so use tryFrom() and expect a null
+ * for a status that is not listed here.
  */
-class ExampleRequest extends GenericRequest {}
+enum TransactionStatus: string
+{
+    case WaitShipping = 'wait_shipping';
+
+    case WaitReview = 'wait_review';
+
+    case WaitDone = 'wait_done';
+
+    case Done = 'done';
+}

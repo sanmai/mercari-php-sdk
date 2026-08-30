@@ -17,14 +17,27 @@
  * limitations under the License.
  */
 
-namespace Tests\Mercari\Doubles;
+declare(strict_types=1);
 
-use Mercari\GenericRequest;
+namespace Tests\Mercari\Enum;
+
+use Mercari\Enum\Fame;
 
 /**
- * @property mixed $bar
- * @property mixed $baz
- * @property mixed $foo
- * @property mixed $zap
+ * @covers \Mercari\Enum\Fame
  */
-class ExampleRequest extends GenericRequest {}
+class FameTest extends BackedEnumTestCase
+{
+    public function enumClass(): string
+    {
+        return Fame::class;
+    }
+
+    public function expectedValues(): array
+    {
+        return [
+            'Good' => 'good',
+            'Bad' => 'bad',
+        ];
+    }
+}

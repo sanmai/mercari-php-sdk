@@ -17,14 +17,31 @@
  * limitations under the License.
  */
 
-namespace Tests\Mercari\Doubles;
+declare(strict_types=1);
 
-use Mercari\GenericRequest;
+namespace Tests\Mercari\Enum;
+
+use Mercari\Enum\ItemStatus;
 
 /**
- * @property mixed $bar
- * @property mixed $baz
- * @property mixed $foo
- * @property mixed $zap
+ * @covers \Mercari\Enum\ItemStatus
  */
-class ExampleRequest extends GenericRequest {}
+class ItemStatusTest extends BackedEnumTestCase
+{
+    public function enumClass(): string
+    {
+        return ItemStatus::class;
+    }
+
+    public function expectedValues(): array
+    {
+        return [
+            'OnSale' => 'on_sale',
+            'Trading' => 'trading',
+            'SoldOut' => 'sold_out',
+            'Stop' => 'stop',
+            'Cancel' => 'cancel',
+            'AdminCancel' => 'admin_cancel',
+        ];
+    }
+}

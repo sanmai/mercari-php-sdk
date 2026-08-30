@@ -17,14 +17,34 @@
  * limitations under the License.
  */
 
-namespace Tests\Mercari\Doubles;
+declare(strict_types=1);
 
-use Mercari\GenericRequest;
+namespace Mercari\Enum;
 
 /**
- * @property mixed $bar
- * @property mixed $baz
- * @property mixed $foo
- * @property mixed $zap
+ * Shipping status of a flea-market transaction.
+ *
+ * The last four apply to the Mercari shipping services only. The API does not
+ * publish the full set, so use tryFrom() and expect a null for a status that
+ * is not listed here.
  */
-class ExampleRequest extends GenericRequest {}
+enum ShippingStatus: string
+{
+    case WaitShipping = 'wait_shipping';
+
+    case Shipping = 'shipping';
+
+    case Shipped = 'shipped';
+
+    case Done = 'done';
+
+    case Publish = 'publish';
+
+    case Filling = 'fillin';
+
+    case FixSize = 'fix_size';
+
+    case WaitPickup = 'wait_pickup';
+
+    case HandOver = 'hand_over';
+}

@@ -26,6 +26,9 @@ use GuzzleHttp\HandlerStack;
 use GuzzleRetry\GuzzleRetryMiddleware;
 use JSONSerializer\Serializer;
 use Mercari\DTO\ItemDetail;
+use Mercari\Enum\Fame;
+use Mercari\Enum\Marketplace;
+use Mercari\Enum\Prefecture;
 use Mercari\DTO\Seller;
 use Mercari\DTO\ShopsOrder;
 use Mercari\DTO\Transaction;
@@ -41,11 +44,11 @@ use function sprintf;
  */
 class MercariClient extends AbstractMercariClient
 {
-    public const MARKETPLACE_MERCARI = 1;
+    public const MARKETPLACE_MERCARI = Marketplace::Mercari->value;
 
-    public const MARKETPLACE_SHOP = 2;
+    public const MARKETPLACE_SHOP = Marketplace::Shops->value;
 
-    public const MARKETPLACE_ALL = 3;
+    public const MARKETPLACE_ALL = Marketplace::All->value;
 
     private const SEARCH_ITEMS_V3 = '/v3/items/search';
 
@@ -191,12 +194,12 @@ class MercariClient extends AbstractMercariClient
         );
     }
 
-    public function item(string $id, ?string $prefecture = null): ?ItemDetail
+    public function item(string $id, string|Prefecture|null $prefecture = null): ?ItemDetail
     {
         return $this->getOptional(
             ItemDetail::class,
             sprintf(self::ITEM, $id),
-            array_filter(['prefecture' => $prefecture]),
+            array_filter(['prefecture' => ParamValue::of($prefecture)]),
             error_codes: self::ITEM_NOT_FOUND_ON_STATUS,
         );
     }
@@ -229,12 +232,12 @@ class MercariClient extends AbstractMercariClient
         );
     }
 
-    public function similarItems(string $id, int $marketplace = self::MARKETPLACE_ALL): ItemsResponse
+    public function similarItems(string $id, int|Marketplace $marketplace = Marketplace::All): ItemsResponse
     {
         $response = $this->getOptional(
             ItemsResponse::class,
             sprintf(self::SIMILAR_ITEMS, $id),
-            array_filter(['marketplace' => $marketplace]),
+            array_filter(['marketplace' => ParamValue::of($marketplace)]),
         );
 
         return $response ?? new ItemsResponse();
@@ -299,14 +302,14 @@ class MercariClient extends AbstractMercariClient
         );
     }
 
-    public function transactionReview(string $transaction_id, string $message, string $fame = 'good'): void
+    public function transactionReview(string $transaction_id, string $message, string|Fame $fame = Fame::Good): void
     {
         /** @var ReviewResponse $response */
         $response = $this->postFallback(
             ReviewResponse::class,
             sprintf(self::TRANSACTION_REVIEW, $transaction_id),
             [
-                'fame' => $fame,
+                'fame' => ParamValue::of($fame),
                 'message' => $message,
                 'subject' => 'seller',
             ],
