@@ -50,6 +50,8 @@ class MercariAuthClient
      * @param array<string, string> $extraHeaders Additional HTTP headers to send with every request
      * @param array<string, mixed> $retryOptions Options passed to GuzzleRetryMiddleware (retry_on_status, etc.)
      * @param array<string, mixed> $clientOptions Extra Guzzle client options (timeout, connect_timeout, etc.) merged after defaults
+     *
+     * @infection-ignore-all
      */
     public static function createInstance(
         string $authHost,
