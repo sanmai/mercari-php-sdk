@@ -21,6 +21,9 @@ namespace Tests\Mercari;
 
 use Mercari\Enum\Fame;
 use Mercari\ParamValue;
+use ArrayIterator;
+
+use function Pipeline\take;
 
 /**
  * @covers \Mercari\ParamValue
@@ -41,7 +44,11 @@ class ParamValueTest extends TestCase
 
         yield 'list of scalars' => [[1, 'two'], '1,two'];
 
+        yield 'iterable' => [take([1, 'two']), '1,two'];
+
         yield 'mixed list' => [[Fame::Good, 'bad'], 'good,bad'];
+
+        yield 'iterator' => [new ArrayIterator([Fame::Good, 'bad']), 'good,bad'];
 
         yield 'empty list' => [[], ''];
     }
