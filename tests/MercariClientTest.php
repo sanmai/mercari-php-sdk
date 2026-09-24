@@ -564,7 +564,14 @@ class MercariClientTest extends TestCase
         $this->client->transactionReview('foo', 'bar');
     }
 
-    public function testTransactionReviewFame(): void
+    public static function provideBadFame(): iterable
+    {
+        yield ['bad'];
+        yield [Fame::Bad];
+    }
+
+    /** @dataProvider provideBadFame */
+    public function testTransactionReviewFame(string|Fame $fame): void
     {
         $response = $this->createMock(ReviewResponse::class);
         $response->expects($this->once())
@@ -586,7 +593,7 @@ class MercariClientTest extends TestCase
             ]),
         );
 
-        $this->client->transactionReview('foo', 'bar', 'bad');
+        $this->client->transactionReview('foo', 'bar', $fame);
     }
 
     public function testTransactionReviewFameEnum(): void
