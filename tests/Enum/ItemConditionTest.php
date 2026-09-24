@@ -33,16 +33,14 @@ class ItemConditionTest extends BackedEnumTestCase
         return ItemCondition::class;
     }
 
-    public function expectedValues(): array
+    public function expectedValues(): iterable
     {
-        return [
-            'BrandNew' => 1,
-            'LikeNew' => 2,
-            'NoNoticeableDamage' => 3,
-            'SlightDamage' => 4,
-            'Damaged' => 5,
-            'PoorCondition' => 6,
-        ];
+        yield 'BrandNew' => 1;
+        yield 'LikeNew' => 2;
+        yield 'NoNoticeableDamage' => 3;
+        yield 'SlightDamage' => 4;
+        yield 'Damaged' => 5;
+        yield 'PoorCondition' => 6;
     }
 
     public function testUsedConditions(): void

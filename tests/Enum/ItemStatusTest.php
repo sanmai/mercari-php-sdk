@@ -33,15 +33,13 @@ class ItemStatusTest extends BackedEnumTestCase
         return ItemStatus::class;
     }
 
-    public function expectedValues(): array
+    public function expectedValues(): iterable
     {
-        return [
-            'OnSale' => 'on_sale',
-            'Trading' => 'trading',
-            'SoldOut' => 'sold_out',
-            'Stop' => 'stop',
-            'Cancel' => 'cancel',
-            'AdminCancel' => 'admin_cancel',
-        ];
+        yield 'OnSale' => 'on_sale';
+        yield 'Trading' => 'trading';
+        yield 'SoldOut' => 'sold_out';
+        yield 'Stop' => 'stop';
+        yield 'Cancel' => 'cancel';
+        yield 'AdminCancel' => 'admin_cancel';
     }
 }

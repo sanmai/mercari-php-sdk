@@ -33,11 +33,9 @@ class SortOrderTest extends BackedEnumTestCase
         return SortOrder::class;
     }
 
-    public function expectedValues(): array
+    public function expectedValues(): iterable
     {
-        return [
-            'Desc' => 'desc',
-            'Asc' => 'asc',
-        ];
+        yield 'Desc' => 'desc';
+        yield 'Asc' => 'asc';
     }
 }

@@ -23,9 +23,9 @@ namespace Mercari;
 
 use BackedEnum;
 
-use function array_map;
 use function implode;
-use function is_array;
+use function is_iterable;
+use function Pipeline\take;
 
 /**
  * @internal
@@ -33,7 +33,8 @@ use function is_array;
 final class ParamValue
 {
     /**
-     * An enum becomes its backing value; an array becomes a comma-separated list.
+     * Converts enums into backing values, lists of enums into comma-separated list of backing values.
+     * @param BackedEnum|iterable<BackedEnum> $value
      */
     public static function of(mixed $value): mixed
     {
@@ -41,8 +42,8 @@ final class ParamValue
             return $value->value;
         }
 
-        if (is_array($value)) {
-            return implode(',', array_map(self::of(...), $value));
+        if (is_iterable($value)) {
+            return implode(',', take($value)->cast(self::of(...))->toList());
         }
 
         return $value;

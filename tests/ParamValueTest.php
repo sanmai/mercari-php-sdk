@@ -19,10 +19,11 @@
 
 namespace Tests\Mercari;
 
-use Mercari\Enum\ItemCondition;
-use Mercari\Enum\ItemStatus;
-use Mercari\Enum\Prefecture;
+use Mercari\Enum\Fame;
 use Mercari\ParamValue;
+use ArrayIterator;
+
+use function Pipeline\take;
 
 /**
  * @covers \Mercari\ParamValue
@@ -37,17 +38,17 @@ class ParamValueTest extends TestCase
 
         yield 'int' => [2, 2];
 
-        yield 'string enum' => [ItemStatus::OnSale, 'on_sale'];
+        yield 'enum' => [Fame::Bad, 'bad'];
 
-        yield 'int enum' => [ItemCondition::LikeNew, 2];
-
-        yield 'enum with a multibyte value' => [Prefecture::Tokyo, '東京都'];
-
-        yield 'list of enums' => [ItemCondition::used(), '2,3,4,5,6'];
+        yield 'list of enums' => [[Fame::Good, Fame::Bad], 'good,bad'];
 
         yield 'list of scalars' => [[1, 'two'], '1,two'];
 
-        yield 'mixed list' => [[ItemStatus::OnSale, 'trading'], 'on_sale,trading'];
+        yield 'iterable' => [take([1, 'two']), '1,two'];
+
+        yield 'mixed list' => [[Fame::Good, 'bad'], 'good,bad'];
+
+        yield 'iterator' => [new ArrayIterator([Fame::Good, 'bad']), 'good,bad'];
 
         yield 'empty list' => [[], ''];
     }

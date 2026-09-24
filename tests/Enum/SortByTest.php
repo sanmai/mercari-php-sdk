@@ -33,13 +33,11 @@ class SortByTest extends BackedEnumTestCase
         return SortBy::class;
     }
 
-    public function expectedValues(): array
+    public function expectedValues(): iterable
     {
-        return [
-            'Score' => 'score',
-            'CreatedTime' => 'created_time',
-            'Price' => 'price',
-            'NumLikes' => 'num_likes',
-        ];
+        yield 'Score' => 'score';
+        yield 'CreatedTime' => 'created_time';
+        yield 'Price' => 'price';
+        yield 'NumLikes' => 'num_likes';
     }
 }

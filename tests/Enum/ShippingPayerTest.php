@@ -33,11 +33,9 @@ class ShippingPayerTest extends BackedEnumTestCase
         return ShippingPayer::class;
     }
 
-    public function expectedValues(): array
+    public function expectedValues(): iterable
     {
-        return [
-            'Buyer' => 1,
-            'Seller' => 2,
-        ];
+        yield 'Buyer' => 1;
+        yield 'Seller' => 2;
     }
 }

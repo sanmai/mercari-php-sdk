@@ -37,7 +37,7 @@ abstract class BackedEnumTestCase extends TestCase
     abstract public function enumClass(): string;
 
     /**
-     * @return array<string, string|int>
+     * @return iterable<string, string|int>
      */
     abstract public function expectedValues(): iterable;
 

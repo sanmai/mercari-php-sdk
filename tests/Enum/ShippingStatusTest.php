@@ -33,18 +33,16 @@ class ShippingStatusTest extends BackedEnumTestCase
         return ShippingStatus::class;
     }
 
-    public function expectedValues(): array
+    public function expectedValues(): iterable
     {
-        return [
-            'WaitShipping' => 'wait_shipping',
-            'Shipping' => 'shipping',
-            'Shipped' => 'shipped',
-            'Done' => 'done',
-            'Publish' => 'publish',
-            'FillIn' => 'fillin',
-            'FixSize' => 'fix_size',
-            'WaitPickup' => 'wait_pickup',
-            'HandOver' => 'hand_over',
-        ];
+        yield 'WaitShipping' => 'wait_shipping';
+        yield 'Shipping' => 'shipping';
+        yield 'Shipped' => 'shipped';
+        yield 'Done' => 'done';
+        yield 'Publish' => 'publish';
+        yield 'FillIn' => 'fillin';
+        yield 'FixSize' => 'fix_size';
+        yield 'WaitPickup' => 'wait_pickup';
+        yield 'HandOver' => 'hand_over';
     }
 }

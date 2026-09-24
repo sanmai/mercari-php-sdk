@@ -33,21 +33,19 @@ class ColorTest extends BackedEnumTestCase
         return Color::class;
     }
 
-    public function expectedValues(): array
+    public function expectedValues(): iterable
     {
-        return [
-            'Black' => 1,
-            'White' => 2,
-            'Grey' => 3,
-            'Brown' => 4,
-            'Red' => 5,
-            'Pink' => 6,
-            'Purple' => 7,
-            'Blue' => 8,
-            'Beige' => 9,
-            'Green' => 10,
-            'Yellow' => 11,
-            'Orange' => 12,
-        ];
+        yield 'Black' => 1;
+        yield 'White' => 2;
+        yield 'Grey' => 3;
+        yield 'Brown' => 4;
+        yield 'Red' => 5;
+        yield 'Pink' => 6;
+        yield 'Purple' => 7;
+        yield 'Blue' => 8;
+        yield 'Beige' => 9;
+        yield 'Green' => 10;
+        yield 'Yellow' => 11;
+        yield 'Orange' => 12;
     }
 }

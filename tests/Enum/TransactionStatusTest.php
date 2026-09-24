@@ -33,13 +33,11 @@ class TransactionStatusTest extends BackedEnumTestCase
         return TransactionStatus::class;
     }
 
-    public function expectedValues(): array
+    public function expectedValues(): iterable
     {
-        return [
-            'WaitShipping' => 'wait_shipping',
-            'WaitReview' => 'wait_review',
-            'WaitDone' => 'wait_done',
-            'Done' => 'done',
-        ];
+        yield 'WaitShipping' => 'wait_shipping';
+        yield 'WaitReview' => 'wait_review';
+        yield 'WaitDone' => 'wait_done';
+        yield 'Done' => 'done';
     }
 }

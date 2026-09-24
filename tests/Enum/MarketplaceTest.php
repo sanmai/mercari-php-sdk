@@ -36,12 +36,10 @@ class MarketplaceTest extends BackedEnumTestCase
         return Marketplace::class;
     }
 
-    public function expectedValues(): array
+    public function expectedValues(): iterable
     {
-        return [
-            'Mercari' => 1,
-            'Shops' => 2,
-            'All' => 3,
-        ];
+        yield 'Mercari' => 1;
+        yield 'Shops' => 2;
+        yield 'All' => 3;
     }
 }

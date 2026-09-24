@@ -141,7 +141,7 @@ $request = (new Mercari\SearchRequest())->searchShopsOnly();
 
 ### Filters Without Magic Numbers
 
-The enums in `Mercari\Enum` name the values a search accepts: `ItemCondition`, `ShippingPayer`, `Color`, `ItemStatus`, `Marketplace`, `SortBy`, and `SortOrder`. Assign one where the request expects an ID, or assign a list where the API takes a comma-separated string - the request turns a list into that string for you:
+The enums in `Mercari\Enum` name the values a search accepts: `ItemCondition`, `ShippingPayer`, `Color`, `ItemStatus`, `Marketplace`, `SortBy`, and `SortOrder`. Assign one where the request expects an ID, or assign a list (or any other iterable, such as a generator) where the API takes a comma-separated string - the request turns it into that string for you:
 
 ```php
 use Mercari\Enum\Color;
