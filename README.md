@@ -365,8 +365,9 @@ foreach ($client->transactionMessages($transaction->id) as $message) {
 
 $client->transactionMessage($transaction->id, '初めまして、購入させていただきました。短い間ではございますが、よろしくお願いします。');
 
-// Leave a review; the rating is "good" (default) or "bad"
+// Leave a review; the rating is Fame::Good (default) or Fame::Bad
 $client->transactionReview($transaction->id, 'この度はお取引ありがとうございました。');
+$client->transactionReview($transaction->id, '残念でした。', Mercari\Enum\Fame::Bad);
 ```
 
 ### Your Todo List

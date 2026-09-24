@@ -27,6 +27,7 @@ use Mercari\DTO\ItemDetail;
 use Mercari\DTO\Seller;
 use Mercari\DTO\Transaction;
 use Mercari\DTO\TransactionMessage;
+use Mercari\Enum\Fame;
 use Mercari\ItemsResponse;
 use Mercari\MercariClient;
 use Mercari\MessagesResponse;
@@ -560,6 +561,31 @@ class MercariClientTest extends TestCase
         );
 
         $this->client->transactionReview('foo', 'bar', 'bad');
+    }
+
+    public function testTransactionReviewFameEnum(): void
+    {
+        $response = $this->createMock(ReviewResponse::class);
+        $response->expects($this->once())
+            ->method('isSuccess')
+            ->willReturn(true);
+
+        $this->clientExpects(
+            'postFallback',
+            $response,
+            $this->logicalAnd(
+                $this->stringContains('transaction'),
+                $this->stringContains('foo'),
+                $this->stringContains('review'),
+            ),
+            $this->identicalTo([
+                'fame' => 'bad',
+                'message' => 'bar',
+                'subject' => 'seller',
+            ]),
+        );
+
+        $this->client->transactionReview('foo', 'bar', Fame::Bad);
     }
 
 
