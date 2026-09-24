@@ -30,6 +30,7 @@ use Mercari\DTO\Seller;
 use Mercari\DTO\ShopsOrder;
 use Mercari\DTO\Transaction;
 use Mercari\DTO\TransactionMessage;
+use Mercari\Enum\Fame;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 use function array_merge;
@@ -299,14 +300,14 @@ class MercariClient extends AbstractMercariClient
         );
     }
 
-    public function transactionReview(string $transaction_id, string $message, string $fame = 'good'): void
+    public function transactionReview(string $transaction_id, string $message, string|Fame $fame = Fame::Good): void
     {
         /** @var ReviewResponse $response */
         $response = $this->postFallback(
             ReviewResponse::class,
             sprintf(self::TRANSACTION_REVIEW, $transaction_id),
             [
-                'fame' => $fame,
+                'fame' => ParamValue::of($fame),
                 'message' => $message,
                 'subject' => 'seller',
             ],
