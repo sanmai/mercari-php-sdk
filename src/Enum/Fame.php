@@ -22,7 +22,7 @@ declare(strict_types=1);
 namespace Mercari\Enum;
 
 /**
- * The rating given with a transaction review.
+ * @see MercariClient::transactionReview()
  */
 enum Fame: string
 {
