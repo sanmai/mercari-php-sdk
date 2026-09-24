@@ -23,6 +23,8 @@ namespace Tests\Mercari\Enum;
 
 use Mercari\Enum\ItemCondition;
 
+use function Pipeline\take;
+
 /**
  * @covers \Mercari\Enum\ItemCondition
  */
@@ -51,6 +53,6 @@ class ItemConditionTest extends BackedEnumTestCase
             ItemCondition::SlightDamage,
             ItemCondition::Damaged,
             ItemCondition::PoorCondition,
-        ], ItemCondition::used());
+        ], take(ItemCondition::used())->toAssoc());
     }
 }

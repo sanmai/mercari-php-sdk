@@ -21,8 +21,7 @@ declare(strict_types=1);
 
 namespace Mercari\Enum;
 
-use function array_filter;
-use function array_values;
+use function Pipeline\take;
 
 /**
  * Item condition, as used by the item_condition_id search filter and reported in ItemCondition DTOs.
@@ -50,13 +49,17 @@ enum ItemCondition: int
     /**
      * Every condition but BrandNew.
      *
-     * @return list<self>
+     * @return iterable<self>
      */
-    public static function used(): array
+    public static function used(): iterable
     {
-        return array_values(array_filter(
-            self::cases(),
-            static fn(self $condition): bool => $condition !== self::BrandNew,
-        ));
+        return take(self::cases())
+            ->select(self::allButBrandNew(...))
+            ->values();
+    }
+
+    private static function allButBrandNew(self $condition): bool
+    {
+        return $condition !== self::BrandNew;
     }
 }
