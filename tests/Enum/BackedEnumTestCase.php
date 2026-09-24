@@ -24,6 +24,8 @@ namespace Tests\Mercari\Enum;
 use BackedEnum;
 use PHPUnit\Framework\TestCase;
 
+use function Pipeline\take;
+
 /**
  * Base for the per-enum tests: pins the exact set of cases and their values.
  */
@@ -35,18 +37,22 @@ abstract class BackedEnumTestCase extends TestCase
     abstract public function enumClass(): string;
 
     /**
-     * @return array<string, string|int> Case names mapped to their values.
+     * @return array<string, string|int>
      */
-    abstract public function expectedValues(): array;
+    abstract public function expectedValues(): iterable;
 
     public function testCases(): void
     {
-        $actual = [];
+        $this->assertSame(
+            take($this->expectedValues())->toAssoc(),
+            take($this->enumClass()::cases())
+                ->map(self::caseMap(...))
+                ->toAssoc(),
+        );
+    }
 
-        foreach ($this->enumClass()::cases() as $case) {
-            $actual[$case->name] = $case->value;
-        }
-
-        $this->assertSame($this->expectedValues(), $actual);
+    private static function caseMap(BackedEnum $case): iterable
+    {
+        yield $case->name => $case->value;
     }
 }
