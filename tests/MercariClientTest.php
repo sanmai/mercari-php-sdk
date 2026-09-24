@@ -227,32 +227,14 @@ class MercariClientTest extends TestCase
         $this->assertSame($response, $responseActual);
     }
 
-    public function testItemPrefecture(): void
+    public static function provideTokyo(): iterable
     {
-        $response = new ItemDetail();
-
-        $this->clientExpects(
-            'getOptional',
-            $response,
-            $this->logicalAnd(
-                $this->stringContains('item'),
-                $this->stringContains('foo'),
-            ),
-            $this->identicalTo(['prefecture' => 'bar']),
-            $this->identicalTo([
-                HttpResponse::HTTP_NOT_FOUND,
-                HttpResponse::HTTP_BAD_REQUEST,
-                HttpResponse::HTTP_FORBIDDEN,
-                HttpResponse::HTTP_PRECONDITION_FAILED,
-            ]),
-        );
-
-        $responseActual = $this->client->item('foo', 'bar');
-
-        $this->assertSame($response, $responseActual);
+        yield ['東京都'];
+        yield [Prefecture::Tokyo];
     }
 
-    public function testItemPrefectureEnum(): void
+    /** @dataProvider provideTokyo */
+    public function testItemPrefecture(string|Prefecture $prefecture): void
     {
         $response = new ItemDetail();
 
@@ -272,7 +254,7 @@ class MercariClientTest extends TestCase
             ]),
         );
 
-        $responseActual = $this->client->item('foo', Prefecture::Tokyo);
+        $responseActual = $this->client->item('foo', $prefecture);
 
         $this->assertSame($response, $responseActual);
     }
@@ -594,31 +576,6 @@ class MercariClientTest extends TestCase
         );
 
         $this->client->transactionReview('foo', 'bar', $fame);
-    }
-
-    public function testTransactionReviewFameEnum(): void
-    {
-        $response = $this->createMock(ReviewResponse::class);
-        $response->expects($this->once())
-            ->method('isSuccess')
-            ->willReturn(true);
-
-        $this->clientExpects(
-            'postFallback',
-            $response,
-            $this->logicalAnd(
-                $this->stringContains('transaction'),
-                $this->stringContains('foo'),
-                $this->stringContains('review'),
-            ),
-            $this->identicalTo([
-                'fame' => 'bad',
-                'message' => 'bar',
-                'subject' => 'seller',
-            ]),
-        );
-
-        $this->client->transactionReview('foo', 'bar', Fame::Bad);
     }
 
     public function testTransactionReviewException()
