@@ -33,11 +33,9 @@ class FameTest extends BackedEnumTestCase
         return Fame::class;
     }
 
-    public function expectedValues(): array
+    public function expectedValues(): iterable
     {
-        return [
-            'Good' => 'good',
-            'Bad' => 'bad',
-        ];
+        yield 'Good' => 'good';
+        yield 'Bad' => 'bad';
     }
 }
