@@ -41,7 +41,7 @@ class ShippingStatusTest extends BackedEnumTestCase
             'Shipped' => 'shipped',
             'Done' => 'done',
             'Publish' => 'publish',
-            'Filling' => 'fillin',
+            'FillIn' => 'fillin',
             'FixSize' => 'fix_size',
             'WaitPickup' => 'wait_pickup',
             'HandOver' => 'hand_over',
