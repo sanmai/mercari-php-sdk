@@ -141,7 +141,7 @@ $request = (new Mercari\SearchRequest())->searchShopsOnly();
 
 ### Filters Without Magic Numbers
 
-The enums in `Mercari\Enum` name the values a search accepts: `ItemCondition`, `ShippingPayer`, `Color`, `ItemStatus`, `Marketplace`, `SortBy`, and `SortOrder`. Assign one where the request expects an ID, or assign a list (or any other iterable, such as a generator) where the API takes a comma-separated string - the request turns it into that string for you:
+The enums in `Mercari\Enum` name the values a search accepts: `ItemCondition`, `ShippingPayer`, `Color`, `ItemStatus`, `Marketplace`, `SortBy`, and `SortOrder`. Assign an enum case to a property that requires an ID. Assign a list (or any other iterable, such as a generator) to a property that requires a comma-separated string; the request converts the list to that string:
 
 ```php
 use Mercari\Enum\Color;
@@ -158,21 +158,21 @@ $request->color_id = Color::Black;                                              
 $request->sort = SortBy::Price;                                                  // "price"
 ```
 
-`ItemCondition::used()` gives every condition but `BrandNew`, for when you want second-hand items only:
+`ItemCondition::used()` returns every condition except `BrandNew`. Use it to search for second-hand items only:
 
 ```php
 $request->item_condition_id = ItemCondition::used(); // "2,3,4,5,6"
 ```
 
-Plain scalars still work everywhere an enum does, and a list of scalars is joined the same way. There is no "any" case anywhere: to search across every condition, color, or status, leave the property unset.
+Each property that accepts an enum also accepts a plain scalar, and the request joins a list of scalars the same way. No enum defines an "any" case: to include every condition, color, or status, leave the property unset.
 
-Responses carry their statuses as plain strings. `ItemStatus`, `TransactionStatus`, and `ShippingStatus` name the values you are likely to meet; read one with `tryFrom()`:
+Responses store statuses as plain strings. `ItemStatus`, `TransactionStatus`, and `ShippingStatus` define the known values; convert a status with `tryFrom()`:
 
 ```php
 $status = Mercari\Enum\TransactionStatus::tryFrom($transaction->status);
 ```
 
-Mercari does not publish the full set of transaction and shipping statuses, so a `null` here means "a status this SDK does not list yet", not an error. Match on the cases you act upon and let the rest fall through.
+Mercari does not publish the full set of transaction and shipping statuses. `tryFrom()` returns `null` for a status that this SDK does not define yet; this is not an error. Match the cases that your code handles and ignore the others.
 
 Results are paginated. `->meta` reports the total and whether more pages exist; advance by raising the request's `page`, which is zero-indexed (the first page is `0`):
 
