@@ -17,38 +17,32 @@
  * limitations under the License.
  */
 
-namespace Mercari;
+declare(strict_types=1);
 
-use ArrayIterator;
-use JMS\Serializer\Annotation\PostDeserialize;
-use JMS\Serializer\Annotation\Type;
-use Mercari\DTO\PartnerOffer;
-use Override;
-use Traversable;
+namespace Tests\Mercari\Enum;
+
+use Mercari\Enum\ShippingStatus;
 
 /**
- * @extends ListResponse<PartnerOffer>
+ * @covers \Mercari\Enum\ShippingStatus
  */
-class PartnerOffersResponse extends ListResponse
+class ShippingStatusTest extends BackedEnumTestCase
 {
-    /**
-     * @var PartnerOffer[]
-     */
-    #[Type('array<Mercari\DTO\PartnerOffer>')]
-    public $data = [];
-
-    #[PostDeserialize]
-    private function normalizeData(): void
+    public function enumClass(): string
     {
-        $this->data ??= [];
+        return ShippingStatus::class;
     }
 
-    /**
-     * @return ArrayIterator<array-key, PartnerOffer>
-     */
-    #[Override]
-    public function getIterator(): Traversable
+    public function expectedValues(): iterable
     {
-        return new ArrayIterator($this->data);
+        yield 'WaitShipping' => 'wait_shipping';
+        yield 'Shipping' => 'shipping';
+        yield 'Shipped' => 'shipped';
+        yield 'Done' => 'done';
+        yield 'Publish' => 'publish';
+        yield 'FillIn' => 'fillin';
+        yield 'FixSize' => 'fix_size';
+        yield 'WaitPickup' => 'wait_pickup';
+        yield 'HandOver' => 'hand_over';
     }
 }

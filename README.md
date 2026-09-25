@@ -425,6 +425,16 @@ $client->addComment('m1234567890', 'コメント失礼いたします。こち�
 
 These apply whichever flow built your `$client`.
 
+### Reading Statuses
+
+Responses store statuses as plain strings. `ItemStatus`, `TransactionStatus`, and `ShippingStatus` define the known values; convert a status with `tryFrom()`:
+
+```php
+$status = Mercari\Enum\TransactionStatus::tryFrom($transaction->status);
+```
+
+Mercari does not publish the full set of transaction and shipping statuses. `tryFrom()` returns `null` for a status that this SDK does not define yet; this is not an error. Match the cases that your code handles and ignore the others.
+
 ### Errors and Missing Resources
 
 Methods that fetch a single resource - `item()`, `user()`, `transaction()`, `itemTransaction()` - return `null` when it isn't found rather than throwing; list methods return an empty, iterable response.

@@ -19,11 +19,11 @@
 
 namespace Mercari;
 
+use ArrayIterator;
 use JMS\Serializer\Annotation\Type;
 use Mercari\DTO\ItemDetail;
-use ArrayIterator;
-use Traversable;
 use Override;
+use Traversable;
 
 /**
  * @extends ListResponse<ItemDetail>

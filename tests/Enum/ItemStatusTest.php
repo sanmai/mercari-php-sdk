@@ -17,31 +17,29 @@
  * limitations under the License.
  */
 
-namespace Mercari;
+declare(strict_types=1);
 
-use ArrayIterator;
-use JMS\Serializer\Annotation\Type;
-use Mercari\DTO\MasterItemBrand;
-use Override;
-use Traversable;
+namespace Tests\Mercari\Enum;
+
+use Mercari\Enum\ItemStatus;
 
 /**
- * @extends NamedListResponse<MasterItemBrand>
+ * @covers \Mercari\Enum\ItemStatus
  */
-class BrandsResponse extends NamedListResponse
+class ItemStatusTest extends BackedEnumTestCase
 {
-    /**
-     * @var MasterItemBrand[]
-     */
-    #[Type('array<Mercari\DTO\MasterItemBrand>')]
-    public array $master_brands = [];
-
-    /**
-     * @return ArrayIterator<array-key, MasterItemBrand>
-     */
-    #[Override]
-    public function getIterator(): Traversable
+    public function enumClass(): string
     {
-        return new ArrayIterator($this->master_brands);
+        return ItemStatus::class;
+    }
+
+    public function expectedValues(): iterable
+    {
+        yield 'OnSale' => 'on_sale';
+        yield 'Trading' => 'trading';
+        yield 'SoldOut' => 'sold_out';
+        yield 'Stop' => 'stop';
+        yield 'Cancel' => 'cancel';
+        yield 'AdminCancel' => 'admin_cancel';
     }
 }

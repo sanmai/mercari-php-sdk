@@ -19,12 +19,12 @@
 
 namespace Mercari;
 
+use ArrayIterator;
 use JMS\Serializer\Annotation\PostDeserialize;
 use JMS\Serializer\Annotation\Type;
 use Mercari\DTO\TodoItem;
-use ArrayIterator;
-use Traversable;
 use Override;
+use Traversable;
 
 /**
  * @extends ListResponse<TodoItem>

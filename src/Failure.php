@@ -19,8 +19,8 @@
 
 namespace Mercari;
 
-use JMS\Serializer\Annotation\Type;
 use JMS\Serializer\Annotation\SkipWhenEmpty;
+use JMS\Serializer\Annotation\Type;
 
 class Failure
 {

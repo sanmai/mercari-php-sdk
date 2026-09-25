@@ -19,10 +19,11 @@
 
 namespace Tests\Mercari;
 
-use Mercari\WebhookSignature;
 use DuoClock\TimeSpy;
 
 use function gzencode;
+
+use Mercari\WebhookSignature;
 
 /**
  * @covers \Mercari\WebhookSignature

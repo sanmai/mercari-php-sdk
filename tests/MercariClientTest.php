@@ -19,6 +19,15 @@
 
 namespace Tests\Mercari;
 
+use function get_class;
+use function get_parent_class;
+
+use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
+use GuzzleRetry\GuzzleRetryMiddleware;
+
+use function is_string;
+
 use Mercari\BrandsResponse;
 use Mercari\CategoriesResponse;
 use Mercari\CommentsResponse;
@@ -40,16 +49,11 @@ use Mercari\ReviewResponse;
 use Mercari\SearchRequest;
 use Mercari\SearchResponse;
 use Mercari\TodoListResponse;
-use GuzzleHttp\Client;
 use PHPUnit\Framework\MockObject\MockObject;
-use GuzzleHttp\HandlerStack;
-use Symfony\Component\HttpFoundation\Response as HttpResponse;
-use GuzzleRetry\GuzzleRetryMiddleware;
 
-use function get_class;
-use function get_parent_class;
-use function is_string;
 use function strpos;
+
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 /**
  * @covers \Mercari\MercariClient
