@@ -19,7 +19,7 @@
 
 namespace Tests\Mercari;
 
-use Mercari\MercariClient;
+use Mercari\Enum\Marketplace;
 use Mercari\SearchRequest;
 
 /**
@@ -39,7 +39,7 @@ class SearchRequestTest extends TestCase
         $request = new SearchRequest();
         $request->searchShopsOnly();
 
-        $this->assertSame(MercariClient::MARKETPLACE_SHOP, $request->marketplace);
+        $this->assertSame(Marketplace::Shops->value, $request->marketplace);
     }
 
     public function testMercari()
@@ -47,7 +47,7 @@ class SearchRequestTest extends TestCase
         $request = new SearchRequest();
         $request->searchMercariOnly();
 
-        $this->assertSame(MercariClient::MARKETPLACE_MERCARI, $request->marketplace);
+        $this->assertSame(Marketplace::Mercari->value, $request->marketplace);
     }
 
     public function testEverywhere()
@@ -55,6 +55,6 @@ class SearchRequestTest extends TestCase
         $request = new SearchRequest();
         $request->searchBothMarketplaces();
 
-        $this->assertSame(MercariClient::MARKETPLACE_ALL, $request->marketplace);
+        $this->assertSame(Marketplace::All->value, $request->marketplace);
     }
 }
