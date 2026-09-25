@@ -19,6 +19,8 @@
 
 namespace Tests\Mercari;
 
+use function json_encode;
+
 use Mercari\Enum\ItemCondition;
 use Mercari\Enum\ItemStatus;
 use Mercari\Enum\Marketplace;
@@ -27,8 +29,6 @@ use Mercari\Enum\SortBy;
 use Mercari\Enum\SortOrder;
 use Mercari\MercariClient;
 use Mercari\SearchRequest;
-
-use function json_encode;
 
 /**
  * @covers \Mercari\SearchRequest

@@ -19,9 +19,9 @@
 
 namespace Tests\Mercari;
 
+use ArrayIterator;
 use Mercari\Enum\Fame;
 use Mercari\ParamValue;
-use ArrayIterator;
 
 use function Pipeline\take;
 

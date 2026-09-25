@@ -19,11 +19,11 @@
 
 namespace Tests\Mercari;
 
+use function json_encode;
+
 use Mercari\Enum\ItemCondition;
 use Mercari\Enum\ItemStatus;
 use Tests\Mercari\Doubles\ExampleRequest;
-
-use function json_encode;
 
 /**
  * @covers \Mercari\GenericRequest

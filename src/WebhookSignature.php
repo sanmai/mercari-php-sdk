@@ -19,9 +19,10 @@
 
 namespace Mercari;
 
+use function abs;
+
 use DuoClock\DuoClock;
 
-use function abs;
 use function file_get_contents;
 use function gzdecode;
 use function hash_equals;

@@ -19,17 +19,6 @@
 
 namespace Tests\Mercari;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Middleware;
-use GuzzleHttp\Psr7\Request;
-use JMS\Serializer\SerializerInterface;
-use JSONSerializer;
-use ReflectionObject;
-use ReflectionException;
-
-use function Pipeline\take;
 use function array_walk;
 use function basename;
 use function count;
@@ -38,18 +27,36 @@ use function end;
 use function file_get_contents;
 use function get_class;
 use function glob;
+
+use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
+use GuzzleHttp\Psr7\Request;
+
 use function is_array;
 use function is_file;
+
+use JMS\Serializer\SerializerInterface;
+
 use function json_decode;
 use function json_encode;
-use function ksort;
-use function preg_replace;
-use function sprintf;
-use function str_replace;
-use function strpos;
 
 use const JSON_PRETTY_PRINT;
 use const JSON_UNESCAPED_UNICODE;
+
+use JSONSerializer;
+
+use function ksort;
+use function Pipeline\take;
+use function preg_replace;
+
+use ReflectionException;
+use ReflectionObject;
+
+use function sprintf;
+use function str_replace;
+use function strpos;
 
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {

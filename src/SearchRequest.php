@@ -21,6 +21,8 @@ declare(strict_types=1);
 
 namespace Mercari;
 
+use function array_map;
+
 use Mercari\Enum\Color;
 use Mercari\Enum\ItemCondition;
 use Mercari\Enum\ItemStatus;
@@ -29,8 +31,6 @@ use Mercari\Enum\ShippingPayer;
 use Mercari\Enum\SortBy;
 use Mercari\Enum\SortOrder;
 use Override;
-
-use function array_map;
 
 /**
  * Where a property takes an enum, it takes the plain scalar just as well.
