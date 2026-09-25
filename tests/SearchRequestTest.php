@@ -19,7 +19,12 @@
 
 namespace Tests\Mercari;
 
+use Mercari\Enum\ItemCondition;
+use Mercari\Enum\ItemStatus;
 use Mercari\Enum\Marketplace;
+use Mercari\Enum\ShippingPayer;
+use Mercari\Enum\SortBy;
+use Mercari\Enum\SortOrder;
 use Mercari\MercariClient;
 use Mercari\SearchRequest;
 

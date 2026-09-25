@@ -21,7 +21,14 @@ declare(strict_types=1);
 
 namespace Mercari;
 
+use Mercari\Enum\Color;
+use Mercari\Enum\ItemCondition;
+use Mercari\Enum\ItemStatus;
 use Mercari\Enum\Marketplace;
+use Mercari\Enum\ShippingPayer;
+use Mercari\Enum\SortBy;
+use Mercari\Enum\SortOrder;
+use Override;
 
 use function array_map;
 
