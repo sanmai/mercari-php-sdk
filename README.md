@@ -209,22 +209,21 @@ $item = $client->item('m1234567890', Mercari\Enum\Prefecture::Tokyo);
 $item = $client->item('m1234567890', '東京都');
 ```
 
-`Mercari\Enum\ShippingMethod` names the shipping method IDs. Use it to find the methods that need special handling: for example, a car trade does not ship as a parcel. For an ID without a matching case, `tryFrom()` returns `null`:
-
-```php
-use Mercari\Enum\ShippingMethod;
-
-if (ShippingMethod::tryFrom($item->shipping_method->id) === ShippingMethod::CarTrade) {
-    echo "This item does not ship as a parcel\n";
-}
-```
-
 Fetch several items at once, or find items similar to a given one:
 
 ```php
 $items = $client->items(['m1111111111', 'm2222222222']);
 
 $similar = $client->similarItems('m1234567890');
+```
+Use `Mercari\Enum\ShippingMethod` enum to find the methods that need special handling:
+
+```php
+use Mercari\Enum\ShippingMethod;
+
+if (ShippingMethod::tryFrom($item->shipping_method->id) === ShippingMethod::CarTrade) {
+    echo "Can't ship this\n";
+}
 ```
 
 ### Looking Up a User
