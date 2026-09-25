@@ -45,13 +45,13 @@ use function sprintf;
 class MercariClient extends AbstractMercariClient
 {
     /** @deprecated Use Marketplace::Mercari */
-    public const MARKETPLACE_MERCARI = Marketplace::Mercari->value;
+    public const MARKETPLACE_MERCARI = 1;
 
     /** @deprecated Use Marketplace::Shops */
-    public const MARKETPLACE_SHOP = Marketplace::Shops->value;
+    public const MARKETPLACE_SHOP = 2;
 
     /** @deprecated Use Marketplace::All */
-    public const MARKETPLACE_ALL = Marketplace::All->value;
+    public const MARKETPLACE_ALL = 3;
 
     private const SEARCH_ITEMS_V3 = '/v3/items/search';
 

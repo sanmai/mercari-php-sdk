@@ -336,7 +336,7 @@ class MercariClientTest extends TestCase
                 $this->stringContains('similar_items'),
             ),
             $this->identicalTo([
-                'marketplace' => 3,
+                'marketplace' => MercariClient::MARKETPLACE_ALL,
             ]),
         );
 
