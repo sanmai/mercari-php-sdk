@@ -21,12 +21,6 @@ declare(strict_types=1);
 
 namespace Mercari\Enum;
 
-/**
- * Status of a flea-market transaction.
- *
- * The API does not publish the full set, so use tryFrom() and expect a null
- * for a status that is not listed here.
- */
 enum TransactionStatus: string
 {
     case WaitShipping = 'wait_shipping';

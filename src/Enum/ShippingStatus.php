@@ -22,11 +22,7 @@ declare(strict_types=1);
 namespace Mercari\Enum;
 
 /**
- * Shipping status of a flea-market transaction.
- *
- * The last four apply to the Mercari shipping services only. The API does not
- * publish the full set, so use tryFrom() and expect a null for a status that
- * is not listed here.
+ * Shipping statuses of a flea-market transaction. Could be an incomplete list.
  */
 enum ShippingStatus: string
 {
@@ -40,8 +36,7 @@ enum ShippingStatus: string
 
     case Publish = 'publish';
 
-    /** Mercari sends this value verbatim; do not correct the spelling. */
-    case FillIn = 'fillin';
+    case FillIn = 'fillin'; // The API sends this value as written
 
     case FixSize = 'fix_size';
 
