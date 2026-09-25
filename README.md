@@ -139,6 +139,33 @@ $request = (new Mercari\SearchRequest())->searchShopsOnly();
 // or ->searchMercariOnly(), or ->searchBothMarketplaces()
 ```
 
+### Search Filters
+
+The `Mercari\Enum` namespace defines enums for the search filters that take fixed values: `ItemCondition`, `ShippingPayer`, `Color`, `ItemStatus`, `Marketplace`, `SortBy`, and `SortOrder`. Assign an enum case to a filter that takes a single value. Filters that take several values, such as `item_condition_id` and `status`, also accept an array (or any other sensible iterable), and the request sends it as a comma-separated string:
+
+```php
+use Mercari\Enum\Color;
+use Mercari\Enum\ItemCondition;
+use Mercari\Enum\ItemStatus;
+use Mercari\Enum\ShippingPayer;
+use Mercari\Enum\SortBy;
+
+$request = new Mercari\SearchRequest();
+$request->item_condition_id = [ItemCondition::BrandNew, ItemCondition::LikeNew]; // "1,2"
+$request->status = [ItemStatus::OnSale, ItemStatus::Trading];                    // "on_sale,trading"
+$request->shipping_payer_id = ShippingPayer::Seller;                             // 2
+$request->color_id = Color::Black;                                               // 1
+$request->sort = SortBy::Price;                                                  // "price"
+```
+
+To search for second-hand items only, use `ItemCondition::used()`. It returns every condition except `BrandNew`:
+
+```php
+$request->item_condition_id = ItemCondition::used(); // "2,3,4,5,6"
+```
+
+Plain values still work wherever an enum does, both on their own and in arrays. The enums have no "any" case: to search across all conditions, colors, or statuses, leave the filter unset.
+
 Results are paginated. `->meta` reports the total and whether more pages exist; advance by raising the request's `page`, which is zero-indexed (the first page is `0`):
 
 ```php

@@ -21,6 +21,8 @@ namespace Tests\Mercari;
 
 use function json_encode;
 
+use Mercari\Enum\ItemCondition;
+use Mercari\Enum\ItemStatus;
 use Tests\Mercari\Doubles\ExampleRequest;
 
 /**
@@ -53,5 +55,20 @@ class GenericRequestTest extends TestCase
         $request->zap = 'test';
 
         $this->assertSame('{"foo":5,"bar":2,"zap":"test"}', json_encode($request));
+    }
+
+    public function testValuesPassThrough()
+    {
+        $request = new ExampleRequest();
+
+        $request->foo = ItemStatus::OnSale;
+        $request->bar = [ItemCondition::BrandNew, 3];
+        $request->zap = 'test';
+
+        $this->assertSame([
+            'foo' => ItemStatus::OnSale,
+            'bar' => [ItemCondition::BrandNew, 3],
+            'zap' => 'test',
+        ], $request->getRequestParams());
     }
 }

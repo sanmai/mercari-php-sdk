@@ -17,14 +17,27 @@
  * limitations under the License.
  */
 
-namespace Tests\Mercari\Doubles;
+declare(strict_types=1);
 
-use Mercari\GenericRequest;
+namespace Tests\Mercari\Enum;
+
+use Mercari\Enum\SortBy;
 
 /**
- * @property mixed $bar
- * @property mixed $baz
- * @property mixed $foo
- * @property mixed $zap
+ * @covers \Mercari\Enum\SortBy
  */
-class ExampleRequest extends GenericRequest {}
+class SortByTest extends BackedEnumTestCase
+{
+    public function enumClass(): string
+    {
+        return SortBy::class;
+    }
+
+    public function expectedValues(): iterable
+    {
+        yield 'Score' => 'score';
+        yield 'CreatedTime' => 'created_time';
+        yield 'Price' => 'price';
+        yield 'NumLikes' => 'num_likes';
+    }
+}

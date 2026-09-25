@@ -21,7 +21,16 @@ declare(strict_types=1);
 
 namespace Mercari;
 
+use function array_map;
+
+use Mercari\Enum\Color;
+use Mercari\Enum\ItemCondition;
+use Mercari\Enum\ItemStatus;
 use Mercari\Enum\Marketplace;
+use Mercari\Enum\ShippingPayer;
+use Mercari\Enum\SortBy;
+use Mercari\Enum\SortOrder;
+use Override;
 
 /**
  * @property string $keyword The search keyword.
@@ -31,20 +40,20 @@ use Mercari\Enum\Marketplace;
  * @property int $seller_id The seller ID.
  * @property int $size_id The size ID.
  * @property string $shop_id The Shop ID.
- * @property int $color_id The color ID.
+ * @property int|Color|iterable<int|Color> $color_id The color ID, or several.
  * @property int $price_min The minimum item price.
  * @property int $price_max The maximum item price.
- * @property int $item_condition_id The condition ID.
- * @property int $shipping_payer_id The shipping payer ID.
- * @property string $status Comma-separated list of item statuses ("on_sale,trading,sold_out" used by default).
+ * @property int|ItemCondition|iterable<int|ItemCondition> $item_condition_id The condition ID, or several.
+ * @property int|ShippingPayer $shipping_payer_id The shipping payer ID.
+ * @property string|ItemStatus|iterable<string|ItemStatus> $status Item statuses (default: "on_sale,trading,sold_out").
  * @property int $created_before_date Only items created before the given Unix timestamp.
  * @property int $created_after_date Only items created after the given Unix timestamp.
  * @property bool $item_authentication Search for items eligible for the item authentication service only.
  * @property bool $time_sale Search for Time-Sale (discounted) items only.
  * @property bool $with_offer_price_promotion Include the offer-to-everyone discount in the returned discount details.
- * @property int $marketplace Preferred marketplace for the search; defaults to Mercari.
- * @property string $sort Sort using the given field.
- * @property string $order Sorting order ('desc' by default)
+ * @property int|Marketplace $marketplace Preferred marketplace for the search; defaults to Mercari.
+ * @property string|SortBy $sort Sort using the given field.
+ * @property string|SortOrder $order Sorting order ('desc' by default)
  * @property int $page Starting page index, zero-based (the first page is 0).
  * @property int $limit Items per page limit. Maximum is 100 and the default is 50.
  * @final
@@ -75,5 +84,11 @@ class SearchRequest extends GenericRequest
         $this->marketplace = Marketplace::All->value;
 
         return $this;
+    }
+
+    #[Override]
+    public function getRequestParams(): array
+    {
+        return array_map(ParamValue::of(...), parent::getRequestParams());
     }
 }

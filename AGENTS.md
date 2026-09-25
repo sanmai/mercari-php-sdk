@@ -9,7 +9,10 @@ It is designed to be type-safe and easy to use, providing a structured way to in
     - **Clients:** `MercariAuthClient` (for OAuth 2 tokens) and `MercariClient` (for API requests).
     - **Requests:** Typed objects (e.g., `SearchRequest`) that encapsulate request parameters.
     - **Responses/DTOs:** Typed objects returned by the clients. List responses are both `IteratorAggregate` and `Countable`.
-- **End-user documentation:** @README.md
+
+End-user documentation:
+
+@README.md
 
 ## Project Navigation
 

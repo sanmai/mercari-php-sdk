@@ -19,7 +19,14 @@
 
 namespace Tests\Mercari;
 
+use function json_encode;
+
+use Mercari\Enum\ItemCondition;
+use Mercari\Enum\ItemStatus;
 use Mercari\Enum\Marketplace;
+use Mercari\Enum\ShippingPayer;
+use Mercari\Enum\SortBy;
+use Mercari\Enum\SortOrder;
 use Mercari\MercariClient;
 use Mercari\SearchRequest;
 
@@ -60,5 +67,28 @@ class SearchRequestTest extends TestCase
 
         $this->assertSame(MercariClient::MARKETPLACE_ALL, $request->marketplace);
         $this->assertSame(Marketplace::All->value, $request->marketplace);
+    }
+
+    public function testFilters()
+    {
+        $request = SearchRequest::build();
+        $request->item_condition_id = ItemCondition::used();
+        $request->shipping_payer_id = ShippingPayer::Seller;
+        $request->status = [ItemStatus::OnSale, ItemStatus::Trading];
+        $request->sort = SortBy::Price;
+        $request->order = SortOrder::Asc;
+
+        $this->assertSame([
+            'item_condition_id' => '2,3,4,5,6',
+            'shipping_payer_id' => 2,
+            'status' => 'on_sale,trading',
+            'sort' => 'price',
+            'order' => 'asc',
+        ], $request->getRequestParams());
+
+        $this->assertSame(
+            '{"item_condition_id":"2,3,4,5,6","shipping_payer_id":2,"status":"on_sale,trading","sort":"price","order":"asc"}',
+            json_encode($request),
+        );
     }
 }

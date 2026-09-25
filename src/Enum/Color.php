@@ -17,14 +17,45 @@
  * limitations under the License.
  */
 
-namespace Tests\Mercari\Doubles;
+declare(strict_types=1);
 
-use Mercari\GenericRequest;
+namespace Mercari\Enum;
 
-/**
- * @property mixed $bar
- * @property mixed $baz
- * @property mixed $foo
- * @property mixed $zap
- */
-class ExampleRequest extends GenericRequest {}
+enum Color: int
+{
+    /** ブラック系 */
+    case Black = 1;
+
+    /** ホワイト系 */
+    case White = 2;
+
+    /** グレイ系 */
+    case Grey = 3;
+
+    /** ブラウン系 */
+    case Brown = 4;
+
+    /** レッド系 */
+    case Red = 5;
+
+    /** ピンク系 */
+    case Pink = 6;
+
+    /** パープル系 */
+    case Purple = 7;
+
+    /** ブルー系 */
+    case Blue = 8;
+
+    /** ベージュ系 */
+    case Beige = 9;
+
+    /** グリーン系 */
+    case Green = 10;
+
+    /** イエロー系 */
+    case Yellow = 11;
+
+    /** オレンジ系 */
+    case Orange = 12;
+}

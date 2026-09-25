@@ -17,14 +17,13 @@
  * limitations under the License.
  */
 
-namespace Tests\Mercari\Doubles;
+declare(strict_types=1);
 
-use Mercari\GenericRequest;
+namespace Mercari\Enum;
 
-/**
- * @property mixed $bar
- * @property mixed $baz
- * @property mixed $foo
- * @property mixed $zap
- */
-class ExampleRequest extends GenericRequest {}
+enum SortOrder: string
+{
+    case Desc = 'desc';
+
+    case Asc = 'asc';
+}

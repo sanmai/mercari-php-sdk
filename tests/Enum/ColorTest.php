@@ -17,14 +17,35 @@
  * limitations under the License.
  */
 
-namespace Tests\Mercari\Doubles;
+declare(strict_types=1);
 
-use Mercari\GenericRequest;
+namespace Tests\Mercari\Enum;
+
+use Mercari\Enum\Color;
 
 /**
- * @property mixed $bar
- * @property mixed $baz
- * @property mixed $foo
- * @property mixed $zap
+ * @covers \Mercari\Enum\Color
  */
-class ExampleRequest extends GenericRequest {}
+class ColorTest extends BackedEnumTestCase
+{
+    public function enumClass(): string
+    {
+        return Color::class;
+    }
+
+    public function expectedValues(): iterable
+    {
+        yield 'Black' => 1;
+        yield 'White' => 2;
+        yield 'Grey' => 3;
+        yield 'Brown' => 4;
+        yield 'Red' => 5;
+        yield 'Pink' => 6;
+        yield 'Purple' => 7;
+        yield 'Blue' => 8;
+        yield 'Beige' => 9;
+        yield 'Green' => 10;
+        yield 'Yellow' => 11;
+        yield 'Orange' => 12;
+    }
+}
