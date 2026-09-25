@@ -21,9 +21,6 @@ declare(strict_types=1);
 
 namespace Mercari\Enum;
 
-/**
- * Marketplace to search, as used by the marketplace search filter.
- */
 enum Marketplace: int
 {
     case Mercari = 1;
