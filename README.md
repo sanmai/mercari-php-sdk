@@ -166,14 +166,6 @@ $request->item_condition_id = ItemCondition::used(); // "2,3,4,5,6"
 
 Each property that accepts an enum also accepts a plain scalar, and the request joins a list of scalars the same way. No enum defines an "any" case: to include every condition, color, or status, leave the property unset.
 
-Responses store statuses as plain strings. `ItemStatus`, `TransactionStatus`, and `ShippingStatus` define the known values; convert a status with `tryFrom()`:
-
-```php
-$status = Mercari\Enum\TransactionStatus::tryFrom($transaction->status);
-```
-
-Mercari does not publish the full set of transaction and shipping statuses. `tryFrom()` returns `null` for a status that this SDK does not define yet; this is not an error. Match the cases that your code handles and ignore the others.
-
 Results are paginated. `->meta` reports the total and whether more pages exist; advance by raising the request's `page`, which is zero-indexed (the first page is `0`):
 
 ```php
@@ -459,6 +451,16 @@ $client->addComment('m1234567890', 'コメント失礼いたします。こち�
 ## Working With Any Call
 
 These apply whichever flow built your `$client`.
+
+### Reading Statuses
+
+Responses store statuses as plain strings. `ItemStatus`, `TransactionStatus`, and `ShippingStatus` define the known values; convert a status with `tryFrom()`:
+
+```php
+$status = Mercari\Enum\TransactionStatus::tryFrom($transaction->status);
+```
+
+Mercari does not publish the full set of transaction and shipping statuses. `tryFrom()` returns `null` for a status that this SDK does not define yet; this is not an error. Match the cases that your code handles and ignore the others.
 
 ### Errors and Missing Resources
 
