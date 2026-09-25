@@ -433,7 +433,7 @@ Response objects expose statuses as plain strings. To compare a status with a kn
 $status = Mercari\Enum\TransactionStatus::tryFrom($transaction->status);
 ```
 
-Mercari does not publish the full set of transaction and shipping statuses, so these enums can be incomplete. For a status without a matching case, `tryFrom()` returns `null`; this is not an error. Handle the cases that your code needs and ignore the others.
+Mercari does not publish the full set of transaction and shipping statuses, so these enums can be incomplete. For a status without a matching case, `tryFrom()` returns `null`. This is a bug in the SDK: please [open an issue](https://github.com/sanmai/mercari-php-sdk/issues/new) with the status value so we can add the missing case.
 
 ### Errors and Missing Resources
 
