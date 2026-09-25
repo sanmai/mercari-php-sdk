@@ -22,24 +22,25 @@ declare(strict_types=1);
 namespace Mercari\Enum;
 
 /**
- * Item status, as reported by items and accepted by the status search filter.
+ * This enum defines the item statuses that items report and that the status
+ * search filter accepts.
  */
 enum ItemStatus: string
 {
     case OnSale = 'on_sale';
 
-    /** The item has been purchased. */
+    /** A buyer purchased the item. */
     case Trading = 'trading';
 
-    /** The trading for this item has ended. */
+    /** The transaction for the item is complete. */
     case SoldOut = 'sold_out';
 
-    /** The item has been suspended. */
+    /** The item is suspended. */
     case Stop = 'stop';
 
-    /** The item has been deleted. */
+    /** The item is deleted. */
     case Cancel = 'cancel';
 
-    /** The item has been deleted by an administrator. */
+    /** An administrator deleted the item. */
     case AdminCancel = 'admin_cancel';
 }

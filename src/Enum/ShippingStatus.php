@@ -22,11 +22,11 @@ declare(strict_types=1);
 namespace Mercari\Enum;
 
 /**
- * Shipping status of a flea-market transaction.
+ * This enum defines the shipping statuses of a flea-market transaction.
  *
- * The last four apply to the Mercari shipping services only. The API does not
- * publish the full set, so use tryFrom() and expect a null for a status that
- * is not listed here.
+ * FillIn, FixSize, WaitPickup, and HandOver apply to the Mercari shipping
+ * services only. The API does not publish the full set, so use tryFrom(): it
+ * returns null for a status that this enum does not define.
  */
 enum ShippingStatus: string
 {

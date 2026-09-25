@@ -427,13 +427,13 @@ These apply whichever flow built your `$client`.
 
 ### Reading Statuses
 
-Responses store statuses as plain strings. `ItemStatus`, `TransactionStatus`, and `ShippingStatus` define the known values; convert a status with `tryFrom()`:
+Response objects expose statuses as plain strings. To compare a status with a known value, convert it to an enum case with `tryFrom()` of `ItemStatus`, `TransactionStatus`, or `ShippingStatus`:
 
 ```php
 $status = Mercari\Enum\TransactionStatus::tryFrom($transaction->status);
 ```
 
-Mercari does not publish the full set of transaction and shipping statuses. `tryFrom()` returns `null` for a status that this SDK does not define yet; this is not an error. Match the cases that your code handles and ignore the others.
+Mercari does not publish the full set of transaction and shipping statuses, so these enums can be incomplete. For a status without a matching case, `tryFrom()` returns `null`; this is not an error. Handle the cases that your code needs and ignore the others.
 
 ### Errors and Missing Resources
 
