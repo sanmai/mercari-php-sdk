@@ -26,13 +26,13 @@ use GuzzleHttp\HandlerStack;
 use GuzzleRetry\GuzzleRetryMiddleware;
 use JSONSerializer\Serializer;
 use Mercari\DTO\ItemDetail;
-use Mercari\Enum\Fame;
-use Mercari\Enum\Marketplace;
-use Mercari\Enum\Prefecture;
 use Mercari\DTO\Seller;
 use Mercari\DTO\ShopsOrder;
 use Mercari\DTO\Transaction;
 use Mercari\DTO\TransactionMessage;
+use Mercari\Enum\Fame;
+use Mercari\Enum\Marketplace;
+use Mercari\Enum\Prefecture;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 use function array_merge;

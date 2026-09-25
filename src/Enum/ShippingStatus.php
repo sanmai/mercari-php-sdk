@@ -40,6 +40,7 @@ enum ShippingStatus: string
 
     case Publish = 'publish';
 
+    /** Mercari sends this value verbatim; do not correct the spelling. */
     case FillIn = 'fillin';
 
     case FixSize = 'fix_size';
