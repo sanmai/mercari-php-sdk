@@ -177,7 +177,9 @@ echo "{$item->name}: {$item->status}\n";
 Passing a prefecture ensures the correct shipping fee for items with variable fees.
 
 ```php
-$item = $client->item('m1234567890', Mercari\Enum\Prefecture::Tokyo); // or '東京都'
+$item = $client->item('m1234567890', Mercari\Enum\Prefecture::Tokyo);
+// string literals also work
+$item = $client->item('m1234567890', '東京都');
 ```
 
 Fetch several items at once, or find items similar to a given one:
