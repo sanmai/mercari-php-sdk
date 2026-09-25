@@ -23,7 +23,7 @@ namespace Mercari\Enum;
 
 enum SortBy: string
 {
-    /** Recommendation score. The API does not guarantee a stable order. */
+    /** Recommendation score. The score may change between requests. */
     case Score = 'score';
 
     case CreatedTime = 'created_time';
