@@ -19,33 +19,27 @@
 
 declare(strict_types=1);
 
-namespace Mercari;
+namespace Tests\Mercari\Enum;
 
-use BackedEnum;
-
-use function implode;
-use function is_iterable;
-use function Pipeline\take;
+use Mercari\Enum\Marketplace;
 
 /**
- * @internal
+ * The literals are the API contract (1 is Mercari, 2 is Shops, 3 is both),
+ * not the MercariClient constants derived from this enum.
+ *
+ * @covers \Mercari\Enum\Marketplace
  */
-final class ParamValue
+class MarketplaceTest extends BackedEnumTestCase
 {
-    /**
-     * Converts enums into backing values, lists of enums into comma-separated list of backing values.
-     * @param BackedEnum|iterable<BackedEnum|scalar>|scalar|null $value
-     */
-    public static function of(mixed $value): mixed
+    public function enumClass(): string
     {
-        if ($value instanceof BackedEnum) {
-            return $value->value;
-        }
+        return Marketplace::class;
+    }
 
-        if (is_iterable($value)) {
-            return implode(',', take($value)->cast(self::of(...))->toList());
-        }
-
-        return $value;
+    public function expectedValues(): iterable
+    {
+        yield 'Mercari' => 1;
+        yield 'Shops' => 2;
+        yield 'All' => 3;
     }
 }

@@ -28,6 +28,7 @@ use Mercari\DTO\Seller;
 use Mercari\DTO\Transaction;
 use Mercari\DTO\TransactionMessage;
 use Mercari\Enum\Fame;
+use Mercari\Enum\Prefecture;
 use Mercari\ItemsResponse;
 use Mercari\MercariClient;
 use Mercari\MessagesResponse;
@@ -226,7 +227,14 @@ class MercariClientTest extends TestCase
         $this->assertSame($response, $responseActual);
     }
 
-    public function testItemPrefecture(): void
+    public static function provideTokyo(): iterable
+    {
+        yield ['東京都'];
+        yield [Prefecture::Tokyo];
+    }
+
+    /** @dataProvider provideTokyo */
+    public function testItemPrefecture(string|Prefecture $prefecture): void
     {
         $response = new ItemDetail();
 
@@ -237,7 +245,7 @@ class MercariClientTest extends TestCase
                 $this->stringContains('item'),
                 $this->stringContains('foo'),
             ),
-            $this->identicalTo(['prefecture' => 'bar']),
+            $this->identicalTo(['prefecture' => '東京都']),
             $this->identicalTo([
                 HttpResponse::HTTP_NOT_FOUND,
                 HttpResponse::HTTP_BAD_REQUEST,
@@ -246,7 +254,7 @@ class MercariClientTest extends TestCase
             ]),
         );
 
-        $responseActual = $this->client->item('foo', 'bar');
+        $responseActual = $this->client->item('foo', $prefecture);
 
         $this->assertSame($response, $responseActual);
     }

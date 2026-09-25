@@ -19,33 +19,13 @@
 
 declare(strict_types=1);
 
-namespace Mercari;
+namespace Mercari\Enum;
 
-use BackedEnum;
-
-use function implode;
-use function is_iterable;
-use function Pipeline\take;
-
-/**
- * @internal
- */
-final class ParamValue
+enum Marketplace: int
 {
-    /**
-     * Converts enums into backing values, lists of enums into comma-separated list of backing values.
-     * @param BackedEnum|iterable<BackedEnum|scalar>|scalar|null $value
-     */
-    public static function of(mixed $value): mixed
-    {
-        if ($value instanceof BackedEnum) {
-            return $value->value;
-        }
+    case Mercari = 1;
 
-        if (is_iterable($value)) {
-            return implode(',', take($value)->cast(self::of(...))->toList());
-        }
+    case Shops = 2;
 
-        return $value;
-    }
+    case All = 3;
 }

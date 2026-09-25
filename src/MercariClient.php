@@ -31,6 +31,8 @@ use Mercari\DTO\ShopsOrder;
 use Mercari\DTO\Transaction;
 use Mercari\DTO\TransactionMessage;
 use Mercari\Enum\Fame;
+use Mercari\Enum\Marketplace;
+use Mercari\Enum\Prefecture;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 use function array_merge;
@@ -42,10 +44,13 @@ use function sprintf;
  */
 class MercariClient extends AbstractMercariClient
 {
+    /** @deprecated Use Marketplace::Mercari */
     public const MARKETPLACE_MERCARI = 1;
 
+    /** @deprecated Use Marketplace::Shops */
     public const MARKETPLACE_SHOP = 2;
 
+    /** @deprecated Use Marketplace::All */
     public const MARKETPLACE_ALL = 3;
 
     private const SEARCH_ITEMS_V3 = '/v3/items/search';
@@ -194,12 +199,12 @@ class MercariClient extends AbstractMercariClient
         );
     }
 
-    public function item(string $id, ?string $prefecture = null): ?ItemDetail
+    public function item(string $id, string|Prefecture|null $prefecture = null): ?ItemDetail
     {
         return $this->getOptional(
             ItemDetail::class,
             sprintf(self::ITEM, $id),
-            array_filter(['prefecture' => $prefecture]),
+            array_filter(['prefecture' => ParamValue::of($prefecture)]),
             error_codes: self::ITEM_NOT_FOUND_ON_STATUS,
         );
     }
@@ -232,12 +237,12 @@ class MercariClient extends AbstractMercariClient
         );
     }
 
-    public function similarItems(string $id, int $marketplace = self::MARKETPLACE_ALL): ItemsResponse
+    public function similarItems(string $id, int|Marketplace $marketplace = Marketplace::All): ItemsResponse
     {
         $response = $this->getOptional(
             ItemsResponse::class,
             sprintf(self::SIMILAR_ITEMS, $id),
-            array_filter(['marketplace' => $marketplace]),
+            array_filter(['marketplace' => ParamValue::of($marketplace)]),
         );
 
         return $response ?? new ItemsResponse();

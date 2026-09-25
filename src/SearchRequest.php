@@ -21,6 +21,8 @@ declare(strict_types=1);
 
 namespace Mercari;
 
+use Mercari\Enum\Marketplace;
+
 /**
  * @property string $keyword The search keyword.
  * @property string $exclude_keyword The keywords to exclude
@@ -56,21 +58,21 @@ class SearchRequest extends GenericRequest
 
     public function searchMercariOnly(): self
     {
-        $this->marketplace = MercariClient::MARKETPLACE_MERCARI;
+        $this->marketplace = Marketplace::Mercari->value;
 
         return $this;
     }
 
     public function searchShopsOnly(): self
     {
-        $this->marketplace = MercariClient::MARKETPLACE_SHOP;
+        $this->marketplace = Marketplace::Shops->value;
 
         return $this;
     }
 
     public function searchBothMarketplaces(): self
     {
-        $this->marketplace = MercariClient::MARKETPLACE_ALL;
+        $this->marketplace = Marketplace::All->value;
 
         return $this;
     }
