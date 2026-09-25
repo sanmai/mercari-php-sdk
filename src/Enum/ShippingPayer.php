@@ -21,9 +21,6 @@ declare(strict_types=1);
 
 namespace Mercari\Enum;
 
-/**
- * Who pays for the shipping, as used by the shipping_payer_id search filter.
- */
 enum ShippingPayer: int
 {
     /**

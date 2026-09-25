@@ -23,9 +23,6 @@ namespace Mercari\Enum;
 
 use function Pipeline\take;
 
-/**
- * Item condition, as used by the item_condition_id search filter and reported in ItemCondition DTOs.
- */
 enum ItemCondition: int
 {
     /** 新品、未使用 */
