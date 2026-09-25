@@ -21,16 +21,7 @@ declare(strict_types=1);
 
 namespace Mercari;
 
-use Mercari\Enum\Color;
-use Mercari\Enum\ItemCondition;
-use Mercari\Enum\ItemStatus;
 use Mercari\Enum\Marketplace;
-use Override;
-use Mercari\Enum\ShippingPayer;
-use Mercari\Enum\SortBy;
-use Mercari\Enum\SortOrder;
-
-use function array_map;
 
 /**
  * Where a property takes an enum, it takes the plain scalar just as well.
@@ -70,21 +61,21 @@ class SearchRequest extends GenericRequest
 
     public function searchMercariOnly(): self
     {
-        $this->marketplace = MercariClient::MARKETPLACE_MERCARI;
+        $this->marketplace = Marketplace::Mercari->value;
 
         return $this;
     }
 
     public function searchShopsOnly(): self
     {
-        $this->marketplace = MercariClient::MARKETPLACE_SHOP;
+        $this->marketplace = Marketplace::Shops->value;
 
         return $this;
     }
 
     public function searchBothMarketplaces(): self
     {
-        $this->marketplace = MercariClient::MARKETPLACE_ALL;
+        $this->marketplace = Marketplace::All->value;
 
         return $this;
     }

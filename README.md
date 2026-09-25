@@ -209,13 +209,12 @@ if ($item === null) {
 echo "{$item->name}: {$item->status}\n";
 ```
 
-Pass a prefecture to have the Shops buyer shipping fee calculated for it. `Mercari\Enum\Prefecture` names all 47, and `id()` gives the code that `shipping_from_area` reports back:
+Passing a prefecture ensures the correct shipping fee for items with variable fees.
 
 ```php
 $item = $client->item('m1234567890', Mercari\Enum\Prefecture::Tokyo);
-
-Mercari\Enum\Prefecture::Tokyo->id();  // 13
-Mercari\Enum\Prefecture::fromId(13);   // Prefecture::Tokyo, or null for an unknown code
+// string literals also work
+$item = $client->item('m1234567890', '東京都');
 ```
 
 Fetch several items at once, or find items similar to a given one:

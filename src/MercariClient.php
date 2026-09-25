@@ -33,6 +33,9 @@ use Mercari\DTO\Seller;
 use Mercari\DTO\ShopsOrder;
 use Mercari\DTO\Transaction;
 use Mercari\DTO\TransactionMessage;
+use Mercari\Enum\Fame;
+use Mercari\Enum\Marketplace;
+use Mercari\Enum\Prefecture;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 use function array_merge;
@@ -44,11 +47,14 @@ use function sprintf;
  */
 class MercariClient extends AbstractMercariClient
 {
-    public const MARKETPLACE_MERCARI = Marketplace::Mercari->value;
+    /** @deprecated Use Marketplace::Mercari */
+    public const MARKETPLACE_MERCARI = 1;
 
-    public const MARKETPLACE_SHOP = Marketplace::Shops->value;
+    /** @deprecated Use Marketplace::Shops */
+    public const MARKETPLACE_SHOP = 2;
 
-    public const MARKETPLACE_ALL = Marketplace::All->value;
+    /** @deprecated Use Marketplace::All */
+    public const MARKETPLACE_ALL = 3;
 
     private const SEARCH_ITEMS_V3 = '/v3/items/search';
 

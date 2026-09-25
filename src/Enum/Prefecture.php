@@ -24,10 +24,7 @@ namespace Mercari\Enum;
 use function array_search;
 
 /**
- * Japanese prefecture, as accepted by the prefecture parameter when fetching an item.
- *
- * Cases follow the JIS X 0401 order, so their position is the prefecture code
- * reported by shipping_from_area.
+ * Japanese prefecture, JIS X 0401 order
  */
 enum Prefecture: string
 {

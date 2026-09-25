@@ -19,11 +19,7 @@
 
 namespace Tests\Mercari;
 
-use Mercari\Enum\ItemCondition;
-use Mercari\Enum\ItemStatus;
-use Mercari\Enum\ShippingPayer;
-use Mercari\Enum\SortBy;
-use Mercari\Enum\SortOrder;
+use Mercari\Enum\Marketplace;
 use Mercari\MercariClient;
 use Mercari\SearchRequest;
 
@@ -47,6 +43,7 @@ class SearchRequestTest extends TestCase
         $request->searchShopsOnly();
 
         $this->assertSame(MercariClient::MARKETPLACE_SHOP, $request->marketplace);
+        $this->assertSame(Marketplace::Shops->value, $request->marketplace);
     }
 
     public function testMercari()
@@ -55,6 +52,7 @@ class SearchRequestTest extends TestCase
         $request->searchMercariOnly();
 
         $this->assertSame(MercariClient::MARKETPLACE_MERCARI, $request->marketplace);
+        $this->assertSame(Marketplace::Mercari->value, $request->marketplace);
     }
 
     public function testEverywhere()
@@ -63,6 +61,7 @@ class SearchRequestTest extends TestCase
         $request->searchBothMarketplaces();
 
         $this->assertSame(MercariClient::MARKETPLACE_ALL, $request->marketplace);
+        $this->assertSame(Marketplace::All->value, $request->marketplace);
     }
 
     public function testFilters()

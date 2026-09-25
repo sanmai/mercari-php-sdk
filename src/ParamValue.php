@@ -34,7 +34,7 @@ final class ParamValue
 {
     /**
      * Converts enums into backing values, lists of enums into comma-separated list of backing values.
-     * @param BackedEnum|iterable<BackedEnum> $value
+     * @param BackedEnum|iterable<BackedEnum|scalar>|scalar|null $value
      */
     public static function of(mixed $value): mixed
     {
