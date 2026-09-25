@@ -21,12 +21,9 @@ declare(strict_types=1);
 
 namespace Mercari\Enum;
 
-/**
- * Sorting may be inconsistent, so do not rely on it.
- */
 enum SortBy: string
 {
-    /** Recommendation score. */
+    /** Recommendation score. The API does not guarantee a stable order. */
     case Score = 'score';
 
     case CreatedTime = 'created_time';
