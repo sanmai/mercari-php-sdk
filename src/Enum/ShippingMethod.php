@@ -21,13 +21,6 @@ declare(strict_types=1);
 
 namespace Mercari\Enum;
 
-/**
- * Shipping method ID, as reported by the shipping_method of an item.
- *
- * Some methods have two IDs: one where the buyer pays for shipping, and one
- * where the seller pays. The plain case name is the seller-pays ID.
- * Use tryFrom() and expect null for a method that is not listed here.
- */
 enum ShippingMethod: int
 {
     /** 未定 (着払い) */
@@ -81,7 +74,10 @@ enum ShippingMethod: int
     /** ゆうゆうメルカリ便 */
     case YuyuMercari = 17;
 
-    /** らくらくメルカリ便 (an older ID from 2017) */
+    /**
+     * らくらくメルカリ便
+     * @deprecated an older ID from 2017
+     */
     case RakurakuMercariLegacy = 18;
 
     /** あとよろメルカリ便 */
