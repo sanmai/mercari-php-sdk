@@ -22,7 +22,7 @@ declare(strict_types=1);
 namespace Mercari\Enum;
 
 /**
- * Color family, as used by the color_id search filter. Each covers a range of shades, not one exact color.
+ * Color family for the color_id search filter.
  */
 enum Color: int
 {
