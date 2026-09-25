@@ -33,8 +33,6 @@ use Mercari\Enum\SortOrder;
 use Override;
 
 /**
- * Properties given a list or any other iterable are sent as a comma-separated string.
- *
  * @property string $keyword The search keyword.
  * @property string $exclude_keyword The keywords to exclude
  * @property int $category_id The category ID.
@@ -42,12 +40,12 @@ use Override;
  * @property int $seller_id The seller ID.
  * @property int $size_id The size ID.
  * @property string $shop_id The Shop ID.
- * @property int|Color|iterable<int|Color> $color_id The color ID, or several of them.
+ * @property int|Color|iterable<int|Color> $color_id The color ID, or several.
  * @property int $price_min The minimum item price.
  * @property int $price_max The maximum item price.
- * @property int|ItemCondition|iterable<int|ItemCondition> $item_condition_id The condition ID, or several of them.
+ * @property int|ItemCondition|iterable<int|ItemCondition> $item_condition_id The condition ID, or several.
  * @property int|ShippingPayer $shipping_payer_id The shipping payer ID.
- * @property string|ItemStatus|iterable<string|ItemStatus> $status Item statuses to look for ("on_sale,trading,sold_out" used by default).
+ * @property string|ItemStatus|iterable<string|ItemStatus> $status Item statuses (default: "on_sale,trading,sold_out").
  * @property int $created_before_date Only items created before the given Unix timestamp.
  * @property int $created_after_date Only items created after the given Unix timestamp.
  * @property bool $item_authentication Search for items eligible for the item authentication service only.
