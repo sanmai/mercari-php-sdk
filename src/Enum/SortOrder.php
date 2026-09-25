@@ -21,9 +21,6 @@ declare(strict_types=1);
 
 namespace Mercari\Enum;
 
-/**
- * Sorting order of the search results.
- */
 enum SortOrder: string
 {
     case Desc = 'desc';

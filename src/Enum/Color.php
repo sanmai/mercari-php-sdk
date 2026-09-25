@@ -21,9 +21,6 @@ declare(strict_types=1);
 
 namespace Mercari\Enum;
 
-/**
- * Color family for the color_id search filter.
- */
 enum Color: int
 {
     /** ブラック系 */

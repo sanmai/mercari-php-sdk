@@ -44,8 +44,6 @@ enum ItemCondition: int
     case PoorCondition = 6;
 
     /**
-     * Every condition but BrandNew.
-     *
      * @return iterable<self>
      */
     public static function used(): iterable

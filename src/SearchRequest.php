@@ -33,7 +33,6 @@ use Mercari\Enum\SortOrder;
 use Override;
 
 /**
- * Where a property takes an enum, it takes the plain scalar just as well.
  * Properties given a list or any other iterable are sent as a comma-separated string.
  *
  * @property string $keyword The search keyword.

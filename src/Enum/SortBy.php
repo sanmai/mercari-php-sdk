@@ -22,7 +22,7 @@ declare(strict_types=1);
 namespace Mercari\Enum;
 
 /**
- * Field to sort search results by. Sorting may be inconsistent, so do not rely on it.
+ * Sorting may be inconsistent, so do not rely on it.
  */
 enum SortBy: string
 {
