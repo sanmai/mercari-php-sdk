@@ -43,6 +43,8 @@ use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 /**
  * Mercari API Client.
+ *
+ * @final
  */
 class MercariClient extends AbstractMercariClient
 {
