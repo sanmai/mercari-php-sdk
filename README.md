@@ -216,6 +216,15 @@ $items = $client->items(['m1111111111', 'm2222222222']);
 
 $similar = $client->similarItems('m1234567890');
 ```
+Use `Mercari\Enum\ShippingMethod` enum to find the methods that need special handling:
+
+```php
+use Mercari\Enum\ShippingMethod;
+
+if (ShippingMethod::tryFrom($item->shipping_method->id) === ShippingMethod::CarTrade) {
+    echo "Can't ship this\n";
+}
+```
 
 ### Looking Up a User
 
