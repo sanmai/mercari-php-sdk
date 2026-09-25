@@ -139,9 +139,9 @@ $request = (new Mercari\SearchRequest())->searchShopsOnly();
 // or ->searchMercariOnly(), or ->searchBothMarketplaces()
 ```
 
-### Filters Without Magic Numbers
+### Search Filters
 
-The enums in `Mercari\Enum` name the values a search accepts: `ItemCondition`, `ShippingPayer`, `Color`, `ItemStatus`, `Marketplace`, `SortBy`, and `SortOrder`. Assign an enum case to a property that requires an ID. Assign a list (or any other sensible iterable) to a property that requires a comma-separated string; the request converts the list to that string:
+The `Mercari\Enum` namespace defines enums for the search filters that take fixed values: `ItemCondition`, `ShippingPayer`, `Color`, `ItemStatus`, `Marketplace`, `SortBy`, and `SortOrder`. Assign an enum case to a filter that takes a single value. Filters that take several values, such as `item_condition_id` and `status`, also accept an array (or any other sensible iterable), and the request sends it as a comma-separated string:
 
 ```php
 use Mercari\Enum\Color;
@@ -158,13 +158,13 @@ $request->color_id = Color::Black;                                              
 $request->sort = SortBy::Price;                                                  // "price"
 ```
 
-`ItemCondition::used()` returns every condition except `BrandNew`. Use it to search for second-hand items only:
+To search for second-hand items only, use `ItemCondition::used()`. It returns every condition except `BrandNew`:
 
 ```php
 $request->item_condition_id = ItemCondition::used(); // "2,3,4,5,6"
 ```
 
-Each property that accepts an enum also accepts a plain scalar, and the request joins a list of scalars the same way. No enum defines an "any" case: to include every condition, color, or status, leave the property unset.
+Plain values still work wherever an enum does, both on their own and in arrays. The enums have no "any" case: to search across all conditions, colors, or statuses, leave the filter unset.
 
 Results are paginated. `->meta` reports the total and whether more pages exist; advance by raising the request's `page`, which is zero-indexed (the first page is `0`):
 
