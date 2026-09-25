@@ -26,9 +26,14 @@ namespace Mercari\Enum;
  */
 enum ShippingPayer: int
 {
-    /** 着払い(購入者負担) */
+    /**
+     * 着払い(購入者負担)
+     * 送料別(購入者負担)
+     */
     case Buyer = 1;
 
-    /** 送料込み(出品者負担) */
+    /**
+     * 送料込み(出品者負担)
+     */
     case Seller = 2;
 }
