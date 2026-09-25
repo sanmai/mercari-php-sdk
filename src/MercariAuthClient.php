@@ -21,15 +21,16 @@ declare(strict_types=1);
 
 namespace Mercari;
 
+use function array_merge;
+
+use DuoClock\DuoClock;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\HandlerStack;
 use GuzzleRetry\GuzzleRetryMiddleware;
 use JMS\Serializer\SerializerInterface;
 use JSONSerializer\Serializer;
-use DuoClock\DuoClock;
 
-use function array_merge;
 use function sprintf;
 
 /**

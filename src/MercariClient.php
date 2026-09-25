@@ -21,6 +21,9 @@ declare(strict_types=1);
 
 namespace Mercari;
 
+use function array_filter;
+use function array_merge;
+
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleRetry\GuzzleRetryMiddleware;
@@ -33,11 +36,10 @@ use Mercari\DTO\TransactionMessage;
 use Mercari\Enum\Fame;
 use Mercari\Enum\Marketplace;
 use Mercari\Enum\Prefecture;
-use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
-use function array_merge;
-use function array_filter;
 use function sprintf;
+
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 /**
  * Mercari API Client.

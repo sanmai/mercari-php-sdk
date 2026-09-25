@@ -19,9 +19,9 @@
 
 namespace Mercari;
 
-use Mercari\DTO\ItemDetail;
-
 use function count;
+
+use Mercari\DTO\ItemDetail;
 
 /**
  * All fields except when marked are required to be non-empty strings.

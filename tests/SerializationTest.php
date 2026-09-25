@@ -19,10 +19,27 @@
 
 namespace Tests\Mercari;
 
+use function array_search;
+use function basename;
+use function count;
+
+use Countable;
+
+use function glob;
+
+use Iterator;
+
+use function iterator_count;
+
+use IteratorAggregate;
 use Mercari\BrandsResponse;
 use Mercari\CategoriesResponse;
 use Mercari\CommentsResponse;
+use Mercari\DTO\ItemDetail;
+use Mercari\DTO\Seller;
 use Mercari\DTO\ShopsOrder;
+use Mercari\DTO\Transaction;
+use Mercari\DTO\Webhook;
 use Mercari\Failure;
 use Mercari\ItemsResponse;
 use Mercari\MessagesResponse;
@@ -31,21 +48,9 @@ use Mercari\PartnerOffersResponse;
 use Mercari\PurchaseResponse;
 use Mercari\ReviewResponse;
 use Mercari\SearchResponse;
-use Mercari\DTO\ItemDetail;
-use Mercari\DTO\Transaction;
-use Mercari\DTO\Webhook;
-use Mercari\DTO\Seller;
 use Mercari\TodoListResponse;
 use PHPUnit\Framework\AssertionFailedError;
-use IteratorAggregate;
-use Countable;
-use Iterator;
 
-use function array_search;
-use function basename;
-use function count;
-use function glob;
-use function iterator_count;
 use function strpos;
 
 class SerializationTest extends TestCase

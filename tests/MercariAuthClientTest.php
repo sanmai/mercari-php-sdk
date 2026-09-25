@@ -19,16 +19,18 @@
 
 namespace Tests\Mercari;
 
-use Mercari\MercariAuthClient;
-use Mercari\TokenResponse;
-use ReflectionObject;
-use GuzzleHttp\Client;
-use Mercari\TokenRequest;
 use DuoClock\DuoClock;
 use DuoClock\TimeSpy;
+use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 
 use function json_encode;
+
+use Mercari\MercariAuthClient;
+use Mercari\TokenRequest;
+use Mercari\TokenResponse;
+use ReflectionObject;
+
 use function urlencode;
 
 /**

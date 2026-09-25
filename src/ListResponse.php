@@ -20,11 +20,12 @@
 namespace Mercari;
 
 use Countable;
-use IteratorAggregate;
-use Traversable;
-use Override;
 
 use function iterator_count;
+
+use IteratorAggregate;
+use Override;
+use Traversable;
 
 /**
  * @template-covariant T

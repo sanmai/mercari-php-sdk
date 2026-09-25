@@ -27,13 +27,14 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
+
+use function in_array;
+
 use JMS\Serializer\Exception\RuntimeException as SerializerException;
 use JMS\Serializer\SerializerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
-
-use function in_array;
 
 /**
  * Abstract Mercari API Client.
