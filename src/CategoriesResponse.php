@@ -19,13 +19,14 @@
 
 namespace Mercari;
 
-use JMS\Serializer\Annotation\Type;
-use Mercari\DTO\Category;
 use ArrayIterator;
-use Override;
-use Traversable;
 
 use function iterator_count;
+
+use JMS\Serializer\Annotation\Type;
+use Mercari\DTO\Category;
+use Override;
+use Traversable;
 
 /**
  * @extends NamedListResponse<Category>

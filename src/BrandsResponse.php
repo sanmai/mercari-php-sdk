@@ -19,9 +19,9 @@
 
 namespace Mercari;
 
+use ArrayIterator;
 use JMS\Serializer\Annotation\Type;
 use Mercari\DTO\MasterItemBrand;
-use ArrayIterator;
 use Override;
 use Traversable;
 

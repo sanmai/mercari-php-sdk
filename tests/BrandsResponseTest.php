@@ -19,10 +19,10 @@
 
 namespace Tests\Mercari;
 
-use Mercari\BrandsResponse;
-
 use function count;
 use function is_file;
+
+use Mercari\BrandsResponse;
 
 /**
  * @covers \Mercari\DTO\MasterItemBrand

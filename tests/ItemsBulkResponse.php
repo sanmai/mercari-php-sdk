@@ -19,9 +19,9 @@
 
 namespace Tests\Mercari;
 
-use Mercari\ItemsResponse;
-
 use function array_key_first;
+
+use Mercari\ItemsResponse;
 
 /**
  * @covers \Mercari\ItemsResponse

@@ -19,9 +19,9 @@
 
 namespace Tests\Mercari;
 
-use Mercari\MessagesResponse;
-
 use function iterator_to_array;
+
+use Mercari\MessagesResponse;
 
 /**
  * @covers \Mercari\MessagesResponse

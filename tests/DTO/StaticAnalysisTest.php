@@ -19,13 +19,13 @@
 
 namespace Tests\Mercari\DTO;
 
-use PHPUnit\Framework\TestCase;
-use Mercari\DTO\TodoItem;
-use ReflectionClass;
-
 use function count;
 use function dirname;
 use function glob;
+
+use Mercari\DTO\TodoItem;
+use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 
 class StaticAnalysisTest extends TestCase
 {

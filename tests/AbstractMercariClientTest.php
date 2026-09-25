@@ -20,6 +20,7 @@
 namespace Tests\Mercari;
 
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use JSONSerializer\Serializer;
@@ -27,11 +28,10 @@ use Mercari\NotModifiedException;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
-use Tests\Mercari\Doubles\ExampleMercariClient;
 use Psr\Log\LoggerInterface;
-use Tests\Mercari\Doubles\ExampleResponse;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
-use GuzzleHttp\Exception\ServerException;
+use Tests\Mercari\Doubles\ExampleMercariClient;
+use Tests\Mercari\Doubles\ExampleResponse;
 
 /**
  * @covers \Mercari\AbstractMercariClient

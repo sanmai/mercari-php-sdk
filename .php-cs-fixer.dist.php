@@ -45,6 +45,7 @@ $config
         '@PHPUnit100Migration:risky' => true,
         '@PHP82Migration' => true,
         'no_unused_imports' => true,
+        'ordered_imports' => true,
         'declare_strict_types' => false,
 
         'native_constant_invocation' => [

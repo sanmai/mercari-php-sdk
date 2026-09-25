@@ -21,9 +21,10 @@ namespace Tests\Mercari\DTO;
 
 use Mercari\DTO\ItemDetail;
 use Mercari\DTO\SellerLatest;
-use Tests\Mercari\TestCase;
 
 use function str_repeat;
+
+use Tests\Mercari\TestCase;
 
 /**
  * @covers \Mercari\DTO\ItemDetail

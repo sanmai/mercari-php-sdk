@@ -19,9 +19,9 @@
 
 namespace Tests\Mercari;
 
-use Tests\Mercari\Doubles\ExampleRequest;
-
 use function json_encode;
+
+use Tests\Mercari\Doubles\ExampleRequest;
 
 /**
  * @covers \Mercari\GenericRequest
