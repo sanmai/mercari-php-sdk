@@ -23,6 +23,8 @@ namespace Mercari;
 
 use Mercari\Enum\Marketplace;
 
+use function array_map;
+
 /**
  * Where a property takes an enum, it takes the plain scalar just as well.
  * Properties given a list or any other iterable are sent as a comma-separated string.
