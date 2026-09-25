@@ -22,11 +22,7 @@ declare(strict_types=1);
 namespace Mercari\Enum;
 
 /**
- * This enum defines the shipping statuses of a flea-market transaction.
- *
- * FillIn, FixSize, WaitPickup, and HandOver apply to the Mercari shipping
- * services only. The API does not publish the full set, so use tryFrom(): it
- * returns null for a status that this enum does not define.
+ * Shipping statuses of a flea-market transaction. Could be an incomplete list.
  */
 enum ShippingStatus: string
 {
@@ -40,8 +36,7 @@ enum ShippingStatus: string
 
     case Publish = 'publish';
 
-    /** Mercari sends this value verbatim; do not correct the spelling. */
-    case FillIn = 'fillin';
+    case FillIn = 'fillin'; // The API sends this value as written
 
     case FixSize = 'fix_size';
 
