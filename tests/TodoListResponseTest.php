@@ -20,10 +20,9 @@
 namespace Tests\Mercari;
 
 use Mercari\TodoListResponse;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Mercari\TodoListResponse
- */
+#[CoversClass(TodoListResponse::class)]
 class TodoListResponseTest extends TestCase
 {
     public function testDeserialize()

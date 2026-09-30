@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/schema/9.2.xsd"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
          bootstrap="vendor/autoload.php"
          executionOrder="random"
          resolveDependencies="true"
          colors="true"
-         cacheResultFile="build/cache/"
+         cacheDirectory="build/cache/phpunit"
 >
-  <filter>
-    <whitelist>
-       <directory suffix=".php">src/</directory>
-    </whitelist>
-  </filter>
+  <source>
+    <include>
+      <directory suffix=".php">src/</directory>
+    </include>
+  </source>
 
   <testsuites>
     <testsuite name="Test Suite">

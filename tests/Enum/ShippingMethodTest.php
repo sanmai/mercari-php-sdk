@@ -22,10 +22,9 @@ declare(strict_types=1);
 namespace Tests\Mercari\Enum;
 
 use Mercari\Enum\ShippingMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Mercari\Enum\ShippingMethod
- */
+#[CoversClass(ShippingMethod::class)]
 class ShippingMethodTest extends BackedEnumTestCase
 {
     public function enumClass(): string

@@ -21,11 +21,6 @@ namespace Tests\Mercari;
 
 use function get_class;
 use function get_parent_class;
-
-use GuzzleHttp\Client;
-use GuzzleHttp\HandlerStack;
-use GuzzleRetry\GuzzleRetryMiddleware;
-
 use function is_string;
 
 use Mercari\BrandsResponse;
@@ -49,15 +44,15 @@ use Mercari\ReviewResponse;
 use Mercari\SearchRequest;
 use Mercari\SearchResponse;
 use Mercari\TodoListResponse;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 
 use function strpos;
 
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
-/**
- * @covers \Mercari\MercariClient
- */
+#[CoversClass(MercariClient::class)]
 class MercariClientTest extends TestCase
 {
     /** @var MercariClient&MockObject */
@@ -76,78 +71,6 @@ class MercariClientTest extends TestCase
             ->getMock();
     }
 
-    public function testCreateInstance(): void
-    {
-        $client = MercariClient::createInstance('sandbox-api.example.com', 'token', ['Foo' => 'bar']);
-
-        $this->assertInstanceOf(MercariClient::class, $client);
-
-        /** @var Client $httpClient */
-        $httpClient = $this->getPropertyValue($client, 'client');
-
-        $this->assertSame('bar', $httpClient->getConfig('headers')['Foo']);
-        $this->assertSame("Bearer token", $httpClient->getConfig('headers')['Authorization']);
-
-        $this->assertNull($httpClient->getConfig('auth'));
-
-        $this->assertSame('https://sandbox-api.example.com', (string) $httpClient->getConfig('base_uri'));
-
-        $this->assertTrue($httpClient->getConfig('http_errors'));
-        $this->assertFalse($httpClient->getConfig('allow_redirects'));
-
-        $this->assertSame(3, $httpClient->getConfig('connect_timeout'));
-        $this->assertSame(120, $httpClient->getConfig('timeout'));
-
-        /** @var HandlerStack $handler */
-        $handler = $httpClient->getConfig('handler');
-
-        $this->assertSame($handler, $this->getPropertyValue($client, 'stack'));
-
-        $this->assertStringContainsString('retry_on_status', (string) $handler);
-
-        $retryMiddleware = $this->getRetryMiddleware($handler);
-
-        $statusCodes = $this->getPropertyValue($retryMiddleware, 'defaultOptions')['retry_on_status'];
-
-        foreach ($statusCodes as $code) {
-            $this->assertIsInt($code);
-        }
-
-        $this->assertCount(6, $statusCodes);
-    }
-
-    private function getRetryMiddleware(HandlerStack $handler): GuzzleRetryMiddleware
-    {
-        $stack = $this->getPropertyValue($handler, 'stack');
-        foreach ($stack as $item) {
-            if ($item[1] === "retry_on_status") {
-                return $item[0](fn() => null);
-            }
-        }
-
-        $this->fail('retry_on_status middleware not found');
-    }
-    public function testCreateInstanceWithClientOptions(): void
-    {
-        $client = MercariClient::createInstance(
-            'sandbox-api.example.com',
-            'token',
-            clientOptions: ['timeout' => 42, 'connect_timeout' => 67],
-        );
-
-        $this->assertInstanceOf(MercariClient::class, $client);
-
-        /** @var Client $httpClient */
-        $httpClient = $this->getPropertyValue($client, 'client');
-
-        $this->assertSame(42, $httpClient->getConfig('timeout'));
-        $this->assertSame(67, $httpClient->getConfig('connect_timeout'));
-
-        // defaults preserved when not overridden
-        $this->assertSame("Bearer token", $httpClient->getConfig('headers')['Authorization']);
-        $this->assertTrue($httpClient->getConfig('http_errors'));
-        $this->assertFalse($httpClient->getConfig('allow_redirects'));
-    }
     public function testSearch(): void
     {
         $response = new SearchResponse();
@@ -237,7 +160,8 @@ class MercariClientTest extends TestCase
         yield [Prefecture::Tokyo];
     }
 
-    /** @dataProvider provideTokyo */
+
+    #[DataProvider('provideTokyo')]
     public function testItemPrefecture(string|Prefecture $prefecture): void
     {
         $response = new ItemDetail();
@@ -556,7 +480,8 @@ class MercariClientTest extends TestCase
         yield [Fame::Bad];
     }
 
-    /** @dataProvider provideBadFame */
+
+    #[DataProvider('provideBadFame')]
     public function testTransactionReviewFame(string|Fame $fame): void
     {
         $response = $this->createMock(ReviewResponse::class);

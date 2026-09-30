@@ -22,10 +22,9 @@ declare(strict_types=1);
 namespace Tests\Mercari\Enum;
 
 use Mercari\Enum\Fame;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Mercari\Enum\Fame
- */
+#[CoversClass(Fame::class)]
 class FameTest extends BackedEnumTestCase
 {
     public function enumClass(): string

@@ -19,13 +19,13 @@
 
 namespace Tests\Mercari;
 
+use Mercari\DTO\PartnerOffer;
 use Mercari\DTO\PartnerOfferStatus;
 use Mercari\PartnerOffersResponse;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Mercari\DTO\PartnerOffer
- * @covers \Mercari\PartnerOffersResponse
- */
+#[CoversClass(PartnerOffer::class)]
+#[CoversClass(PartnerOffersResponse::class)]
 class PartnerOffersResponseTest extends TestCase
 {
     public function testDeserialize()

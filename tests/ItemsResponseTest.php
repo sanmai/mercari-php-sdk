@@ -21,10 +21,10 @@ namespace Tests\Mercari;
 
 use Mercari\DTO\ItemDetail;
 use Mercari\ItemsResponse;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-/**
- * @covers \Mercari\ItemsResponse
- */
+#[CoversClass(ItemsResponse::class)]
 class ItemsResponseTest extends TestCase
 {
     public static function provideItems(): iterable
@@ -32,9 +32,7 @@ class ItemsResponseTest extends TestCase
         yield 'similar_items_null.json' => [__DIR__ . '/data/similar_items_null.json'];
     }
 
-    /**
-     * @dataProvider provideItems
-     */
+    #[DataProvider('provideItems')]
     public function testDeserialize(string $file)
     {
         $response = $this->deserializeFile($file, ItemsResponse::class);

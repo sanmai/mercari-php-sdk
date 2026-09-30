@@ -37,7 +37,7 @@
         "jenssegers/optimus": "^0.2.3 || ^1.0.0",
         "php-coveralls/php-coveralls": "^2.4",
         "phpstan/phpstan": ">=0.10",
-        "phpunit/phpunit": "^9.3",
+        "phpunit/phpunit": "^11 || ^12",
         "sanmai/pipeline": ">=6.11",
         "symfony/validator": ">=5.4"
     },

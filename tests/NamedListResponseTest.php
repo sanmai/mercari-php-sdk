@@ -23,10 +23,10 @@ use Mercari\BrandsResponse;
 use Mercari\CategoriesResponse;
 use Mercari\DTO\NamedItem;
 use Mercari\NamedListResponse;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-/**
- * @covers \Mercari\NamedListResponse
- */
+#[CoversClass(NamedListResponse::class)]
 class NamedListResponseTest extends TestCase
 {
     public static function provideLookups(): iterable
@@ -47,9 +47,9 @@ class NamedListResponseTest extends TestCase
     }
 
     /**
-     * @dataProvider provideLookups
      * @param class-string<NamedListResponse> $type
      */
+    #[DataProvider('provideLookups')]
     public function testGet(string $file, string $type, string $id, string $name): void
     {
         $response = $this->deserializeFile($file, $type);

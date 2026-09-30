@@ -50,6 +50,7 @@ use Mercari\ReviewResponse;
 use Mercari\SearchResponse;
 use Mercari\TodoListResponse;
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 use function strpos;
 
@@ -117,9 +118,7 @@ class SerializationTest extends TestCase
         }
     }
 
-    /**
-     * @dataProvider provideFiles
-     */
+    #[DataProvider('provideFiles')]
     public function testDeserialize(
         string $basename,
         string $file,

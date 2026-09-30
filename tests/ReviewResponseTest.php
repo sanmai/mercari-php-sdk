@@ -20,10 +20,9 @@
 namespace Tests\Mercari;
 
 use Mercari\ReviewResponse;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Mercari\ReviewResponse
- */
+#[CoversClass(ReviewResponse::class)]
 class ReviewResponseTest extends TestCase
 {
     public function testSuccess()

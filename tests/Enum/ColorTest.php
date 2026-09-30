@@ -22,10 +22,9 @@ declare(strict_types=1);
 namespace Tests\Mercari\Enum;
 
 use Mercari\Enum\Color;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Mercari\Enum\Color
- */
+#[CoversClass(Color::class)]
 class ColorTest extends BackedEnumTestCase
 {
     public function enumClass(): string

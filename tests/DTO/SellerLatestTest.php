@@ -20,11 +20,10 @@
 namespace Tests\Mercari\DTO;
 
 use Mercari\DTO\SellerLatest;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Tests\Mercari\TestCase;
 
-/**
- * @covers \Mercari\DTO\SellerLatest
- */
+#[CoversClass(SellerLatest::class)]
 class SellerLatestTest extends TestCase
 {
     public function testNoFallback()

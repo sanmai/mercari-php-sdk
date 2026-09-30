@@ -20,10 +20,10 @@
 namespace Tests\Mercari;
 
 use Mercari\DTO\Seller;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-/**
- * @covers \Mercari\DTO\Seller
- */
+#[CoversClass(Seller::class)]
 class SellerTest extends TestCase
 {
     public static function provideItems(): iterable
@@ -34,9 +34,7 @@ class SellerTest extends TestCase
         yield 'seller_badge_actual.json' => [__DIR__ . '/data/seller_badge_actual.json', 646991664];
     }
 
-    /**
-     * @dataProvider provideItems
-     */
+    #[DataProvider('provideItems')]
     public function testDeserialize(string $file, int $id)
     {
         $response = $this->deserializeFile($file, Seller::class);

@@ -27,10 +27,9 @@ use Mercari\DTO\ItemDetail;
 use Mercari\DTO\ItemDiscount;
 use Mercari\DTO\ItemVariant;
 use Mercari\PurchaseRequest;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Mercari\PurchaseRequest
- */
+#[CoversClass(PurchaseRequest::class)]
 class PurchaseRequestTest extends TestCase
 {
     public function testDefault()

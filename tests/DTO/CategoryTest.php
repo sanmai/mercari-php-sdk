@@ -20,11 +20,10 @@
 namespace Tests\Mercari\DTO;
 
 use Mercari\DTO\Category;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Tests\Mercari\TestCase;
 
-/**
- * @covers \Mercari\DTO\Category
- */
+#[CoversClass(Category::class)]
 class CategoryTest extends TestCase
 {
     public function testNamedItem()

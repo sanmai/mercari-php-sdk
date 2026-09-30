@@ -20,14 +20,16 @@
 namespace Tests\Mercari;
 
 use Mercari\DTO\ItemDetail;
+use Mercari\DTO\SellerLatest;
+use Mercari\PurchaseRequest;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 use function strpos;
 
-/**
- * @covers \Mercari\DTO\ItemDetail
- * @covers \Mercari\PurchaseRequest
- * @covers \Mercari\DTO\SellerLatest
- */
+#[CoversClass(ItemDetail::class)]
+#[CoversClass(PurchaseRequest::class)]
+#[CoversClass(SellerLatest::class)]
 class ItemDetailTest extends TestCase
 {
     public static function provideItems(): iterable
@@ -37,9 +39,7 @@ class ItemDetailTest extends TestCase
         }
     }
 
-    /**
-     * @dataProvider provideItems
-     */
+    #[DataProvider('provideItems')]
     public function testDeserialize(string $file)
     {
         /** @var ItemDetail $item */

@@ -22,10 +22,9 @@ declare(strict_types=1);
 namespace Tests\Mercari\Enum;
 
 use Mercari\Enum\ItemStatus;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Mercari\Enum\ItemStatus
- */
+#[CoversClass(ItemStatus::class)]
 class ItemStatusTest extends BackedEnumTestCase
 {
     public function enumClass(): string

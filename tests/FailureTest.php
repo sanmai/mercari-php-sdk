@@ -20,10 +20,9 @@
 namespace Tests\Mercari;
 
 use Mercari\Failure;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Mercari\Failure
- */
+#[CoversClass(Failure::class)]
 class FailureTest extends TestCase
 {
     public function testDeserialize()

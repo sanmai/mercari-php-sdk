@@ -23,11 +23,12 @@ use function count;
 use function is_file;
 
 use Mercari\CategoriesResponse;
+use Mercari\DTO\Category;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-/**
- * @covers \Mercari\DTO\Category
- * @covers \Mercari\CategoriesResponse
- */
+#[CoversClass(Category::class)]
+#[CoversClass(CategoriesResponse::class)]
 class CategoriesResponseTest extends TestCase
 {
     public static function provideCategories(): iterable
@@ -41,9 +42,7 @@ class CategoriesResponseTest extends TestCase
         }
     }
 
-    /**
-     * @dataProvider provideCategories
-     */
+    #[DataProvider('provideCategories')]
     public function testDeserialize(string $file, ?int $count = null)
     {
         $response = $this->deserializeFile($file, CategoriesResponse::class);
