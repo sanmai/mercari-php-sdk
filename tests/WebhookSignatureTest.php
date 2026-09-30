@@ -24,10 +24,10 @@ use DuoClock\TimeSpy;
 use function gzencode;
 
 use Mercari\WebhookSignature;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-/**
- * @covers \Mercari\WebhookSignature
- */
+#[CoversClass(WebhookSignature::class)]
 class WebhookSignatureTest extends TestCase
 {
     public function testInvalid()
@@ -79,9 +79,7 @@ class WebhookSignatureTest extends TestCase
         yield 'beyond window' => [$time + WebhookSignature::VALIDITY_WINDOW + 1, false];
     }
 
-    /**
-     * @dataProvider provideTimestamps
-     */
+    #[DataProvider('provideTimestamps')]
     public function testValid(int $time, bool $valid)
     {
         $timekeeper = new TimeSpy($time);
@@ -113,9 +111,7 @@ class WebhookSignatureTest extends TestCase
         $this->assertTrue($signature->isValid($timekeeper));
     }
 
-    /**
-     * @dataProvider provideTimestamps
-     */
+    #[DataProvider('provideTimestamps')]
     public function testValidServerVars(int $time, bool $valid)
     {
         $_SERVER['HTTP_X_MERCARI_REQUEST_TIMESTAMP'] = self::TEST_TIME;

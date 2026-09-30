@@ -29,13 +29,12 @@ use function json_encode;
 use Mercari\MercariAuthClient;
 use Mercari\TokenRequest;
 use Mercari\TokenResponse;
+use PHPUnit\Framework\Attributes\CoversClass;
 use ReflectionObject;
 
 use function urlencode;
 
-/**
- * @covers \Mercari\MercariAuthClient
- */
+#[CoversClass(MercariAuthClient::class)]
 class MercariAuthClientTest extends TestCase
 {
     public function testCreateInstance()

@@ -22,10 +22,9 @@ declare(strict_types=1);
 namespace Tests\Mercari\Enum;
 
 use Mercari\Enum\SortBy;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Mercari\Enum\SortBy
- */
+#[CoversClass(SortBy::class)]
 class SortByTest extends BackedEnumTestCase
 {
     public function enumClass(): string

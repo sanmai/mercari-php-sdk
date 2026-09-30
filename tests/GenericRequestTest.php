@@ -23,11 +23,11 @@ use function json_encode;
 
 use Mercari\Enum\ItemCondition;
 use Mercari\Enum\ItemStatus;
+use Mercari\GenericRequest;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Tests\Mercari\Doubles\ExampleRequest;
 
-/**
- * @covers \Mercari\GenericRequest
- */
+#[CoversClass(GenericRequest::class)]
 class GenericRequestTest extends TestCase
 {
     public function testRequest()

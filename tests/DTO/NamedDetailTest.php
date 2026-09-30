@@ -22,11 +22,11 @@ namespace Tests\Mercari\DTO;
 use Mercari\DTO\ItemCategory;
 use Mercari\DTO\NamedDetail;
 use Mercari\DTO\NamedItem;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Mercari\TestCase;
 
-/**
- * @covers \Mercari\DTO\NamedDetail
- */
+#[CoversClass(NamedDetail::class)]
 class NamedDetailTest extends TestCase
 {
     public static function provideNamedDetails(): iterable
@@ -44,9 +44,7 @@ class NamedDetailTest extends TestCase
         yield 'item category' => [$itemCategory, 1234, 'サンプル小カテゴリー'];
     }
 
-    /**
-     * @dataProvider provideNamedDetails
-     */
+    #[DataProvider('provideNamedDetails')]
     public function testNamedItem(NamedItem $item, int $id, string $name)
     {
         $this->assertSame($id, $item->getId());

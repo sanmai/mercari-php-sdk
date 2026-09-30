@@ -29,10 +29,9 @@ use Mercari\Enum\SortBy;
 use Mercari\Enum\SortOrder;
 use Mercari\MercariClient;
 use Mercari\SearchRequest;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Mercari\SearchRequest
- */
+#[CoversClass(SearchRequest::class)]
 class SearchRequestTest extends TestCase
 {
     public function testDefault()

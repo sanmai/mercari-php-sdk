@@ -21,10 +21,9 @@ namespace Tests\Mercari;
 
 use Mercari\DTO\ItemDetail;
 use Mercari\SearchResponse;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Mercari\SearchResponse
- */
+#[CoversClass(SearchResponse::class)]
 class SearchResponseTest extends TestCase
 {
     public function testDeserialize()

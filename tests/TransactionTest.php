@@ -21,13 +21,14 @@ declare(strict_types=1);
 
 namespace Tests\Mercari;
 
+use Mercari\DTO\ProviderShippingInfo;
+use Mercari\DTO\ShippingInfo;
 use Mercari\DTO\Transaction;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Mercari\DTO\Transaction
- * @covers \Mercari\DTO\ShippingInfo
- * @covers \Mercari\DTO\ProviderShippingInfo
- */
+#[CoversClass(Transaction::class)]
+#[CoversClass(ShippingInfo::class)]
+#[CoversClass(ProviderShippingInfo::class)]
 class TransactionTest extends TestCase
 {
     public function testDeserialize()

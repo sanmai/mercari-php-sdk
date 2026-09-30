@@ -22,10 +22,9 @@ namespace Tests\Mercari;
 use function array_key_first;
 
 use Mercari\ItemsResponse;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Mercari\ItemsResponse
- */
+#[CoversClass(ItemsResponse::class)]
 class ItemsBulkResponse extends TestCase
 {
     public function testDeserializeBulk()

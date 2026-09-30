@@ -20,11 +20,10 @@
 namespace Tests\Mercari\DTO;
 
 use Mercari\DTO\MasterItemBrand;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Tests\Mercari\TestCase;
 
-/**
- * @covers \Mercari\DTO\MasterItemBrand
- */
+#[CoversClass(MasterItemBrand::class)]
 class MasterItemBrandTest extends TestCase
 {
     public function testNamedItem()

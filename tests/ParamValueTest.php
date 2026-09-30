@@ -22,12 +22,12 @@ namespace Tests\Mercari;
 use ArrayIterator;
 use Mercari\Enum\Fame;
 use Mercari\ParamValue;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 use function Pipeline\take;
 
-/**
- * @covers \Mercari\ParamValue
- */
+#[CoversClass(ParamValue::class)]
 class ParamValueTest extends TestCase
 {
     public static function provideValues(): iterable
@@ -53,9 +53,7 @@ class ParamValueTest extends TestCase
         yield 'empty list' => [[], ''];
     }
 
-    /**
-     * @dataProvider provideValues
-     */
+    #[DataProvider('provideValues')]
     public function testOf(mixed $value, mixed $expected)
     {
         $this->assertSame($expected, ParamValue::of($value));

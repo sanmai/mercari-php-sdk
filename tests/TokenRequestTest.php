@@ -21,10 +21,9 @@ namespace Tests\Mercari;
 
 use Mercari\TokenRequest;
 use Mercari\TokenResponse;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Mercari\TokenRequest
- */
+#[CoversClass(TokenRequest::class)]
 class TokenRequestTest extends TestCase
 {
     public function testClientCredentials()

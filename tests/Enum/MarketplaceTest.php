@@ -22,13 +22,14 @@ declare(strict_types=1);
 namespace Tests\Mercari\Enum;
 
 use Mercari\Enum\Marketplace;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * The literals are the API contract (1 is Mercari, 2 is Shops, 3 is both),
  * not the MercariClient constants derived from this enum.
  *
- * @covers \Mercari\Enum\Marketplace
  */
+#[CoversClass(Marketplace::class)]
 class MarketplaceTest extends BackedEnumTestCase
 {
     public function enumClass(): string

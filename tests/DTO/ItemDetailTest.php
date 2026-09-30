@@ -21,14 +21,13 @@ namespace Tests\Mercari\DTO;
 
 use Mercari\DTO\ItemDetail;
 use Mercari\DTO\SellerLatest;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 use function str_repeat;
 
 use Tests\Mercari\TestCase;
 
-/**
- * @covers \Mercari\DTO\ItemDetail
- */
+#[CoversClass(ItemDetail::class)]
 class ItemDetailTest extends TestCase
 {
     public function testIsAvailable()

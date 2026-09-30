@@ -49,15 +49,16 @@ use Mercari\ReviewResponse;
 use Mercari\SearchRequest;
 use Mercari\SearchResponse;
 use Mercari\TodoListResponse;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 
 use function strpos;
 
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
-/**
- * @covers \Mercari\MercariClient
- */
+#[CoversClass(MercariClient::class)]
 class MercariClientTest extends TestCase
 {
     /** @var MercariClient&MockObject */
@@ -76,6 +77,7 @@ class MercariClientTest extends TestCase
             ->getMock();
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testCreateInstance(): void
     {
         $client = MercariClient::createInstance('sandbox-api.example.com', 'token', ['Foo' => 'bar']);
@@ -127,6 +129,8 @@ class MercariClientTest extends TestCase
 
         $this->fail('retry_on_status middleware not found');
     }
+
+    #[AllowMockObjectsWithoutExpectations]
     public function testCreateInstanceWithClientOptions(): void
     {
         $client = MercariClient::createInstance(
@@ -148,6 +152,7 @@ class MercariClientTest extends TestCase
         $this->assertTrue($httpClient->getConfig('http_errors'));
         $this->assertFalse($httpClient->getConfig('allow_redirects'));
     }
+
     public function testSearch(): void
     {
         $response = new SearchResponse();
@@ -237,7 +242,8 @@ class MercariClientTest extends TestCase
         yield [Prefecture::Tokyo];
     }
 
-    /** @dataProvider provideTokyo */
+
+    #[DataProvider('provideTokyo')]
     public function testItemPrefecture(string|Prefecture $prefecture): void
     {
         $response = new ItemDetail();
@@ -556,7 +562,8 @@ class MercariClientTest extends TestCase
         yield [Fame::Bad];
     }
 
-    /** @dataProvider provideBadFame */
+
+    #[DataProvider('provideBadFame')]
     public function testTransactionReviewFame(string|Fame $fame): void
     {
         $response = $this->createMock(ReviewResponse::class);

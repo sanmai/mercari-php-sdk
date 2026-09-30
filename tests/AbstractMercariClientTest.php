@@ -24,7 +24,10 @@ use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use JSONSerializer\Serializer;
+use Mercari\AbstractMercariClient;
 use Mercari\NotModifiedException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
@@ -33,9 +36,7 @@ use Symfony\Component\HttpFoundation\Response as HttpResponse;
 use Tests\Mercari\Doubles\ExampleMercariClient;
 use Tests\Mercari\Doubles\ExampleResponse;
 
-/**
- * @covers \Mercari\AbstractMercariClient
- */
+#[CoversClass(AbstractMercariClient::class)]
 class AbstractMercariClientTest extends TestCase
 {
     public function testAddLogger(): void
@@ -79,9 +80,7 @@ class AbstractMercariClientTest extends TestCase
         yield ['getOptional'];
     }
 
-    /**
-     * @dataProvider provideGetMethods
-     */
+    #[DataProvider('provideGetMethods')]
     public function testGet(string $method): void
     {
         $responses = [
@@ -102,9 +101,7 @@ class AbstractMercariClientTest extends TestCase
         $this->assertSame('/example?foo=bar', (string) $request->getUri());
     }
 
-    /**
-     * @dataProvider provideGetMethods
-     */
+    #[DataProvider('provideGetMethods')]
     public function testGetWithOptions(string $method): void
     {
         $responses = [
@@ -142,9 +139,7 @@ class AbstractMercariClientTest extends TestCase
         yield ['postFallback'];
     }
 
-    /**
-     * @dataProvider providePostMethods
-     */
+    #[DataProvider('providePostMethods')]
     public function testPost(string $method): void
     {
         $responses = [
@@ -266,7 +261,7 @@ class AbstractMercariClientTest extends TestCase
         $client->expects($this->once())
             ->method('post')
             ->with(ExampleResponse::class, '/example', ['foo' => 'bar'])
-            ->willThrowException(new RequestException('Internal Server Error', $this->createMock(Request::class)));
+            ->willThrowException(new RequestException('Internal Server Error', $this->createStub(Request::class)));
 
         $client->expects($this->once())
             ->method('handleRequestException')
@@ -282,7 +277,7 @@ class AbstractMercariClientTest extends TestCase
     public function testHandleRequestExceptionWithoutResponse(): void
     {
         $client = $this->buildExampleClient([]);
-        $request = $this->createMock(Request::class);
+        $request = $this->createStub(Request::class);
 
         $exception = new RequestException('Internal Server Error', $request);
 
@@ -293,7 +288,7 @@ class AbstractMercariClientTest extends TestCase
     public function testHandleRequestExceptionWithHtmlResponse(): void
     {
         $client = $this->buildExampleClient([]);
-        $request = $this->createMock(Request::class);
+        $request = $this->createStub(Request::class);
         $response = new Response(HttpResponse::HTTP_INTERNAL_SERVER_ERROR, [], '<html></html>');
 
         $exception = new RequestException('Internal Server Error', $request, $response);
@@ -305,7 +300,7 @@ class AbstractMercariClientTest extends TestCase
     public function testHandleRequestExceptionWithFailure(): void
     {
         $client = $this->buildExampleClient([]);
-        $request = $this->createMock(Request::class);
+        $request = $this->createStub(Request::class);
         $response = new Response(HttpResponse::HTTP_INTERNAL_SERVER_ERROR, [], '{"code": 1}');
 
         $exception = new RequestException('Internal Server Error', $request, $response);
@@ -317,7 +312,7 @@ class AbstractMercariClientTest extends TestCase
     public function testHandleRequestExceptionWithoutFailure(): void
     {
         $client = $this->buildExampleClient([]);
-        $request = $this->createMock(Request::class);
+        $request = $this->createStub(Request::class);
         $response = new Response(HttpResponse::HTTP_INTERNAL_SERVER_ERROR, [], ExampleResponse::JSON);
 
         $exception = new RequestException('Internal Server Error', $request, $response);
@@ -330,7 +325,7 @@ class AbstractMercariClientTest extends TestCase
     public function testHandleRequestExceptionWithInvalidResponse(): void
     {
         $client = $this->buildExampleClient([]);
-        $request = $this->createMock(Request::class);
+        $request = $this->createStub(Request::class);
         $response = new Response(HttpResponse::HTTP_INTERNAL_SERVER_ERROR, [], '{"status":{"foo":"bar"}}');
 
         $exception = new RequestException('Internal Server Error', $request, $response);

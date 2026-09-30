@@ -22,12 +22,11 @@ declare(strict_types=1);
 namespace Tests\Mercari\Enum;
 
 use Mercari\Enum\ItemCondition;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 use function Pipeline\take;
 
-/**
- * @covers \Mercari\Enum\ItemCondition
- */
+#[CoversClass(ItemCondition::class)]
 class ItemConditionTest extends BackedEnumTestCase
 {
     public function enumClass(): string

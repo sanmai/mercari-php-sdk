@@ -22,10 +22,9 @@ namespace Tests\Mercari;
 use function iterator_to_array;
 
 use Mercari\MessagesResponse;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Mercari\MessagesResponse
- */
+#[CoversClass(MessagesResponse::class)]
 class MessagesResponseTest extends TestCase
 {
     public function testIteratorAggregate()

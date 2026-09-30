@@ -20,11 +20,11 @@
 namespace Tests\Mercari\Enum;
 
 use Mercari\Enum\Prefecture;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Mercari\TestCase;
 
-/**
- * @covers \Mercari\Enum\Prefecture
- */
+#[CoversClass(Prefecture::class)]
 class PrefectureTest extends TestCase
 {
     public static function provideCodes(): iterable
@@ -78,9 +78,7 @@ class PrefectureTest extends TestCase
         yield [47, Prefecture::Okinawa, '沖縄県'];
     }
 
-    /**
-     * @dataProvider provideCodes
-     */
+    #[DataProvider('provideCodes')]
     public function testCode(int $id, Prefecture $prefecture, string $name)
     {
         $this->assertSame($name, $prefecture->value);
