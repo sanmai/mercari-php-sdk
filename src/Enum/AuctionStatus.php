@@ -32,4 +32,6 @@ enum AuctionStatus: string
     case Sold = 'SOLD';
 
     case Ended = 'ENDED';
+
+    case Cancelled = 'CANCELLED';
 }

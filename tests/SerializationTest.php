@@ -35,7 +35,9 @@ use IteratorAggregate;
 use Mercari\BrandsResponse;
 use Mercari\CategoriesResponse;
 use Mercari\CommentsResponse;
+use Mercari\DTO\AuctionConcludedWebhook;
 use Mercari\DTO\AuctionDetail;
+use Mercari\DTO\AuctionOutbidWebhook;
 use Mercari\DTO\Bid;
 use Mercari\DTO\ItemDetail;
 use Mercari\DTO\Seller;
@@ -73,6 +75,8 @@ class SerializationTest extends TestCase
         'search' => SearchResponse::class,
         'item' => ItemDetail::class,
         'transaction' => Transaction::class,
+        'webhook_auction_outbid' => AuctionOutbidWebhook::class,
+        'webhook_auction_concluded' => AuctionConcludedWebhook::class,
         'webhook' => Webhook::class,
         'seller' => Seller::class,
         'todo' => TodoListResponse::class,

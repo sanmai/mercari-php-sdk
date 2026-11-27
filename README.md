@@ -415,13 +415,13 @@ if ($auction === null) {
     return;
 }
 
-if ($auction->getStatus() === Mercari\Enum\AuctionStatus::Active) {
+if ($auction->getStatus() === Mercari\Enum\AuctionStatus::Scheduled || $auction->getStatus() === Mercari\Enum\AuctionStatus::Active) {
     $bid = $client->placeBid('m1234567890', $auction->minimum_next_bid);
     echo "Bid #{$bid->bid_number}, next minimum {$bid->minimum_next_bid}\n";
 }
 ```
 
-A rejected bid throws a `RequestException` (for example, when the price is less than `minimum_next_bid`, or the auction is not active).
+A rejected bid throws a `RequestException` (for example, when the price is less than `minimum_next_bid`, or the auction does not accept bids).
 
 When bidding closes, the auction enters the `WinningPeriod` status. Only the user that placed the winning bid (`is_winner`) can purchase the item, and only until `winner_period_end_time`. Purchase it with a `PurchaseRequest` as usual. An unsold auction that has ended becomes a regular item again.
 

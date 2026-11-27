@@ -39,5 +39,6 @@ class AuctionStatusTest extends BackedEnumTestCase
         yield 'WinningPeriod' => 'WINNING_PERIOD';
         yield 'Sold' => 'SOLD';
         yield 'Ended' => 'ENDED';
+        yield 'Cancelled' => 'CANCELLED';
     }
 }

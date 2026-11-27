@@ -1,0 +1,7 @@
+{
+    "webhook_type": "auction_concluded",
+    "item_id": "m10000000001",
+    "auction_status": "WINNING_PERIOD",
+    "event_id": "00000000-0000-7000-8000-000000000003",
+    "created_at": "2026-01-01T09:00:05Z"
+}
