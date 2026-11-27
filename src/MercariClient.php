@@ -28,6 +28,8 @@ use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleRetry\GuzzleRetryMiddleware;
 use JSONSerializer\Serializer;
+use Mercari\DTO\AuctionDetail;
+use Mercari\DTO\Bid;
 use Mercari\DTO\ItemDetail;
 use Mercari\DTO\Seller;
 use Mercari\DTO\ShopsOrder;
@@ -64,6 +66,10 @@ class MercariClient extends AbstractMercariClient
     private const ITEM = '/v1/items/%s';
 
     private const ITEM_COMMENTS = '/v1/items/%s/comments';
+
+    private const AUCTION = '/v1/items/%s/auction';
+
+    private const AUCTION_BIDS = '/v1/items/%s/auction/bids';
 
     private const USER = '/v1/users/%s';
 
@@ -103,9 +109,9 @@ class MercariClient extends AbstractMercariClient
     ];
 
     /**
-     * No retries on 409 for the message board.
+     * No retries on 409 for the message board and for bids.
      */
-    private const MESSAGES_RETRY_OPTIONS = [
+    private const TRANSIENT_RETRY_OPTIONS = [
         'retry_on_status' => self::RETRY_ON_STATUS_TRANSIENT,
     ];
 
@@ -232,6 +238,24 @@ class MercariClient extends AbstractMercariClient
         );
     }
 
+    public function auction(string $item_id): ?AuctionDetail
+    {
+        return $this->getOptional(
+            AuctionDetail::class,
+            sprintf(self::AUCTION, $item_id),
+        );
+    }
+
+    public function placeBid(string $item_id, int $price): Bid
+    {
+        return $this->post(
+            Bid::class,
+            sprintf(self::AUCTION_BIDS, $item_id),
+            ['price' => $price],
+            self::TRANSIENT_RETRY_OPTIONS,
+        );
+    }
+
     public function user(string $id): ?Seller
     {
         return $this->getOptional(
@@ -295,7 +319,7 @@ class MercariClient extends AbstractMercariClient
             MessagesResponse::class,
             sprintf(self::TRANSACTION_MESSAGES, $transaction_id),
             error_codes: self::MESSAGES_UNAVAILABLE_ON_STATUS,
-            options: self::MESSAGES_RETRY_OPTIONS,
+            options: self::TRANSIENT_RETRY_OPTIONS,
         );
 
         return $response ?? new MessagesResponse();
@@ -307,7 +331,7 @@ class MercariClient extends AbstractMercariClient
             TransactionMessage::class,
             sprintf(self::TRANSACTION_MESSAGES, $transaction_id),
             ['message' => $message],
-            self::MESSAGES_RETRY_OPTIONS,
+            self::TRANSIENT_RETRY_OPTIONS,
         );
     }
 

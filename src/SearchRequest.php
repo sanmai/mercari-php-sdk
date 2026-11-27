@@ -26,6 +26,7 @@ use function array_map;
 use Mercari\Enum\Color;
 use Mercari\Enum\ItemCondition;
 use Mercari\Enum\ItemStatus;
+use Mercari\Enum\ListingType;
 use Mercari\Enum\Marketplace;
 use Mercari\Enum\ShippingPayer;
 use Mercari\Enum\SortBy;
@@ -51,6 +52,7 @@ use Override;
  * @property bool $item_authentication Search for items eligible for the item authentication service only.
  * @property bool $time_sale Search for Time-Sale (discounted) items only.
  * @property bool $with_offer_price_promotion Include the offer-to-everyone discount in the returned discount details.
+ * @property string|ListingType $listing_type Only regular items, or only auction items.
  * @property int|Marketplace $marketplace Preferred marketplace for the search; defaults to Mercari.
  * @property string|SortBy $sort Sort using the given field.
  * @property string|SortOrder $order Sorting order ('desc' by default)

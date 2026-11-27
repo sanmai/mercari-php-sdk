@@ -35,6 +35,8 @@ use IteratorAggregate;
 use Mercari\BrandsResponse;
 use Mercari\CategoriesResponse;
 use Mercari\CommentsResponse;
+use Mercari\DTO\AuctionDetail;
+use Mercari\DTO\Bid;
 use Mercari\DTO\ItemDetail;
 use Mercari\DTO\Seller;
 use Mercari\DTO\ShopsOrder;
@@ -75,6 +77,8 @@ class SerializationTest extends TestCase
         'seller' => Seller::class,
         'todo' => TodoListResponse::class,
         'bulk' => ItemsResponse::class,
+        'auction_detail' => AuctionDetail::class,
+        'bid' => Bid::class,
     ];
 
     private const NORMALIZE_IDS = [
@@ -91,6 +95,7 @@ class SerializationTest extends TestCase
         'todolist_null.json',
         'similar_items_null.json',
         'partner_offers_empty.json',
+        'auction_detail_min.json',
     ];
 
     public static function provideFiles(): iterable

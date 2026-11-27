@@ -236,6 +236,53 @@ class MercariClientTest extends TestCase
         $this->assertSame($response, $responseActual);
     }
 
+    public function testAuction(): void
+    {
+        $response = new DTO\AuctionDetail();
+
+        $this->clientExpects(
+            'getOptional',
+            $response,
+            $this->identicalTo('/v1/items/foo/auction'),
+        );
+
+        $responseActual = $this->client->auction('foo');
+
+        $this->assertSame($response, $responseActual);
+    }
+
+    public function testAuctionNotFound(): void
+    {
+        $this->client->expects($this->once())
+            ->method('getOptional')
+            ->willReturn(null);
+
+        $this->assertNull($this->client->auction('foo'));
+    }
+
+    public function testPlaceBid(): void
+    {
+        $response = new DTO\Bid();
+
+        $this->clientExpects(
+            'post',
+            $response,
+            $this->identicalTo('/v1/items/foo/auction/bids'),
+            $this->identicalTo(['price' => 5600]),
+            $this->identicalTo(['retry_on_status' => [
+                HttpResponse::HTTP_INTERNAL_SERVER_ERROR,
+                HttpResponse::HTTP_TOO_MANY_REQUESTS,
+                HttpResponse::HTTP_BAD_GATEWAY,
+                HttpResponse::HTTP_SERVICE_UNAVAILABLE,
+                HttpResponse::HTTP_GATEWAY_TIMEOUT,
+            ]]),
+        );
+
+        $responseActual = $this->client->placeBid('foo', 5600);
+
+        $this->assertSame($response, $responseActual);
+    }
+
     public static function provideTokyo(): iterable
     {
         yield ['東京都'];

@@ -38,5 +38,6 @@ class TransactionStatusTest extends BackedEnumTestCase
         yield 'WaitReview' => 'wait_review';
         yield 'WaitDone' => 'wait_done';
         yield 'Done' => 'done';
+        yield 'AdminCancel' => 'admin_cancel';
     }
 }
