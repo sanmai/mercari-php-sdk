@@ -47,6 +47,7 @@ class AuctionSnapshotTest extends TestCase
 
     public function testNoBids(): void
     {
-        $this->assertSame(0, (new AuctionSnapshot())->bid_count);
+        $auction = new AuctionSnapshot();
+        $this->assertSame(0, $auction->bid_count);
     }
 }

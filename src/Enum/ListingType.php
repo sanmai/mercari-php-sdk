@@ -21,15 +21,12 @@ declare(strict_types=1);
 
 namespace Mercari\Enum;
 
-/**
- * @see \Mercari\SearchRequest::$listing_type
- */
 enum ListingType: string
 {
     case Regular = 'regular';
 
     case NormalAuction = 'normal_auction';
 
-    /** Not a valid search filter, webhook-only. */
+    /** webhook-only */
     case Auction = 'auction';
 }
