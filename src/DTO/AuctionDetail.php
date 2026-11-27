@@ -23,7 +23,6 @@ class AuctionDetail extends AuctionSnapshot
 {
     public int $minimum_next_bid;
 
-    /** RFC 3339 date-time. Only during the winning period. */
     public string $winner_period_end_time;
 
     public bool $is_winner = false;
