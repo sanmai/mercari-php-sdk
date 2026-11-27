@@ -35,6 +35,10 @@ use IteratorAggregate;
 use Mercari\BrandsResponse;
 use Mercari\CategoriesResponse;
 use Mercari\CommentsResponse;
+use Mercari\DTO\AuctionConcludedWebhook;
+use Mercari\DTO\AuctionDetail;
+use Mercari\DTO\AuctionOutbidWebhook;
+use Mercari\DTO\Bid;
 use Mercari\DTO\ItemDetail;
 use Mercari\DTO\Seller;
 use Mercari\DTO\ShopsOrder;
@@ -71,10 +75,14 @@ class SerializationTest extends TestCase
         'search' => SearchResponse::class,
         'item' => ItemDetail::class,
         'transaction' => Transaction::class,
+        'webhook_auction_outbid' => AuctionOutbidWebhook::class,
+        'webhook_auction_concluded' => AuctionConcludedWebhook::class,
         'webhook' => Webhook::class,
         'seller' => Seller::class,
         'todo' => TodoListResponse::class,
         'bulk' => ItemsResponse::class,
+        'auction_detail' => AuctionDetail::class,
+        'bid' => Bid::class,
     ];
 
     private const NORMALIZE_IDS = [
@@ -91,6 +99,7 @@ class SerializationTest extends TestCase
         'todolist_null.json',
         'similar_items_null.json',
         'partner_offers_empty.json',
+        'auction_detail_min.json',
     ];
 
     public static function provideFiles(): iterable

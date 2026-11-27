@@ -20,6 +20,8 @@ Please note that this is not an official SDK but rather an independent, communit
 - [x] Similar Items
 - [x] Get User By ID
 - [x] Purchase Item
+- [x] Get Auction Detail
+- [x] Place Auction Bid
 - [x] Get Transaction By Transaction ID
 - [x] Get Transaction By Item ID
 - [x] Get Transaction Messages
@@ -141,7 +143,7 @@ $request = (new Mercari\SearchRequest())->searchShopsOnly();
 
 ### Search Filters
 
-The `Mercari\Enum` namespace defines enums for the search filters that take fixed values: `ItemCondition`, `ShippingPayer`, `Color`, `ItemStatus`, `Marketplace`, `SortBy`, and `SortOrder`. Assign an enum case to a filter that takes a single value. Filters that take several values, such as `item_condition_id` and `status`, also accept an array (or any other sensible iterable), and the request sends it as a comma-separated string:
+The `Mercari\Enum` namespace defines enums for the search filters that take fixed values: `ItemCondition`, `ShippingPayer`, `Color`, `ItemStatus`, `ListingType`, `Marketplace`, `SortBy`, and `SortOrder`. Assign an enum case to a filter that takes a single value. Filters that take several values, such as `item_condition_id` and `status`, also accept an array (or any other sensible iterable), and the request sends it as a comma-separated string:
 
 ```php
 use Mercari\Enum\Color;
@@ -156,6 +158,12 @@ $request->status = [ItemStatus::OnSale, ItemStatus::Trading];                   
 $request->shipping_payer_id = ShippingPayer::Seller;                             // 2
 $request->color_id = Color::Black;                                               // 1
 $request->sort = SortBy::Price;                                                  // "price"
+```
+
+Use `listing_type` to search for only regular items or only auction items. To get both, leave it unset:
+
+```php
+$request->listing_type = Mercari\Enum\ListingType::NormalAuction;
 ```
 
 To search for second-hand items only, use `ItemCondition::used()`. It returns every condition except `BrandNew`:
@@ -394,6 +402,28 @@ The constructor only auto-selects a variant when the item has exactly one. For a
 #### Latency Considerations for Purchases
 
 To ensure the highest success rate for purchases, the client automatically retries transient errors (such as HTTP 500 or 409) using an exponential back-off strategy. While this increases reliability, it can lead to significant response times. You should ensure that your web server (e.g., Nginx `proxy_read_timeout`), PHP configuration (`max_execution_time`), and any database transaction timeouts are aligned to accommodate the potential total duration of a retried purchase request.
+
+### Auctions
+
+Auction items have `listing_type` set to `normal_auction` and an `auction` snapshot of their state at the time of the query. Before you show a bid form, get the current state with `auction()`. It returns `null` when the item is not an auction:
+
+```php
+$auction = $client->auction('m1234567890');
+
+if ($auction === null) {
+    echo "Not an auction\n";
+    return;
+}
+
+if ($auction->getStatus() === Mercari\Enum\AuctionStatus::Scheduled || $auction->getStatus() === Mercari\Enum\AuctionStatus::Active) {
+    $bid = $client->placeBid('m1234567890', $auction->minimum_next_bid);
+    echo "Bid #{$bid->bid_number}, next minimum {$bid->minimum_next_bid}\n";
+}
+```
+
+A rejected bid throws a `RequestException` (for example, when the price is less than `minimum_next_bid`, or the auction does not accept bids).
+
+When bidding closes, the auction enters the `WinningPeriod` status. Only the user that placed the winning bid (`is_winner`) can purchase the item, and only until `winner_period_end_time`. Purchase it with a `PurchaseRequest` as usual. An unsold auction that has ended becomes a regular item again.
 
 ### Transactions and Messaging
 

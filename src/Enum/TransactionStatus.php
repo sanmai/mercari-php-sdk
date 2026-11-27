@@ -30,4 +30,6 @@ enum TransactionStatus: string
     case WaitDone = 'wait_done';
 
     case Done = 'done';
+
+    case AdminCancel = 'admin_cancel';
 }

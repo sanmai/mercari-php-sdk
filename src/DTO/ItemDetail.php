@@ -152,6 +152,9 @@ class ItemDetail
 
     public string $listing_type;
 
+    #[Type('Mercari\DTO\AuctionSnapshot')]
+    public AuctionSnapshot $auction;
+
     /**
      * @var array<string,array<string>>
      */
