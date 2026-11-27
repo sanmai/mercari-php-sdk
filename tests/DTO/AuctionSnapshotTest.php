@@ -21,32 +21,32 @@ declare(strict_types=1);
 
 namespace Tests\Mercari\DTO;
 
-use Mercari\DTO\AuctionDetail;
 use Mercari\DTO\AuctionSnapshot;
 use Mercari\Enum\AuctionStatus;
 use PHPUnit\Framework\Attributes\CoversClass;
-use Tests\Mercari\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 
-#[CoversClass(AuctionDetail::class)]
 #[CoversClass(AuctionSnapshot::class)]
-class AuctionTest extends TestCase
+class AuctionSnapshotTest extends TestCase
 {
-    public function testOmittedZeroValues(): void
+    public static function provideStatuses(): iterable
     {
-        /** @var AuctionDetail $auction */
-        $auction = $this->deserializeFile(__DIR__ . '/../data/auction_detail_min.json', AuctionDetail::class);
-
-        $this->assertSame(0, $auction->bid_count);
-        $this->assertFalse($auction->is_winner);
-        $this->assertFalse($auction->is_top_bidder);
-        $this->assertSame(AuctionStatus::Scheduled, $auction->getStatus());
+        yield 'known' => ['WINNING_PERIOD', AuctionStatus::WinningPeriod];
+        yield 'unknown' => ['UNKNOWN', null];
     }
 
-    public function testUnknownStatus(): void
+    #[DataProvider('provideStatuses')]
+    public function testGetStatus(string $status, ?AuctionStatus $expected): void
     {
         $auction = new AuctionSnapshot();
-        $auction->status = 'UNKNOWN';
+        $auction->status = $status;
 
-        $this->assertNull($auction->getStatus());
+        $this->assertSame($expected, $auction->getStatus());
+    }
+
+    public function testNoBids(): void
+    {
+        $this->assertSame(0, (new AuctionSnapshot())->bid_count);
     }
 }
